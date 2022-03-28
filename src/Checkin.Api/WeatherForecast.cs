@@ -1,6 +1,6 @@
 using System;
 
-namespace Checkin
+namespace Checkin.Api
 {
     public class WeatherForecast
     {

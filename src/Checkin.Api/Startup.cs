@@ -11,8 +11,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Checkin.Models;
+using Checkin.Services;
+using Checkin.Services.Interfaces;
+using Checkin.Repositories;
 
-namespace Checkin
+namespace Checkin.Api
 {
     public class Startup
     {
@@ -26,11 +30,20 @@ namespace Checkin
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMemoryCache();
+
+            services.AddScoped<IDeviceService, DeviceService>();
+
+            services.AddScoped<IDeviceRepository, DeviceRepository>();
+            services.AddScoped<IDeviceService, DeviceService>();
+
+            services.AddSingleton<ICacheRepository<List<Device>>, CacheRepository<List<Device>>>();
+
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Checkin", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Checkin.Api", Version = "v1" });
             });
         }
 
@@ -41,7 +54,7 @@ namespace Checkin
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Checkin v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Checkin.Api v1"));
             }
 
             app.UseHttpsRedirection();
