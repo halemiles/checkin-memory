@@ -15,6 +15,8 @@ using Checkin.Models;
 using Checkin.Services;
 using Checkin.Services.Interfaces;
 using Checkin.Repositories;
+using AutoMapper;
+using Checkin.Models;
 
 namespace Checkin.Api
 {
@@ -31,6 +33,10 @@ namespace Checkin.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMemoryCache();
+
+            services.AddAutoMapper(mapperConfig => {
+                mapperConfig.AddProfile<DeviceDtoToDeviceProfile>();
+            });
 
             services.AddScoped<IDeviceService, DeviceService>();
 

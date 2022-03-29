@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Checkin.Models;
 using Checkin.Services;
 using Checkin.Services.Interfaces;
+using AutoMapper;
 
 namespace Checkin.Api.Controllers
 {
@@ -15,14 +16,17 @@ namespace Checkin.Api.Controllers
     public class DeviceController : ControllerBase
     {
         private readonly IDeviceService deviceService;
+        private readonly IMapper mapper;
 
         private readonly ILogger<DeviceController> _logger;
 
         public DeviceController(
-            IDeviceService deviceService
+            IDeviceService deviceService,
+            IMapper mapper
         )
         {
             this.deviceService = deviceService;
+            this.mapper = mapper;
         }
 
         [HttpGet]
@@ -34,14 +38,7 @@ namespace Checkin.Api.Controllers
         [HttpPost]
         public IActionResult CreateDevice([FromBody]DeviceDto deviceDto)
         {
-            Device device = new()
-            {
-                Id = 99999, //deviceDto.Id,
-                Name = deviceDto.Name,
-                IpAddress = deviceDto.IpAddress,
-                CreatedDate = deviceDto.CreatedDate,
-                ModifiedDate = DateTime.Now
-            };
+            var device = mapper.Map<Device>(deviceDto);
             deviceService.Add(device);
             return Ok();
         }
