@@ -29,11 +29,15 @@ namespace Checkin.Models.Extensions
             // Handle same-day times.
             if (dayDiff == 0)
             {
-                // A.
-                // Less than one minute ago.
-                if (secDiff < 60)
+                if (secDiff < 10)
                 {
                     return "just now";
+                }
+                // A.
+                // Less than one minute ago.
+                if (secDiff < 31)
+                {
+                    return "30 seconds ago";
                 }
                 // B.
                 // Less than 2 minutes ago.

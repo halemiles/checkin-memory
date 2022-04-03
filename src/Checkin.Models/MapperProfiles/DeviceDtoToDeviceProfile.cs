@@ -13,6 +13,7 @@ namespace Checkin.Models
                 .ForMember(dest => dest.IpAddress, opt => opt.MapFrom(src => src.IpAddress))
                 .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CreatedDate))
                 .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => DateTime.Now))
+                .ForMember(dest => dest.Network, opt => opt.MapFrom(src => src.Network))
                 .ReverseMap();
         }
     }
