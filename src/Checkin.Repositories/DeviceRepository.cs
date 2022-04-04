@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Checkin.Models;
+using System.Linq;
 
 namespace Checkin.Repositories
 {
@@ -22,6 +23,14 @@ namespace Checkin.Repositories
         public List<Device> GetAll()
         {
             return cache.Get(CacheKey);
+        }
+
+        public void Update(Device device)
+        {
+            var devices = cache.Get(CacheKey);
+            var existing = devices.SingleOrDefault(x => x.Id == device.Id);
+            existing = device;
+            cache.Set(CacheKey, devices);
         }
     }
 }

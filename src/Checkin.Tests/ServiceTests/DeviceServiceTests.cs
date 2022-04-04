@@ -10,6 +10,7 @@ using Serilog;
 using Checkin.Services.Interfaces;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Logging;
+using AutoMapper;
 
 namespace Checkin.Tests
 {
@@ -17,9 +18,11 @@ namespace Checkin.Tests
     public class DeviceServiceTests
     {
         private Mock<IDeviceRepository> mockDeviceRepository;
+        private Mock<IMapper> mockMapper;
         private DeviceService NewDnsService() =>
             new DeviceService(
-                    mockDeviceRepository.Object
+                    mockDeviceRepository.Object,
+                    mockMapper.Object
                 );
            
         private Device defaultDevice;
@@ -28,6 +31,7 @@ namespace Checkin.Tests
         public void SetUp()
         {
             mockDeviceRepository = new Mock<IDeviceRepository>();
+            mockMapper = new Mock<IMapper>();
 
             defaultDevice = new Device()
             {

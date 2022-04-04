@@ -36,6 +36,7 @@ namespace Checkin.Api
 
             services.AddAutoMapper(mapperConfig => {
                 mapperConfig.AddProfile<DeviceDtoToDeviceProfile>();
+                mapperConfig.AddProfile<DeviceToDeviceMergeProfile>();
             });
 
             services.AddScoped<IDeviceService, DeviceService>();
