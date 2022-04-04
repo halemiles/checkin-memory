@@ -69,6 +69,22 @@ namespace Checkin.Tests
         }
 
         [TestMethod]
+        public void GetAll_WithExistingDevice_VerifyCacheReturnsRecords()
+        {
+            // Arrange  
+            var sut = NewDeviceRepository();
+            mockCacheRepository.Setup(x => x.Get(expectedDeviceCacheKey)).Returns(GenerateMultiple());
+            
+            // Act
+            var result = sut.GetAll();
+            //Assert
+            
+            mockCacheRepository.Verify(x => x.Get(expectedDeviceCacheKey), Times.Once);    
+            result.Count.Should().Be(5);
+                    
+        }
+
+        [TestMethod]
         public void Update_WithExistingDevice_VerifyCacheUpdated()
         {
             // Arrange  
@@ -103,34 +119,6 @@ namespace Checkin.Tests
                 ), Times.Once);
             
         }
-
-        [TestMethod]
-        public void Update_WithExistingDevice_VerifyCahceUpdated2()
-        {
-            // Arrange         
-            var cacheRepository = new CacheRepository<List<Device>>(new MemoryCache(new MemoryCacheOptions()));       
-            var sut = new DeviceRepository(cacheRepository);
-            var updatedDevice = new Device()
-            {
-                Id = 0,
-                CreatedDate = DateTime.Now,
-                Name = "Updated Name",
-                IpAddress = "192.168.0.11"
-            };
-            // Act
-            // sut.Create(defaultDevices);
-            // sut.Update(updatedDevice);
-            // var results = sut.GetAll();
-            // //Assert
-            // results.Count.Should().Be(1);
-            // var firstResult = results.FirstOrDefault();
-            // firstResult.Should().NotBeNull();
-            // firstResult.Name.Should().Be("Updated Name");
-            // firstResult.IpAddress.Should().Be("192.168.0.11");
-            
-        }
-
-        
 
         private static List<Device> GenerateMultiple()
         {

@@ -18,11 +18,11 @@ namespace Checkin.Tests
     public class DeviceServiceUpdateTests
     {
         private Mock<IDeviceRepository> mockDeviceRepository;
-        private Mock<IMapper> mockMapper;
+        private IMapper mapper;
         private DeviceService NewDeviceService() =>
             new DeviceService(
                     mockDeviceRepository.Object,
-                    mockMapper.Object
+                    mapper
                 );
            
         private Device defaultDevice;
@@ -32,7 +32,13 @@ namespace Checkin.Tests
         public void SetUp()
         {
             mockDeviceRepository = new Mock<IDeviceRepository>();
-            mockMapper = new Mock<IMapper>();
+            var mapperConfig = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<DeviceDtoToDeviceProfile>();
+                cfg.AddProfile<DeviceToDeviceMergeProfile>();
+                cfg.AddProfile<DeviceNetworkToDeviceNetworkDtoProfile>();
+            });
+            mapper = mapperConfig.CreateMapper();
 
             defaultDevice = new Device()
             {
@@ -77,7 +83,6 @@ namespace Checkin.Tests
             sut.Update(defaultDevice);
 
             //Assert
-            mockMapper.Verify(x => x.Map(It.IsAny<Device>(), It.IsAny<Device>()), Times.Once);
             mockDeviceRepository.Verify(x => x.Update(It.IsAny<Device>()), Times.Once);
         }
 

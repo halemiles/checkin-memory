@@ -23,7 +23,6 @@ namespace Checkin.Repositories
         public List<Device> GetAll()
         {
             var result = cache.Get(CacheKey);
-            Console.WriteLine($"Result {result} :: {result.Count}");
             return result;
         }
 
