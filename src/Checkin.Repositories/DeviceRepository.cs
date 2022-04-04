@@ -22,13 +22,15 @@ namespace Checkin.Repositories
 
         public List<Device> GetAll()
         {
-            return cache.Get(CacheKey);
+            var result = cache.Get(CacheKey);
+            Console.WriteLine($"Result {result} :: {result.Count}");
+            return result;
         }
 
         public void Update(Device device)
         {
             var devices = cache.Get(CacheKey);
-            var existing = devices.SingleOrDefault(x => x.Id == device.Id);
+            var existing = devices.FirstOrDefault(x => x.Id == device.Id);
             existing = device;
             cache.Set(CacheKey, devices);
         }

@@ -45,9 +45,9 @@ namespace Checkin.Services
         public void Update(Device device)
         {
             var existingDevice = deviceRepository.GetAll().FirstOrDefault(x => x.Id == device.Id);
+            
             var mergedDevice = mapper.Map(device, existingDevice);
             deviceRepository.Update(mergedDevice);
-            return;
         }
 
         public List<Device> GetAll()
