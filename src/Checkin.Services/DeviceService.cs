@@ -3,18 +3,22 @@ using Checkin.Services.Interfaces;
 using Checkin.Models;
 using Checkin.Repositories;
 using System.Linq;
+using AutoMapper;
 
 namespace Checkin.Services
 {
     public class DeviceService : IDeviceService
     {
         private readonly IDeviceRepository deviceRepository;
+        private readonly IMapper mapper;
         
         public DeviceService(
-            IDeviceRepository deviceRepository
+            IDeviceRepository deviceRepository,
+            IMapper mapper
         )
         {
             this.deviceRepository = deviceRepository;
+            this.mapper = mapper;
         }
 
         public void Add(Device device)
@@ -23,19 +27,27 @@ namespace Checkin.Services
             var devices = deviceRepository.GetAll() ?? new List<Device>();
                         
             //Doesnt exist
-            if(!devices.Any(x => x.IpAddress == device.IpAddress))
+            if(!devices.Any(x => x.Id == device.Id))
             {
                  devices.Add(device);
             }
             else //Update existing
             {
-                var existing = devices.Find(x => x.IpAddress == device.IpAddress);
-                existing.Name = device.Name;
-                existing.CreatedDate = device.CreatedDate;
-                existing.ModifiedDate = device.ModifiedDate;
+                var existing = devices.Find(x => x.Id == device.Id);
+                mapper.Map(device, existing);
             }
 
             deviceRepository.Create(devices);
+        }
+
+
+
+        public void Update(Device device)
+        {
+            var existingDevice = deviceRepository.GetAll().FirstOrDefault(x => x.Id == device.Id);
+            
+            var mergedDevice = mapper.Map(device, existingDevice);
+            deviceRepository.Update(mergedDevice);
         }
 
         public List<Device> GetAll()

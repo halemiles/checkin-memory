@@ -46,6 +46,13 @@ namespace Checkin.Api.Controllers
         [HttpPut]
         public IActionResult UpdateDevice([FromBody] DeviceDto deviceDto)
         {
+            var device = mapper.Map<Device>(deviceDto);
+            deviceService.Update(device);
+            return Ok();
+        }
+
+        public IActionResult DeleteDevice(int id)
+        {
             return Ok();
         }
     }

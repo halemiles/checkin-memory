@@ -7,6 +7,8 @@ using Checkin.Models;
 using System;
 using FluentAssertions;
 using Microsoft.Extensions.Caching.Memory;
+using System.Linq;
+using System.Threading;
 
 namespace Checkin.Tests
 {
@@ -17,6 +19,7 @@ namespace Checkin.Tests
         private DeviceRepository NewDeviceRepository() => 
             new DeviceRepository(mockCacheRepository.Object);
 
+        private string expectedDeviceCacheKey = "Devices";
         private List<Device> defaultDevices;
 
         [TestInitialize]
@@ -45,7 +48,7 @@ namespace Checkin.Tests
 
             //Assert
             mockCacheRepository.Verify(x => x.Set(
-                    It.IsAny<string>(), 
+                    expectedDeviceCacheKey, 
                     It.IsAny<List<Device>>()
                 ), Times.Once);
         }
@@ -58,22 +61,74 @@ namespace Checkin.Tests
             // Act
             sut.Create(GenerateMultiple());
 
-            //Assert
+            //Assert            
             mockCacheRepository.Verify(x => x.Set(
-                    It.IsAny<string>(), 
+                    expectedDeviceCacheKey, 
                     It.IsAny<List<Device>>()
                 ), Times.Once);
+        }
+
+        [TestMethod]
+        public void GetAll_WithExistingDevice_VerifyCacheReturnsRecords()
+        {
+            // Arrange  
+            var sut = NewDeviceRepository();
+            mockCacheRepository.Setup(x => x.Get(expectedDeviceCacheKey)).Returns(GenerateMultiple());
+            
+            // Act
+            var result = sut.GetAll();
+            //Assert
+            
+            mockCacheRepository.Verify(x => x.Get(expectedDeviceCacheKey), Times.Once);    
+            result.Count.Should().Be(5);
+                    
+        }
+
+        [TestMethod]
+        public void Update_WithExistingDevice_VerifyCacheUpdated()
+        {
+            // Arrange  
+            var sut = NewDeviceRepository();
+            
+            var updatedDevice = 
+                new Device()
+                {
+                    Id = 0,
+                    CreatedDate = DateTime.Now,
+                    Name = "Updated Name",
+                    IpAddress = "192.168.0.11"
+                
+            };  
+            var expectedDevicesToBeWritten = new List<Device>()
+            {
+                updatedDevice,
+                new Device(){Id = 1,IpAddress = "127.0.0.1"},
+                new Device(){Id = 2,IpAddress = "127.0.0.1"},
+                new Device(){Id = 3,IpAddress = "127.0.0.1"},
+                new Device(){Id = 4,IpAddress = "127.0.0.1"},
+            };
+            mockCacheRepository.Setup(x => x.Get(expectedDeviceCacheKey)).Returns(GenerateMultiple());
+            
+            // Act
+            sut.Update(updatedDevice);
+            //Assert
+            mockCacheRepository.Verify(x => x.Get(expectedDeviceCacheKey), Times.Once);
+            mockCacheRepository.Verify(x => x.Set(
+                    expectedDeviceCacheKey, 
+                    It.IsAny<List<Device>>()
+                ), Times.Once);
+            
         }
 
         private static List<Device> GenerateMultiple()
         {
             List<Device> devices = new();
+            DateTime timestamp = DateTime.Now;
             for(int i=0;i <5; i++)
             {
                 devices.Add(new Device()
                 {
-                    Id = 0,
-                    CreatedDate = DateTime.Now,
+                    Id = i,
                     IpAddress = "127.0.0.1"
                 });
             }

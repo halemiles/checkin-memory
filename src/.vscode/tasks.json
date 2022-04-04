@@ -19,6 +19,22 @@
                 "reveal": "silent"
             },
             "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "test",
+            "command": "dotnet",
+            "type": "shell",
+            "args": [
+                "test",
+                "/property:CollectCoverage=true",
+                "/property:CoverletOutputFormat=lcov",
+                "/property:CoverletOutput=./lcov.info"
+            ],
+            "group": "test",
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
         }
     ]
 }

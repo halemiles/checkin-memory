@@ -10,24 +10,35 @@ using Serilog;
 using Checkin.Services.Interfaces;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Logging;
+using AutoMapper;
 
 namespace Checkin.Tests
 {
     [TestClass]
-    public class DeviceServiceTests
+    public class DeviceServiceUpdateTests
     {
         private Mock<IDeviceRepository> mockDeviceRepository;
-        private DeviceService NewDnsService() =>
+        private IMapper mapper;
+        private DeviceService NewDeviceService() =>
             new DeviceService(
-                    mockDeviceRepository.Object
+                    mockDeviceRepository.Object,
+                    mapper
                 );
            
         private Device defaultDevice;
+        private Device newDeviceDetails;
 
         [TestInitialize]
         public void SetUp()
         {
             mockDeviceRepository = new Mock<IDeviceRepository>();
+            var mapperConfig = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<DeviceDtoToDeviceProfile>();
+                cfg.AddProfile<DeviceToDeviceMergeProfile>();
+                cfg.AddProfile<DeviceNetworkToDeviceNetworkDtoProfile>();
+            });
+            mapper = mapperConfig.CreateMapper();
 
             defaultDevice = new Device()
             {
@@ -36,51 +47,43 @@ namespace Checkin.Tests
                 Name = "Test Device",
                 IpAddress = "127.0.0.1"
             };
+
+            newDeviceDetails = new Device()
+            {
+                Id = 0,
+                CreatedDate = DateTime.Now,
+                Name = "Updated Name",
+                IpAddress = "192.168.0.195"
+            };
         }
 
         [TestMethod]
-        public void Add_WhenNoPings_ReturnsFailure()
+        public void Update_WithUpdatedProperties_VerifyCalledMethods()
         {
             // Arrange
-            mockDeviceRepository.Setup(x => x.GetAll()).Returns(new List<Device>());
-            var sut = NewDnsService();
+            mockDeviceRepository.Setup(x => x.GetAll()).Returns(new List<Device>(){defaultDevice});
+            var sut = NewDeviceService();
 
             // Act
-            sut.Add(defaultDevice);
+            sut.Update(defaultDevice);
 
             //Assert
             mockDeviceRepository.Verify(x => x.GetAll(), Times.Once);
-            mockDeviceRepository.Verify(x => x.Create(It.IsAny<List<Device>>()), Times.Once);
+            mockDeviceRepository.Verify(x => x.Update(It.IsAny<Device>()), Times.Once);
         }
 
         [TestMethod]
-        public void GetAll_WithMultiplePings_ReturnsPings()
+        public void Update_WithUpdatedIpAddress_IpAddressIsUpdated()
         {
             // Arrange
-            mockDeviceRepository.Setup(x => x.GetAll()).Returns(GenerateMultiple());
-            var sut = NewDnsService();
+            mockDeviceRepository.Setup(x => x.GetAll()).Returns(new List<Device>(){defaultDevice});
+            var sut = NewDeviceService();
 
             // Act
-            var results = sut.GetAll();
+            sut.Update(defaultDevice);
 
             //Assert
-            results.Count.Should().Be(5);
-            mockDeviceRepository.Verify(x => x.GetAll(), Times.Once);
-        }
-
-        [TestMethod]
-        public void GetAll_WithNullPings_ReturnsEmptyResult()
-        {
-            // Arrange
-            mockDeviceRepository.Setup(x => x.GetAll()).Returns((List<Device>)null);
-            var sut = NewDnsService();
-
-            // Act
-            var results = sut.GetAll();
-
-            //Assert
-            results.Should().NotBeNull();
-            results.Count.Should().Be(0);
+            mockDeviceRepository.Verify(x => x.Update(It.IsAny<Device>()), Times.Once);
         }
 
         private static List<Device> GenerateMultiple()
@@ -92,7 +95,7 @@ namespace Checkin.Tests
                 {
                     Id = 0,
                     CreatedDate = DateTime.Now,
-                    IpAddress = "127.0.0.1"
+                    IpAddress = $"192.168.0.{i}"
                 });
             }
             return devices;

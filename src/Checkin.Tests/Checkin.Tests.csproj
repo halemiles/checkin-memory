@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-
+    <ProduceReferenceAssemblyInOutDir>true</ProduceReferenceAssemblyInOutDir>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
@@ -25,7 +25,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Checkin.Models\Checkin.Models.csproj" />
     <ProjectReference Include="..\Checkin.Services\Checkin.Services.csproj" />
-    <ProjectReference Include="..\Checkin.Repository\Checkin.Repository.csproj" />
+    <ProjectReference Include="..\Checkin.Repositories\Checkin.Repositories.csproj" />
   </ItemGroup>
 
 </Project>
