@@ -27,7 +27,7 @@
             "args": [
                 "test",
                 "/property:CollectCoverage=true",
-                "/property:CoverletOutputFormat=lcov",
+                "/property:CoverletOutputFormat=cobertura,lcov",
                 "/property:CoverletOutput=./lcov.info"
             ],
             "group": "test",
