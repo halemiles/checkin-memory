@@ -34,5 +34,5 @@ jobs:
         project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
         # or
         # api-token: ${{ secrets.CODACY_API_TOKEN }}
-        coverage-reports: Checkin.Tests/coverage.cobertura.xml
+        coverage-reports: ./src/Checkin.Tests/coverage.cobertura.xml
 
