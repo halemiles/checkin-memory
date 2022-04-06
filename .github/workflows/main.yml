@@ -21,7 +21,20 @@ jobs:
         dotnet-version: 5.0.x
     - name: Restore dependencies
       run: dotnet restore
+      working-directory: ${{ env.working-directory }}
     - name: Build
-      run: dotnet build --no-restore --project Checkin.Api
+      run: dotnet build --no-restore
+      working-directory: ${{ env.working-directory }}
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura  --no-build --verbosity normal
+      working-directory: ${{ env.working-directory }}
+    - name: Debug
+      run: ls && ls src && ls src/Checkin.Tests
+    - name: Codacy Coverage Reporter
+      uses: codacy/codacy-coverage-reporter-action@v1.3.0
+      with:
+        project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        # or
+        # api-token: ${{ secrets.CODACY_API_TOKEN }}
+        coverage-reports: src/Checkin.Tests/coverage.cobertura.xml
+
