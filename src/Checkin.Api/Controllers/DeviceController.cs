@@ -18,15 +18,17 @@ namespace Checkin.Api.Controllers
         private readonly IDeviceService deviceService;
         private readonly IMapper mapper;
 
-        private readonly ILogger<DeviceController> _logger;
+        private readonly ILogger<DeviceController> logger;
 
         public DeviceController(
             IDeviceService deviceService,
-            IMapper mapper
+            IMapper mapper,
+            ILogger<DeviceController> logger
         )
         {
-            this.deviceService = deviceService;
-            this.mapper = mapper;
+            this.deviceService = deviceService; //TODO: Null ref check
+            this.mapper = mapper; //TODO: Null ref check
+            this.logger = logger; //TODO: Null ref check
         }
 
         [HttpGet]
@@ -38,6 +40,7 @@ namespace Checkin.Api.Controllers
         [HttpPost]
         public IActionResult CreateDevice([FromBody]DeviceDto deviceDto)
         {
+            logger.LogInformation("Creating Device");
             var device = mapper.Map<Device>(deviceDto);
             deviceService.Add(device);
             return Ok();
