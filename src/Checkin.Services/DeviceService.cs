@@ -11,7 +11,7 @@ namespace Checkin.Services
     {
         private readonly IDeviceRepository deviceRepository;
         private readonly IMapper mapper;
-        
+
         public DeviceService(
             IDeviceRepository deviceRepository,
             IMapper mapper
@@ -25,7 +25,8 @@ namespace Checkin.Services
         {
             //No devices exist
             var devices = deviceRepository.GetAll() ?? new List<Device>();
-                        
+            var existingDevice = devices.Find(x => x.Id == device.Id);
+
             //Doesnt exist
             if(!devices.Any(x => x.Id == device.Id))
             {
@@ -33,19 +34,18 @@ namespace Checkin.Services
             }
             else //Update existing
             {
-                var existing = devices.Find(x => x.Id == device.Id);
-                mapper.Map(device, existing);
+                mapper.Map(device, existingDevice);
             }
 
             deviceRepository.Create(devices);
         }
 
-
-
         public void Update(Device device)
         {
-            var existingDevice = deviceRepository.GetAll().FirstOrDefault(x => x.Id == device.Id);
-            
+            var existingDevice = deviceRepository
+                                    .GetAll()
+                                    .Find(x => x.Id == device.Id);
+
             var mergedDevice = mapper.Map(device, existingDevice);
             deviceRepository.Update(mergedDevice);
         }

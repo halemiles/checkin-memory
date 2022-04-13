@@ -6,10 +6,6 @@ using System.Collections.Generic;
 using Checkin.Models;
 using System;
 using FluentAssertions;
-using Serilog;
-using Checkin.Services.Interfaces;
-using Microsoft.Extensions.Logging.Abstractions;
-using Microsoft.Extensions.Logging;
 using AutoMapper;
 
 namespace Checkin.Tests
@@ -20,11 +16,11 @@ namespace Checkin.Tests
         private Mock<IDeviceRepository> mockDeviceRepository;
         private Mock<IMapper> mockMapper;
         private DeviceService NewDnsService() =>
-            new DeviceService(
+            new(
                     mockDeviceRepository.Object,
                     mockMapper.Object
                 );
-           
+
         private Device defaultDevice;
 
         [TestInitialize]
@@ -73,7 +69,7 @@ namespace Checkin.Tests
         }
 
         [TestMethod]
-        public void GetAll_WithNullPings_ReturnsEmptyResult()
+        public void GetAll_WhenRepositoryReturnsNull_ReturnsEmptyResult()
         {
             // Arrange
             mockDeviceRepository.Setup(x => x.GetAll()).Returns((List<Device>)null);
@@ -89,7 +85,7 @@ namespace Checkin.Tests
 
         private static List<Device> GenerateMultiple()
         {
-            List<Device> devices = new List<Device>();
+            List<Device> devices = new();
             for(int i=0;i <5; i++)
             {
                 devices.Add(new Device()

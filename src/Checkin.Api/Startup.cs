@@ -15,10 +15,6 @@ using Checkin.Models;
 using Checkin.Services;
 using Checkin.Services.Interfaces;
 using Checkin.Repositories;
-using AutoMapper;
-using Checkin.Models;
-using Serilog;
-
 namespace Checkin.Api
 {
     public class Startup
