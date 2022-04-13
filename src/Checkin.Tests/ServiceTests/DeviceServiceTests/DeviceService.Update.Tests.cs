@@ -15,87 +15,87 @@ namespace Checkin.Tests
     {
         private Mock<IDeviceRepository> mockDeviceRepository;
         private Mock<IMapper> mockMapper;
-        private DeviceService NewDnsService() =>
-            new(
-                    mockDeviceRepository.Object,
-                    mockMapper.Object
-                );
+        // private DeviceService NewDnsService() =>
+        //     new(
+        //             mockDeviceRepository.Object,
+        //             mockMapper.Object
+        //         );
 
         private Device defaultDevice;
 
-        [TestInitialize]
-        public void SetUp()
-        {
-            mockDeviceRepository = new Mock<IDeviceRepository>();
-            mockMapper = new Mock<IMapper>();
+        // [TestInitialize]
+        // public void SetUp()
+        // {
+        //     mockDeviceRepository = new Mock<IDeviceRepository>();
+        //     mockMapper = new Mock<IMapper>();
 
-            defaultDevice = new Device()
-            {
-                Id = 0,
-                CreatedDate = DateTime.Now,
-                Name = "Test Device",
-                IpAddress = "127.0.0.1"
-            };
-        }
+        //     defaultDevice = new Device()
+        //     {
+        //         Id = 0,
+        //         CreatedDate = DateTime.Now,
+        //         Name = "Test Device",
+        //         IpAddress = "127.0.0.1"
+        //     };
+        // }
 
-        [TestMethod]
-        public void Add_WhenNoPings_ReturnsFailure()
-        {
-            // Arrange
-            mockDeviceRepository.Setup(x => x.GetAll()).Returns(new List<Device>());
-            var sut = NewDnsService();
+        // [TestMethod]
+        // public void Add_WhenNoPings_ReturnsFailure()
+        // {
+        //     // Arrange
+        //     mockDeviceRepository.Setup(x => x.GetAll()).Returns(new List<Device>());
+        //     var sut = NewDnsService();
 
-            // Act
-            sut.Add(defaultDevice);
+        //     // Act
+        //     sut.Add(defaultDevice);
 
-            //Assert
-            mockDeviceRepository.Verify(x => x.GetAll(), Times.Once);
-            mockDeviceRepository.Verify(x => x.Create(It.IsAny<List<Device>>()), Times.Once);
-        }
+        //     //Assert
+        //     mockDeviceRepository.Verify(x => x.GetAll(), Times.Once);
+        //     mockDeviceRepository.Verify(x => x.Create(It.IsAny<List<Device>>()), Times.Once);
+        // }
 
-        [TestMethod]
-        public void GetAll_WithMultiplePings_ReturnsPings()
-        {
-            // Arrange
-            mockDeviceRepository.Setup(x => x.GetAll()).Returns(GenerateMultiple());
-            var sut = NewDnsService();
+        // [TestMethod]
+        // public void GetAll_WithMultiplePings_ReturnsPings()
+        // {
+        //     // Arrange
+        //     mockDeviceRepository.Setup(x => x.GetAll()).Returns(GenerateMultiple());
+        //     var sut = NewDnsService();
 
-            // Act
-            var results = sut.GetAll();
+        //     // Act
+        //     var results = sut.GetAll();
 
-            //Assert
-            results.Count.Should().Be(5);
-            mockDeviceRepository.Verify(x => x.GetAll(), Times.Once);
-        }
+        //     //Assert
+        //     results.Count.Should().Be(5);
+        //     mockDeviceRepository.Verify(x => x.GetAll(), Times.Once);
+        // }
 
-        [TestMethod]
-        public void GetAll_WhenRepositoryReturnsNull_ReturnsEmptyResult()
-        {
-            // Arrange
-            mockDeviceRepository.Setup(x => x.GetAll()).Returns((List<Device>)null);
-            var sut = NewDnsService();
+        // [TestMethod]
+        // public void GetAll_WhenRepositoryReturnsNull_ReturnsEmptyResult()
+        // {
+        //     // Arrange
+        //     mockDeviceRepository.Setup(x => x.GetAll()).Returns((List<Device>)null);
+        //     var sut = NewDnsService();
 
-            // Act
-            var results = sut.GetAll();
+        //     // Act
+        //     var results = sut.GetAll();
 
-            //Assert
-            results.Should().NotBeNull();
-            results.Count.Should().Be(0);
-        }
+        //     //Assert
+        //     results.Should().NotBeNull();
+        //     results.Count.Should().Be(0);
+        // }
 
-        private static List<Device> GenerateMultiple()
-        {
-            List<Device> devices = new();
-            for(int i=0;i <5; i++)
-            {
-                devices.Add(new Device()
-                {
-                    Id = 0,
-                    CreatedDate = DateTime.Now,
-                    IpAddress = $"192.168.0.{i}"
-                });
-            }
-            return devices;
-        }
+        // private static List<Device> GenerateMultiple()
+        // {
+        //     List<Device> devices = new();
+        //     for(int i=0;i <5; i++)
+        //     {
+        //         devices.Add(new Device()
+        //         {
+        //             Id = 0,
+        //             CreatedDate = DateTime.Now,
+        //             IpAddress = $"192.168.0.{i}"
+        //         });
+        //     }
+        //     return devices;
+        // }
     }
 }

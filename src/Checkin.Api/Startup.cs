@@ -29,7 +29,11 @@ namespace Checkin.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMemoryCache();
+            services.AddDistributedRedisCache(option =>
+            {
+                option.Configuration = "127.0.0.1";
+                option.InstanceName = "master";
+            });
 
             services.AddAutoMapper(mapperConfig => {
                 mapperConfig.AddProfile<DeviceDtoToDeviceProfile>();
@@ -39,10 +43,11 @@ namespace Checkin.Api
 
             services.AddScoped<IDeviceService, DeviceService>();
 
-            services.AddScoped<IDeviceRepository, DeviceRepository>();
+            //services.AddScoped<IDeviceRepository, DeviceRepository>();
+            services.AddScoped<IDistrbutedCacheRepository, DistributedCacheRepository>();
             services.AddScoped<IDeviceService, DeviceService>();
 
-            services.AddSingleton<ICacheRepository<List<Device>>, CacheRepository<List<Device>>>();
+            //services.AddSingleton<ICacheRepository<List<Device>>, CacheRepository<List<Device>>>();
 
 
             services.AddControllers();

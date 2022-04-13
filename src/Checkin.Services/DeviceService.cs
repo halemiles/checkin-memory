@@ -4,16 +4,17 @@ using Checkin.Models;
 using Checkin.Repositories;
 using System.Linq;
 using AutoMapper;
+using System.Threading.Tasks;
 
 namespace Checkin.Services
 {
     public class DeviceService : IDeviceService
     {
-        private readonly IDeviceRepository deviceRepository;
+        private readonly IDistrbutedCacheRepository deviceRepository;
         private readonly IMapper mapper;
 
         public DeviceService(
-            IDeviceRepository deviceRepository,
+            IDistrbutedCacheRepository deviceRepository,
             IMapper mapper
         )
         {
@@ -21,10 +22,10 @@ namespace Checkin.Services
             this.mapper = mapper;
         }
 
-        public void Add(Device device)
+        public async Task<bool> Add(Device device)
         {
             //No devices exist
-            var devices = deviceRepository.GetAll() ?? new List<Device>();
+            var devices = await deviceRepository.GetAll() ?? new List<Device>();
             var existingDevice = devices.Find(x => x.Id == device.Id);
 
             //Doesnt exist
@@ -37,44 +38,47 @@ namespace Checkin.Services
                 mapper.Map(device, existingDevice);
             }
 
-            deviceRepository.Create(devices);
+            await deviceRepository.Set(devices);
+            return true;
         }
 
         public void Update(Device device)
         {
-            var existingDevice = deviceRepository
-                                    .GetAll()
-                                    .Find(x => x.Id == device.Id);
+            // var existingDevice = deviceRepository
+            //                         .GetAll()
+            //                         .Find(x => x.Id == device.Id);
 
-            var mergedDevice = mapper.Map(device, existingDevice);
-            deviceRepository.Update(mergedDevice);
+            // var mergedDevice = mapper.Map(device, existingDevice);
+            // deviceRepository.Update(mergedDevice);
         }
 
-        public List<Device> GetAll()
+        public async Task<List<Device>> GetAll()
         {
-            if(deviceRepository.GetAll() is List<Device> devices)
-            {
-                return devices;
-            }
-            return new List<Device>();
+            var result = await deviceRepository.GetAll();
+            return result;
         }
 
         public Device GetByIp(string ipAddress)
         {
-            if(deviceRepository.GetAll() is List<Device> devices)
-            {
-                return devices.Find(x => x.IpAddress == ipAddress);
-            }
+            // if(deviceRepository.GetAll() is List<Device> devices)
+            // {
+            //     return devices.Find(x => x.IpAddress == ipAddress);
+            // }
             return new Device();
         }
 
         public Device GetByDevice(int deviceId)
         {
-            if(deviceRepository.GetAll() is List<Device> devices)
-            {
-                return devices.Find(x => x.Id == deviceId);
-            }
+            // if(deviceRepository.GetAll() is List<Device> devices)
+            // {
+            //     return devices.Find(x => x.Id == deviceId);
+            // }
             return new Device();
+        }
+
+        public void Delete(int id)
+        {
+
         }
     }
 }

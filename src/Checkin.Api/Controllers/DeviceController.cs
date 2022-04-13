@@ -32,17 +32,17 @@ namespace Checkin.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            return Ok(deviceService.GetAll());
+            return Ok(await deviceService.GetAll());
         }
 
         [HttpPost]
-        public IActionResult CreateDevice([FromBody]DeviceDto deviceDto)
+        public async Task<IActionResult> CreateDevice([FromBody]DeviceDto deviceDto)
         {
             logger.LogInformation("Creating Device");
             var device = mapper.Map<Device>(deviceDto);
-            deviceService.Add(device);
+            await deviceService.Add(device);
             return Ok();
         }
 
@@ -56,6 +56,7 @@ namespace Checkin.Api.Controllers
 
         public IActionResult DeleteDevice(int id)
         {
+            deviceService.Delete(id);
             return Ok();
         }
     }
