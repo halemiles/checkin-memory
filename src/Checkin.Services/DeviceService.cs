@@ -10,11 +10,11 @@ namespace Checkin.Services
 {
     public class DeviceService : IDeviceService
     {
-        private readonly IDistrbutedCacheRepository deviceRepository;
+        private readonly IDeviceCacheRepository deviceRepository;
         private readonly IMapper mapper;
 
         public DeviceService(
-            IDistrbutedCacheRepository deviceRepository,
+            IDeviceCacheRepository deviceRepository,
             IMapper mapper
         )
         {
@@ -22,10 +22,10 @@ namespace Checkin.Services
             this.mapper = mapper;
         }
 
-        public async Task<bool> Add(Device device)
+        public bool Add(Device device)
         {
             //No devices exist
-            var devices = await deviceRepository.GetAll() ?? new List<Device>();
+            var devices = deviceRepository.GetAll() ?? new List<Device>();
             var existingDevice = devices.Find(x => x.Id == device.Id);
 
             //Doesnt exist
@@ -38,7 +38,7 @@ namespace Checkin.Services
                 mapper.Map(device, existingDevice);
             }
 
-            await deviceRepository.Set(devices);
+            deviceRepository.Set(devices);
             return true;
         }
 
@@ -52,9 +52,9 @@ namespace Checkin.Services
             // deviceRepository.Update(mergedDevice);
         }
 
-        public async Task<List<Device>> GetAll()
+        public List<Device> GetAll()
         {
-            var result = await deviceRepository.GetAll();
+            var result = deviceRepository.GetAll();
             return result;
         }
 

@@ -17,7 +17,7 @@ namespace Checkin.Api
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                    webBuilder.useCustomTelemetry();                    
+                    webBuilder.UseCustomTelemetry();
                 });
     }
 }

@@ -8,30 +8,29 @@ namespace Checkin.Repositories
 {
     public class DeviceRepository : IDeviceRepository
     {
-        private const string CacheKey = "Devices";
-        private ICacheRepository<List<Device>> cache;
-        public DeviceRepository(ICacheRepository<List<Device>> cache)
+        private IDeviceCacheRepository cache;
+        public DeviceRepository(IDeviceCacheRepository cache)
         {
             this.cache = cache;
         }
 
         public void Create(List<Device> value)
         {
-            cache.Set(CacheKey, value);
+            cache.Set(value);
         }
 
         public List<Device> GetAll()
         {
-            var result = cache.Get(CacheKey);
+            var result = cache.GetAll();
             return result;
         }
 
         public void Update(Device device)
         {
-            var devices = cache.Get(CacheKey);
+            var devices = cache.GetAll();
             var existing = devices.FirstOrDefault(x => x.Id == device.Id);
             existing = device;
-            cache.Set(CacheKey, devices);
+            cache.Set(devices);
         }
     }
 }

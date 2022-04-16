@@ -4,13 +4,13 @@ using Checkin.Models;
 
 namespace Checkin.Services.Interfaces
 {
-    public interface IDeviceService //TODO - Make this generic
+    public interface IDeviceService
     {
-        Task<List<Device>> GetAll();
+        List<Device> GetAll();
         void Update(Device device);
         Device GetByIp(string ipAddress);
         Device GetByDevice(int deviceId);
-        Task<bool> Add(Device device);
+        bool Add(Device device);
         void Delete(int id);
     }
 }

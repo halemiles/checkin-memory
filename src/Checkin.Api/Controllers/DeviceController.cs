@@ -32,17 +32,17 @@ namespace Checkin.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public ActionResult GetAll()
         {
-            return Ok(await deviceService.GetAll());
+            return Ok(deviceService.GetAll());
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateDevice([FromBody]DeviceDto deviceDto)
+        public ActionResult CreateDevice([FromBody]DeviceDto deviceDto)
         {
             logger.LogInformation("Creating Device");
             var device = mapper.Map<Device>(deviceDto);
-            await deviceService.Add(device);
+            deviceService.Add(device);
             return Ok();
         }
 

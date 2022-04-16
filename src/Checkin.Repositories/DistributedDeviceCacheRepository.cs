@@ -8,18 +8,18 @@ using System.Text.Json.Serialization;
 
 namespace Checkin.Repositories
 {
-    public class DistributedCacheRepository : IDistrbutedCacheRepository
+    public class DistributedDeviceCacheRepository : IDeviceCacheRepository
     {
+        private readonly string cacheKey = "Devices";
         private readonly IDistributedCache distributedCache;
-        public DistributedCacheRepository(IDistributedCache distributedCache)
+        public DistributedDeviceCacheRepository(IDistributedCache distributedCache)
         {
             this.distributedCache = distributedCache;
         }
 
-        public async Task<List<Device>> GetAll()
+        public List<Device> GetAll()
 	    {
-            var cacheKey = "TheTime";
-            var result = await distributedCache.GetStringAsync(cacheKey);
+            var result = distributedCache.GetString(cacheKey);
             if(result != null)
             {
                 var devices = JsonSerializer.Deserialize<List<Device>>(result);
@@ -31,11 +31,10 @@ namespace Checkin.Repositories
 
 	    }
 
-        public async Task<bool> Set(List<Device> devices)
+        public bool Set(List<Device> devices)
         {
-            var cacheKey = "TheTime";
             var json = JsonSerializer.Serialize(devices);
-            await distributedCache.SetStringAsync(cacheKey, json);
+            distributedCache.SetString(cacheKey, json);
             return true;
         }
     }
