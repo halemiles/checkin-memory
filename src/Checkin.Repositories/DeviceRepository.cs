@@ -6,10 +6,10 @@ using System.Linq;
 
 namespace Checkin.Repositories
 {
-    public class DeviceRepository : IDeviceRepository
+    public class LocalDeviceRepository : IDeviceRepository
     {
-        private IDeviceCacheRepository cache;
-        public DeviceRepository(IDeviceCacheRepository cache)
+        private readonly IDeviceCacheRepository cache;
+        public LocalDeviceRepository(IDeviceCacheRepository cache)
         {
             this.cache = cache;
         }

@@ -6,29 +6,40 @@ using System.Collections.Generic;
 using Checkin.Models;
 using System;
 using FluentAssertions;
+using Serilog;
+using Checkin.Services.Interfaces;
+using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Logging;
 using AutoMapper;
-using Checkin.Tests.Helpers;
 
 namespace Checkin.Tests
 {
     [TestClass]
-    public class DeviceServiceUpdateTests
+    public class DeviceServiceAddTests
     {
         private Mock<IDeviceCacheRepository> mockDeviceRepository;
-        private Mock<IMapper> mockMapper;
-        private DeviceService NewDnsService() =>
-            new(
+
+        private IMapper mapper;
+        private DeviceService NewDeviceService() =>
+            new DeviceService(
                     mockDeviceRepository.Object,
-                    mockMapper.Object
+                    mapper
                 );
 
         private Device defaultDevice;
+        private Device newDeviceDetails;
 
         [TestInitialize]
         public void SetUp()
         {
             mockDeviceRepository = new Mock<IDeviceCacheRepository>();
-            mockMapper = new Mock<IMapper>();
+            var mapperConfig = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<DeviceDtoToDeviceProfile>();
+                cfg.AddProfile<DeviceToDeviceMergeProfile>();
+                cfg.AddProfile<DeviceNetworkToDeviceNetworkDtoProfile>();
+            });
+            mapper = mapperConfig.CreateMapper();
 
             defaultDevice = new Device()
             {
@@ -37,6 +48,14 @@ namespace Checkin.Tests
                 Name = "Test Device",
                 IpAddress = "127.0.0.1"
             };
+
+            newDeviceDetails = new Device()
+            {
+                Id = 0,
+                CreatedDate = DateTime.Now,
+                Name = "Updated Name",
+                IpAddress = "192.168.0.195"
+            };
         }
 
         [TestMethod]
@@ -44,7 +63,7 @@ namespace Checkin.Tests
         {
             // Arrange
             mockDeviceRepository.Setup(x => x.GetAll()).Returns(new List<Device>());
-            var sut = NewDnsService();
+            var sut = NewDeviceService();
 
             // Act
             sut.Add(defaultDevice);
@@ -52,36 +71,6 @@ namespace Checkin.Tests
             //Assert
             mockDeviceRepository.Verify(x => x.GetAll(), Times.Once);
             mockDeviceRepository.Verify(x => x.Set(It.IsAny<List<Device>>()), Times.Once);
-        }
-
-        [TestMethod]
-        public void GetAll_WithMultiplePings_ReturnsPings()
-        {
-            // Arrange
-            mockDeviceRepository.Setup(x => x.GetAll()).Returns(DeviceGenerationHelpers.GenerateMultiple());
-            var sut = NewDnsService();
-
-            // Act
-            var results = sut.GetAll();
-
-            //Assert
-            results.Count.Should().Be(5);
-            mockDeviceRepository.Verify(x => x.GetAll(), Times.Once);
-        }
-
-        [TestMethod]
-        public void GetAll_WhenRepositoryReturnsNull_ReturnsEmptyResult()
-        {
-            // Arrange
-            mockDeviceRepository.Setup(x => x.GetAll()).Returns((List<Device>)null);
-            var sut = NewDnsService();
-
-            // Act
-            var results = sut.GetAll();
-
-            //Assert
-            results.Should().NotBeNull();
-            results.Count.Should().Be(0);
         }
     }
 }

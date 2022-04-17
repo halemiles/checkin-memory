@@ -8,11 +8,12 @@ using System;
 using FluentAssertions;
 using AutoMapper;
 using Checkin.Tests.Helpers;
+using Snapper;
 
 namespace Checkin.Tests
 {
     [TestClass]
-    public class DeviceServiceUpdateTests
+    public class DeviceServiceGetAllTests
     {
         private Mock<IDeviceCacheRepository> mockDeviceRepository;
         private Mock<IMapper> mockMapper;
@@ -37,21 +38,6 @@ namespace Checkin.Tests
                 Name = "Test Device",
                 IpAddress = "127.0.0.1"
             };
-        }
-
-        [TestMethod]
-        public void Add_WhenNoPings_ReturnsFailure()
-        {
-            // Arrange
-            mockDeviceRepository.Setup(x => x.GetAll()).Returns(new List<Device>());
-            var sut = NewDnsService();
-
-            // Act
-            sut.Add(defaultDevice);
-
-            //Assert
-            mockDeviceRepository.Verify(x => x.GetAll(), Times.Once);
-            mockDeviceRepository.Verify(x => x.Set(It.IsAny<List<Device>>()), Times.Once);
         }
 
         [TestMethod]
@@ -82,6 +68,34 @@ namespace Checkin.Tests
             //Assert
             results.Should().NotBeNull();
             results.Count.Should().Be(0);
+        }
+
+        [TestMethod]
+        public void GetAll_WhenMultipleDevicesReturned_MatchesSnapshot()
+        {
+            // Arrange
+            mockDeviceRepository.Setup(x => x.GetAll()).Returns(DeviceGenerationHelpers.GenerateMultiple());
+            var sut = NewDnsService();
+
+            // Act
+            var results = sut.GetAll();
+
+            //Assert
+            results.ShouldMatchSnapshot();
+        }
+
+        [TestMethod]
+        public void GetAll_WhenRepositoryReturnsNull_MatchesSnapshot()
+        {
+            // Arrange
+            mockDeviceRepository.Setup(x => x.GetAll()).Returns((List<Device>)null);
+            var sut = NewDnsService();
+
+            // Act
+            var results = sut.GetAll();
+
+            //Assert
+            results.ShouldMatchSnapshot();
         }
     }
 }

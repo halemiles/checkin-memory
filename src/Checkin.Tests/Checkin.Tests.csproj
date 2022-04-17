@@ -20,6 +20,7 @@
     <PackageReference Include="coverlet.collector" Version="3.0.2" />
     <PackageReference Include="Serilog" Version="2.10.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
+    <PackageReference Include="snapper" Version="2.3.1" />
   </ItemGroup>
 
   <ItemGroup>

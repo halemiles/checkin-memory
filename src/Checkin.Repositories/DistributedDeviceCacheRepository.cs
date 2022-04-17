@@ -25,10 +25,7 @@ namespace Checkin.Repositories
                 var devices = JsonSerializer.Deserialize<List<Device>>(result);
                 return devices;
             }
-                return new List<Device>();
-            
-            
-
+            return new List<Device>();
 	    }
 
         public bool Set(List<Device> devices)

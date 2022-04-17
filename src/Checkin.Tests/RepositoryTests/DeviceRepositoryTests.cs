@@ -16,8 +16,8 @@ namespace Checkin.Tests
     public class DeviceRepositoryTests
     {
         private Mock<IDeviceCacheRepository> mockCacheRepository;
-        private DeviceRepository NewDeviceRepository() => 
-            new DeviceRepository(mockCacheRepository.Object);
+        private LocalDeviceRepository NewDeviceRepository() => 
+            new LocalDeviceRepository(mockCacheRepository.Object);
 
         private string expectedDeviceCacheKey = "Devices";
         private List<Device> defaultDevices;
