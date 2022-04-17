@@ -37,17 +37,14 @@ namespace Checkin.Api
                 .CreateLogger();
 
             Log.Information("Starting API");
-
             
-
             services.AddAutoMapper(mapperConfig => {
                 mapperConfig.AddProfile<DeviceDtoToDeviceProfile>();
                 mapperConfig.AddProfile<DeviceToDeviceMergeProfile>();
                 mapperConfig.AddProfile<DeviceNetworkToDeviceNetworkDtoProfile>();
             });
-
-            var memoryProviderSettings = Configuration.GetSection("MemoryProvider") as MemoryProviderSettings ?? new MemoryProviderSettings();
-            memoryProviderSettings.Name = "DistributedCache";
+            var memoryProviderSettings = Configuration.GetSection("MemoryProvider").Get<MemoryProviderSettings>();
+            
             if(memoryProviderSettings.Name == "DistributedCache")
             {
                 Log.Information("Using distributed cache");
@@ -63,14 +60,10 @@ namespace Checkin.Api
                 Log.Information("Using IMemoryCache");
                 services.AddMemoryCache();
                 services.AddScoped<IDeviceCacheRepository, DeviceCacheRepository>();
-                
             }
-            
-            
 
             services.AddScoped<IDeviceService, DeviceService>();
 
-            //services.AddSingleton<ICacheRepository<List<Device>>, CacheRepository<List<Device>>>();
             services.AddControllers();
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "Checkin.Api", Version = "v1" }));
         }
