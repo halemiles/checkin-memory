@@ -32,13 +32,13 @@ namespace Checkin.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public ActionResult GetAll()
         {
             return Ok(deviceService.GetAll());
         }
 
         [HttpPost]
-        public IActionResult CreateDevice([FromBody]DeviceDto deviceDto)
+        public ActionResult CreateDevice([FromBody]DeviceDto deviceDto)
         {
             logger.LogInformation("Creating Device");
             var device = mapper.Map<Device>(deviceDto);
@@ -56,6 +56,7 @@ namespace Checkin.Api.Controllers
 
         public IActionResult DeleteDevice(int id)
         {
+            deviceService.Delete(id);
             return Ok();
         }
     }

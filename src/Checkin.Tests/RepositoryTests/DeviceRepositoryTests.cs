@@ -15,9 +15,9 @@ namespace Checkin.Tests
     [TestClass]
     public class DeviceRepositoryTests
     {
-        private Mock<ICacheRepository<List<Device>>> mockCacheRepository;
-        private DeviceRepository NewDeviceRepository() => 
-            new DeviceRepository(mockCacheRepository.Object);
+        private Mock<IDeviceCacheRepository> mockCacheRepository;
+        private LocalDeviceRepository NewDeviceRepository() => 
+            new LocalDeviceRepository(mockCacheRepository.Object);
 
         private string expectedDeviceCacheKey = "Devices";
         private List<Device> defaultDevices;
@@ -25,7 +25,7 @@ namespace Checkin.Tests
         [TestInitialize]
         public void SetUp()
         {
-            mockCacheRepository = new Mock<ICacheRepository<List<Device>>>();
+            mockCacheRepository = new Mock<IDeviceCacheRepository>();
 
             List<Device> defaultDevices = new()
             {
@@ -48,7 +48,6 @@ namespace Checkin.Tests
 
             //Assert
             mockCacheRepository.Verify(x => x.Set(
-                    expectedDeviceCacheKey, 
                     It.IsAny<List<Device>>()
                 ), Times.Once);
         }
@@ -63,7 +62,6 @@ namespace Checkin.Tests
 
             //Assert            
             mockCacheRepository.Verify(x => x.Set(
-                    expectedDeviceCacheKey, 
                     It.IsAny<List<Device>>()
                 ), Times.Once);
         }
@@ -73,13 +71,13 @@ namespace Checkin.Tests
         {
             // Arrange  
             var sut = NewDeviceRepository();
-            mockCacheRepository.Setup(x => x.Get(expectedDeviceCacheKey)).Returns(GenerateMultiple());
+            mockCacheRepository.Setup(x => x.GetAll()).Returns(GenerateMultiple());
             
             // Act
             var result = sut.GetAll();
             //Assert
             
-            mockCacheRepository.Verify(x => x.Get(expectedDeviceCacheKey), Times.Once);    
+            mockCacheRepository.Verify(x => x.GetAll(), Times.Once);
             result.Count.Should().Be(5);
                     
         }
@@ -107,14 +105,13 @@ namespace Checkin.Tests
                 new Device(){Id = 3,IpAddress = "127.0.0.1"},
                 new Device(){Id = 4,IpAddress = "127.0.0.1"},
             };
-            mockCacheRepository.Setup(x => x.Get(expectedDeviceCacheKey)).Returns(GenerateMultiple());
+            mockCacheRepository.Setup(x => x.GetAll()).Returns(GenerateMultiple());
             
             // Act
             sut.Update(updatedDevice);
             //Assert
-            mockCacheRepository.Verify(x => x.Get(expectedDeviceCacheKey), Times.Once);
+            mockCacheRepository.Verify(x => x.GetAll(), Times.Once);
             mockCacheRepository.Verify(x => x.Set(
-                    expectedDeviceCacheKey, 
                     It.IsAny<List<Device>>()
                 ), Times.Once);
             

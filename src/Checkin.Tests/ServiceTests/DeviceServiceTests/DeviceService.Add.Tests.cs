@@ -15,23 +15,24 @@ using AutoMapper;
 namespace Checkin.Tests
 {
     [TestClass]
-    public class DeviceServiceUpdateTests
+    public class DeviceServiceAddTests
     {
-        private Mock<IDeviceRepository> mockDeviceRepository;
+        private Mock<IDeviceCacheRepository> mockDeviceRepository;
+
         private IMapper mapper;
         private DeviceService NewDeviceService() =>
             new DeviceService(
                     mockDeviceRepository.Object,
                     mapper
                 );
-           
+
         private Device defaultDevice;
         private Device newDeviceDetails;
 
         [TestInitialize]
         public void SetUp()
         {
-            mockDeviceRepository = new Mock<IDeviceRepository>();
+            mockDeviceRepository = new Mock<IDeviceCacheRepository>();
             var mapperConfig = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<DeviceDtoToDeviceProfile>();
@@ -58,47 +59,18 @@ namespace Checkin.Tests
         }
 
         [TestMethod]
-        public void Update_WithUpdatedProperties_VerifyCalledMethods()
+        public void Add_WhenNoPings_ReturnsFailure()
         {
             // Arrange
-            mockDeviceRepository.Setup(x => x.GetAll()).Returns(new List<Device>(){defaultDevice});
+            mockDeviceRepository.Setup(x => x.GetAll()).Returns(new List<Device>());
             var sut = NewDeviceService();
 
             // Act
-            sut.Update(defaultDevice);
+            sut.Add(defaultDevice);
 
             //Assert
             mockDeviceRepository.Verify(x => x.GetAll(), Times.Once);
-            mockDeviceRepository.Verify(x => x.Update(It.IsAny<Device>()), Times.Once);
-        }
-
-        [TestMethod]
-        public void Update_WithUpdatedIpAddress_IpAddressIsUpdated()
-        {
-            // Arrange
-            mockDeviceRepository.Setup(x => x.GetAll()).Returns(new List<Device>(){defaultDevice});
-            var sut = NewDeviceService();
-
-            // Act
-            sut.Update(defaultDevice);
-
-            //Assert
-            mockDeviceRepository.Verify(x => x.Update(It.IsAny<Device>()), Times.Once);
-        }
-
-        private static List<Device> GenerateMultiple()
-        {
-            List<Device> devices = new List<Device>();
-            for(int i=0;i <5; i++)
-            {
-                devices.Add(new Device()
-                {
-                    Id = 0,
-                    CreatedDate = DateTime.Now,
-                    IpAddress = $"192.168.0.{i}"
-                });
-            }
-            return devices;
+            mockDeviceRepository.Verify(x => x.Set(It.IsAny<List<Device>>()), Times.Once);
         }
     }
 }
