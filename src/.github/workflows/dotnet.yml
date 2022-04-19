@@ -30,4 +30,4 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag ${IMAGE_NAME}
     - name: Push image
-      run: docker push ${REGISTRY} %{IMAGE_NAME}
+      run: docker push ${REGISTRY} %{IMAGE_NAME} 
