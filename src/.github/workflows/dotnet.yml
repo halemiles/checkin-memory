@@ -23,3 +23,11 @@ jobs:
       run: dotnet build --no-restore --project Checkin.Api
     - name: Test
       run: dotnet test --no-build --verbosity normal
+    - name: Setup auth
+      run: export CR_PAT=${{ secrets.DOCKER_TOKEN }}
+    - name: Authenticate with repository
+      run: echo $CR_PAT | docker login ghcr.io -u halemiles --password-stdin 
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag ${IMAGE_NAME}
+    - name: Push image
+      run: docker push ${REGISTRY} %{IMAGE_NAME}
