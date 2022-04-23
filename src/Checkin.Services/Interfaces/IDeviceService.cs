@@ -7,6 +7,7 @@ namespace Checkin.Services.Interfaces
     public interface IDeviceService
     {
         List<Device> GetAll();
+        List<Device> Search(int? deviceId, string ipAddress);
         void Update(Device device);
         Device GetByIp(string ipAddress);
         Device GetByDevice(int deviceId);

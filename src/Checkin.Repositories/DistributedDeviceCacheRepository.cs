@@ -5,6 +5,7 @@ using Checkin.Models;
 using Microsoft.Extensions.Caching.Distributed;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Linq;
 
 namespace Checkin.Repositories
 {
@@ -27,6 +28,29 @@ namespace Checkin.Repositories
             }
             return new List<Device>();
 	    }
+
+        public List<Device> Search(int? deviceId, string ipAddress)
+        {
+            var result = distributedCache.GetString(cacheKey);
+            var devices = new List<Device>();
+            if(result != null)
+            {
+                devices = JsonSerializer.Deserialize<List<Device>>(result);
+                
+            }
+
+            if(deviceId.HasValue)
+            {
+                devices = devices.Where(x => x.Id == deviceId.Value).ToList();
+            }
+
+            if(!string.IsNullOrEmpty(ipAddress))
+            {
+                devices = devices.Where(x => x.IpAddress == ipAddress).ToList();
+            }
+
+            return devices;
+        }
 
         public bool Set(List<Device> devices)
         {
