@@ -4,7 +4,9 @@ using Checkin.Models;
 using Checkin.Repositories;
 using System.Linq;
 using AutoMapper;
-using System.Threading.Tasks;
+using Serilog;
+using System;
+using System.Text.Json;
 
 namespace Checkin.Services
 {
@@ -18,8 +20,8 @@ namespace Checkin.Services
             IMapper mapper
         )
         {
-            this.deviceRepository = deviceRepository;
-            this.mapper = mapper;
+            this.deviceRepository = deviceRepository ?? throw new ArgumentNullException(nameof(deviceRepository));
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public bool Add(Device device)
@@ -31,25 +33,43 @@ namespace Checkin.Services
             //Doesnt exist
             if(!devices.Any(x => x.Id == device.Id))
             {
-                 devices.Add(device);
+                Log.Information("{timestamp} Adding new device {device}", DateTime.Now.ToShortTimeString(), JsonSerializer.Serialize(device));
+                devices.Add(device);
+                try
+                {
+                    deviceRepository.Set(devices);
+                }
+                catch(Exception ex)
+                {
+                    Log.Fatal(ex.ToString());
+                    return false;
+                }
             }
             else //Update existing
             {
-                mapper.Map(device, existingDevice);
+                return Update(device);
             }
 
-            deviceRepository.Set(devices);
             return true;
         }
 
-        public void Update(Device device)
+        public bool Update(Device device)
         {
+            try{
             var devices = deviceRepository.GetAll();
             var existingDevice = devices
                                     .Find(x => x.Id == device.Id);
 
             var mergedDevice = mapper.Map(device, existingDevice);
+            Log.Information("{timestamp} Updating device {device} with values {values}", DateTime.Now.ToShortTimeString(), device.Name, JsonSerializer.Serialize(device));
             deviceRepository.Set(devices);
+            }
+            catch(Exception ex)
+            {
+                Log.Fatal(ex.ToString());
+                return false;
+            }
+            return true;
         }
 
         public List<Device> GetAll()

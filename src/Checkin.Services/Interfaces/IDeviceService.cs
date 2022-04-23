@@ -8,7 +8,7 @@ namespace Checkin.Services.Interfaces
     {
         List<Device> GetAll();
         List<Device> Search(int? deviceId, string ipAddress);
-        void Update(Device device);
+        bool Update(Device device);
         Device GetByIp(string ipAddress);
         Device GetByDevice(int deviceId);
         bool Add(Device device);

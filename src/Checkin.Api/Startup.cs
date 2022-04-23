@@ -34,6 +34,7 @@ namespace Checkin.Api
         {
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.Console()
+                .Enrich.FromLogContext()
                 .CreateLogger();
 
             Log.Information("Starting API");
