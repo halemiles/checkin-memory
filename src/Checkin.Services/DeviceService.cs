@@ -82,27 +82,9 @@ namespace Checkin.Services
             return deviceRepository.Search(deviceId, ipAddress) ?? new List<Device>();
         }
 
-        public Device GetByIp(string ipAddress)
-        {
-            if(deviceRepository.GetAll() is List<Device> devices)
-            {
-                return devices.Find(x => x.IpAddress == ipAddress);
-            }
-            return new Device();
-        }
-
-        public Device GetByDevice(int deviceId)
-        {
-            if(deviceRepository.GetAll() is List<Device> devices)
-            {
-                return devices.Find(x => x.Id == deviceId);
-            }
-            return new Device();
-        }
-
         public void Delete(int id)
         {
-
+            throw new NotImplementedException();
         }
     }
 }

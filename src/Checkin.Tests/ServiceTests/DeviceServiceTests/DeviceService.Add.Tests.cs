@@ -38,6 +38,7 @@ namespace Checkin.Tests
                 cfg.AddProfile<DeviceDtoToDeviceProfile>();
                 cfg.AddProfile<DeviceToDeviceMergeProfile>();
                 cfg.AddProfile<DeviceNetworkToDeviceNetworkDtoProfile>();
+                cfg.AddProfile<DeviceNetworkToDeviceNetworkDtoProfile>();
             });
             mapper = mapperConfig.CreateMapper();
 

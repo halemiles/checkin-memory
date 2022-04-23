@@ -23,6 +23,14 @@ namespace Checkin.Tests.Helpers
                         IspName = "Major ISP",
                         LastModified = new DateTime(2022,1,1),
                         DateCreated = new DateTime(2022,1,1)
+                    },
+                    Services = new List<ServiceStatus>()
+                    {
+                        new ServiceStatus()
+                        {
+                            Name = "Docker",
+                            Status = DeviceServiceStatus.UP
+                        }
                     }
                 });
             }
