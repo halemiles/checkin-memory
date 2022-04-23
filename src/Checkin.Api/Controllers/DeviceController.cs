@@ -31,10 +31,19 @@ namespace Checkin.Api.Controllers
             this.logger = logger; //TODO: Null ref check
         }
 
+        [HttpGet("search")]
+        public ActionResult Search(
+            [FromQuery] int? deviceId,
+            [FromQuery] string ipAddress
+        )
+        {
+                return Ok(deviceService.Search(deviceId, ipAddress));
+        }
+
         [HttpGet]
         public ActionResult GetAll()
         {
-            return Ok(deviceService.GetAll());
+                return Ok(deviceService.GetAll());
         }
 
         [HttpPost]

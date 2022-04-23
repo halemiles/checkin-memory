@@ -8,5 +8,6 @@ namespace Checkin.Repositories
         bool Set(List<Device> value);
 
         List<Device> GetAll();
+        List<Device> Search(int? deviceId, string ipAddress);
     }
 }

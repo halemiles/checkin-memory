@@ -77,6 +77,11 @@ namespace Checkin.Services
             return deviceRepository.GetAll() ?? new List<Device>();
         }
 
+        public  List<Device> Search(int? deviceId, string ipAddress)
+        {
+            return deviceRepository.Search(deviceId, ipAddress) ?? new List<Device>();
+        }
+
         public Device GetByIp(string ipAddress)
         {
             if(deviceRepository.GetAll() is List<Device> devices)
