@@ -8,8 +8,6 @@ using System;
 using FluentAssertions;
 using Serilog;
 using Checkin.Services.Interfaces;
-using Microsoft.Extensions.Logging.Abstractions;
-using Microsoft.Extensions.Logging;
 using AutoMapper;
 
 namespace Checkin.Tests
@@ -20,10 +18,12 @@ namespace Checkin.Tests
         private Mock<IDeviceCacheRepository> mockDeviceRepository;
 
         private IMapper mapper;
+        private Mock<ILogger> mockLogger;
         private DeviceService NewDeviceService() =>
             new DeviceService(
                     mockDeviceRepository.Object,
-                    mapper
+                    mapper,
+                    mockLogger.Object
                 );
 
         private Device defaultDevice;
@@ -33,6 +33,7 @@ namespace Checkin.Tests
         public void SetUp()
         {
             mockDeviceRepository = new Mock<IDeviceCacheRepository>();
+            mockLogger = new Mock<ILogger>();
             var mapperConfig = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<DeviceDtoToDeviceProfile>();

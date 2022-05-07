@@ -14,14 +14,17 @@ namespace Checkin.Services
     {
         private readonly IDeviceCacheRepository deviceRepository;
         private readonly IMapper mapper;
+        private readonly ILogger logger;
 
         public DeviceService(
             IDeviceCacheRepository deviceRepository,
-            IMapper mapper
+            IMapper mapper,
+            ILogger logger
         )
         {
             this.deviceRepository = deviceRepository ?? throw new ArgumentNullException(nameof(deviceRepository));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public bool Add(Device device)
@@ -33,7 +36,10 @@ namespace Checkin.Services
             //Doesnt exist
             if(!devices.Any(x => x.Id == device.Id))
             {
-                Log.Information("{timestamp} Adding new device {device}", DateTime.Now.ToShortTimeString(), JsonSerializer.Serialize(device));
+                //TODO - Correct this and uncomment
+                // logger
+                //     .ForContext("Device",device)
+                //     .Information("Adding new device");
                 devices.Add(device);
                 try
                 {
@@ -61,7 +67,9 @@ namespace Checkin.Services
                                     .Find(x => x.Id == device.Id);
 
             var mergedDevice = mapper.Map(device, existingDevice);
-            Log.Information("{timestamp} Updating device {device} with values {values}", DateTime.Now.ToShortTimeString(), device.Name, JsonSerializer.Serialize(device));
+            logger
+                .ForContext("Device", device)
+                .Information($"Updating device {device.Name}");
             deviceRepository.Set(devices);
             }
             catch(Exception ex)
@@ -74,11 +82,17 @@ namespace Checkin.Services
 
         public List<Device> GetAll()
         {
+            logger
+                .Information("Getting all devices");
             return deviceRepository.GetAll() ?? new List<Device>();
         }
 
         public  List<Device> Search(int? deviceId, string ipAddress)
         {
+            logger
+                .ForContext("DeviceId", deviceId)
+                .ForContext("IpAddress", ipAddress)
+                .Information("Searching for device");
             return deviceRepository.Search(deviceId, ipAddress) ?? new List<Device>();
         }
 
