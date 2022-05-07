@@ -19,7 +19,6 @@ namespace Checkin.Tests.Helpers
                     ExternalNetwork = new DeviceNetwork()
                     {
                         ExternalIpAddress = "1.2.3.4",
-                        DomainName = "test.domain",
                         IspName = "Major ISP",
                         LastModified = new DateTime(2022,1,1),
                         DateCreated = new DateTime(2022,1,1)
