@@ -6,6 +6,9 @@ using Microsoft.Extensions.Caching.Distributed;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Linq;
+using System;
+using Serilog;
+using Serilog.Exceptions;
 
 namespace Checkin.Repositories
 {
@@ -13,18 +16,33 @@ namespace Checkin.Repositories
     {
         private readonly string cacheKey = "Devices";
         private readonly IDistributedCache distributedCache;
-        public DistributedDeviceCacheRepository(IDistributedCache distributedCache)
+        private readonly ILogger logger;
+        public DistributedDeviceCacheRepository
+        (
+            IDistributedCache distributedCache,
+            ILogger logger
+        )
         {
-            this.distributedCache = distributedCache;
+            this.distributedCache = distributedCache ?? throw new ArgumentNullException(nameof(distributedCache));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public List<Device> GetAll()
 	    {
-            var result = distributedCache.GetString(cacheKey);
-            if(result != null)
+            try
             {
-                var devices = JsonSerializer.Deserialize<List<Device>>(result);
-                return devices;
+                var result = distributedCache.GetString(cacheKey);
+                if(result != null)
+                {
+                    var devices = JsonSerializer.Deserialize<List<Device>>(result);
+                    return devices;
+                }
+            }
+            catch(Exception ex)
+            {
+                logger
+                    .ForContext("Exception",ex)
+                    .Error("An exception was thrown when attempting to read from distributed cache");
             }
             return new List<Device>();
 	    }

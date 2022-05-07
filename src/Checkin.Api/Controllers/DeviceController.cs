@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using Serilog;
 using Checkin.Models;
 using Checkin.Services;
 using Checkin.Services.Interfaces;
@@ -18,17 +18,17 @@ namespace Checkin.Api.Controllers
         private readonly IDeviceService deviceService;
         private readonly IMapper mapper;
 
-        private readonly ILogger<DeviceController> logger;
+        private readonly ILogger logger;
 
         public DeviceController(
             IDeviceService deviceService,
             IMapper mapper,
-            ILogger<DeviceController> logger
+            ILogger logger
         )
         {
-            this.deviceService = deviceService; //TODO: Null ref check
-            this.mapper = mapper; //TODO: Null ref check
-            this.logger = logger; //TODO: Null ref check
+            this.deviceService = deviceService ?? throw new ArguementNullException(nameof(deviceService))
+            this.mapper = mapper ?? throw new ArguementNullException(nameof(mapper));
+            this.logger = logger ?? throw new ArguementNullException(nameof(logger));
         }
 
         [HttpGet("search")]
@@ -49,7 +49,10 @@ namespace Checkin.Api.Controllers
         [HttpPost]
         public ActionResult CreateDevice([FromBody]DeviceDto deviceDto)
         {
-            logger.LogInformation("Creating Device");
+            logger
+                .ForContext("DeviceName",deviceDto.Name)
+                .ForContext("HttpContext",HttpContext)
+                .Debug("Creating Device");
             var device = mapper.Map<Device>(deviceDto);
             deviceService.Add(device);
             return Ok();

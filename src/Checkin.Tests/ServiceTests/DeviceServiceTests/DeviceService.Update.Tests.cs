@@ -8,6 +8,7 @@ using System;
 using FluentAssertions;
 using AutoMapper;
 using Checkin.Tests.Helpers;
+using Serilog;
 
 namespace Checkin.Tests
 {
@@ -16,10 +17,12 @@ namespace Checkin.Tests
     {
         private Mock<IDeviceCacheRepository> mockDeviceRepository;
         private Mock<IMapper> mockMapper;
+        private Mock<ILogger> mockLogger;
         private DeviceService NewDnsService() =>
             new(
                     mockDeviceRepository.Object,
-                    mockMapper.Object
+                    mockMapper.Object,
+                    mockLogger.Object
                 );
 
         private Device defaultDevice;
@@ -29,6 +32,7 @@ namespace Checkin.Tests
         {
             mockDeviceRepository = new Mock<IDeviceCacheRepository>();
             mockMapper = new Mock<IMapper>();
+            mockLogger = new Mock<ILogger>();
 
             defaultDevice = new Device()
             {

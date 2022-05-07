@@ -17,6 +17,9 @@ using Checkin.Services.Interfaces;
 using Checkin.Repositories;
 using Checkin.Api.Models;
 using Serilog;
+using Checkin.Api.Extensions;
+using Serilog.Core;
+using Serilog.Exceptions;
 
 namespace Checkin.Api
 {
@@ -32,36 +35,34 @@ namespace Checkin.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            Log.Logger = new LoggerConfiguration()
-                .WriteTo.Console()
-                .Enrich.FromLogContext()
-                .CreateLogger();
+            // The following line enables Application Insights telemetry collection.
+            //services.AddApplicationInsightsTelemetry();
+            
+            var logger = new LoggerConfiguration()
+                .WriteTo.Console()                
+                .Enrich.FromLogContext();
+                .Enrich.WithExceptionDetails();
 
-            Log.Information("Starting API");
+            // We only want to add Seq if we have defined a host
+            var seqSettings = Configuration.GetSection("Seq").Get<SeqSettings>();
+            if(seqSettings.UseSeq)
+            {
+                logger.WriteTo.Seq(seqSettings.Host,
+                 apiKey: seqSettings.ApiKey);
+            }
+
+            Log.Logger = logger.CreateLogger();
+
+            Log.Information("Configuring services");
+            services.AddSingleton(Log.Logger);
+            services.ConfigureTelemetry(Configuration);
             
             services.AddAutoMapper(mapperConfig => {
                 mapperConfig.AddProfile<DeviceDtoToDeviceProfile>();
                 mapperConfig.AddProfile<DeviceToDeviceMergeProfile>();
                 mapperConfig.AddProfile<DeviceNetworkToDeviceNetworkDtoProfile>();
             });
-            var memoryProviderSettings = Configuration.GetSection("MemoryProvider").Get<MemoryProviderSettings>();
             
-            if(memoryProviderSettings.Name == "DistributedCache")
-            {
-                Log.Information("Using distributed cache");
-                services.AddDistributedRedisCache(option =>
-            {
-                option.Configuration = "127.0.0.1";
-                option.InstanceName = "master";
-            });
-                services.AddScoped<IDeviceCacheRepository, DistributedDeviceCacheRepository>();
-            }
-            else
-            {
-                Log.Information("Using IMemoryCache");
-                services.AddMemoryCache();
-                services.AddScoped<IDeviceCacheRepository, DeviceCacheRepository>();
-            }
 
             services.AddScoped<IDeviceService, DeviceService>();
 
