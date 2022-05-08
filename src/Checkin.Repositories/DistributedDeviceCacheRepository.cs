@@ -49,31 +49,52 @@ namespace Checkin.Repositories
 
         public List<Device> Search(int? deviceId, string ipAddress)
         {
-            var result = distributedCache.GetString(cacheKey);
-            var devices = new List<Device>();
-            if(result != null)
+            try
             {
-                devices = JsonSerializer.Deserialize<List<Device>>(result);
-                
+                var result = distributedCache.GetString(cacheKey);
+                var devices = new List<Device>();
+                if(result != null)
+                {
+                    devices = JsonSerializer.Deserialize<List<Device>>(result);
+                    
+                }
+
+                if(deviceId.HasValue)
+                {
+                    devices = devices.Where(x => x.Id == deviceId.Value).ToList();
+                }
+
+                if(!string.IsNullOrEmpty(ipAddress))
+                {
+                    devices = devices.Where(x => x.IpAddress == ipAddress).ToList();
+                }
+                return devices;
+            }
+            catch(Exception ex)
+            {
+                logger
+                    .ForContext("Exception",ex)
+                    .Error("An exception was thrown when attempting to search from distributed cache");
+            
             }
 
-            if(deviceId.HasValue)
-            {
-                devices = devices.Where(x => x.Id == deviceId.Value).ToList();
-            }
-
-            if(!string.IsNullOrEmpty(ipAddress))
-            {
-                devices = devices.Where(x => x.IpAddress == ipAddress).ToList();
-            }
-
-            return devices;
+            return new List<Device>();
         }
 
         public bool Set(List<Device> devices)
         {
-            var json = JsonSerializer.Serialize(devices);
-            distributedCache.SetString(cacheKey, json);
+            try
+            {
+                var json = JsonSerializer.Serialize(devices);
+                distributedCache.SetString(cacheKey, json);
+            }
+            catch(Exception ex)
+            {
+                logger
+                    .ForContext("Exception",ex)
+                    .Error("An exception was thrown when attempting to set distributed cache");
+                return false;
+            }
             return true;
         }
     }
