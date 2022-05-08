@@ -9,6 +9,7 @@ using FluentAssertions;
 using Microsoft.Extensions.Caching.Memory;
 using System.Linq;
 using System.Threading;
+using Serilog;
 
 namespace Checkin.Tests
 {
@@ -16,8 +17,12 @@ namespace Checkin.Tests
     public class DeviceRepositoryTests
     {
         private Mock<IDeviceCacheRepository> mockCacheRepository;
+        private Mock<ILogger> mockLogger;
         private LocalDeviceRepository NewDeviceRepository() => 
-            new LocalDeviceRepository(mockCacheRepository.Object);
+            new LocalDeviceRepository(
+                    mockCacheRepository.Object,
+                    mockLogger.Object
+                );
 
         private List<Device> defaultDevices;
 
@@ -25,6 +30,7 @@ namespace Checkin.Tests
         public void SetUp()
         {
             mockCacheRepository = new Mock<IDeviceCacheRepository>();
+            mockLogger = new Mock<ILogger>();
 
             defaultDevices = new()
             {
