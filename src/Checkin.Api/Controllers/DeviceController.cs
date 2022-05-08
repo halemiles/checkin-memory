@@ -26,9 +26,9 @@ namespace Checkin.Api.Controllers
             ILogger logger
         )
         {
-            this.deviceService = deviceService ?? throw new ArguementNullException(nameof(deviceService))
-            this.mapper = mapper ?? throw new ArguementNullException(nameof(mapper));
-            this.logger = logger ?? throw new ArguementNullException(nameof(logger));
+            this.deviceService = deviceService ?? throw new ArgumentNullException(nameof(deviceService));
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         [HttpGet("search")]

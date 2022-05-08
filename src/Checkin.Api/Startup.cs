@@ -40,7 +40,7 @@ namespace Checkin.Api
             
             var logger = new LoggerConfiguration()
                 .WriteTo.Console()                
-                .Enrich.FromLogContext();
+                .Enrich.FromLogContext()
                 .Enrich.WithExceptionDetails();
 
             // We only want to add Seq if we have defined a host
