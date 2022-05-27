@@ -11,6 +11,7 @@ namespace Checkin.Models
         public string IpAddress { get; set; }
         public DeviceNetwork ExternalNetwork { get; set; }
         public IEnumerable<ServiceStatus> Services { get; set; }
+        public IEnumerable<DeviceBattery> Batteries { get; set; }
         public DateTime CreatedDate {get; set;}
         public DateTime ModifiedDate {get; set;}
         public string ModifiedDateString
