@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Checkin.Models\Checkin.Models.csproj" />
+    <ProjectReference Include="..\Checkin.Services\Checkin.Services.csproj" />
   </ItemGroup>
 
 </Project>

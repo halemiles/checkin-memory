@@ -10,6 +10,7 @@ using AutoMapper;
 using Checkin.Tests.Helpers;
 using Snapper;
 using Serilog;
+using Checkin.Services.Interfaces;
 
 namespace Checkin.Tests
 {

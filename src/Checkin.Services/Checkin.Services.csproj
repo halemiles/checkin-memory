@@ -2,7 +2,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Checkin.Models\Checkin.Models.csproj" />
-    <ProjectReference Include="..\Checkin.Repositories\Checkin.Repositories.csproj" />
   </ItemGroup>
 
   <ItemGroup>

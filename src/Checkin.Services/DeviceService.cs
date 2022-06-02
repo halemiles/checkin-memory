@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Checkin.Services.Interfaces;
 using Checkin.Models;
-using Checkin.Repositories;
+
 using System.Linq;
 using AutoMapper;
 using Serilog;

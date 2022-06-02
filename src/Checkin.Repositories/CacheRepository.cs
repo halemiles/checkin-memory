@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Checkin.Models;
 using Microsoft.Extensions.Caching.Memory;
+using Checkin.Services.Interfaces;
 
 namespace Checkin.Repositories
 {

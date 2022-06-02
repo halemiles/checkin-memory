@@ -9,6 +9,7 @@ using FluentAssertions;
 using AutoMapper;
 using Checkin.Tests.Helpers;
 using Serilog;
+using Checkin.Services.Interfaces;
 
 namespace Checkin.Tests
 {
