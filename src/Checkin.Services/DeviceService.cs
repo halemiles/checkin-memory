@@ -24,7 +24,7 @@ namespace Checkin.Services
         {
             this.deviceRepository = deviceRepository ?? throw new ArgumentNullException(nameof(deviceRepository));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            this.logger = logger ?? throw new ArgumentNullException(nameof(mapper));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public bool Add(Device device)
@@ -67,9 +67,9 @@ namespace Checkin.Services
                                     .Find(x => x.Id == device.Id);
 
             var mergedDevice = mapper.Map(device, existingDevice);
-            logger
-                .ForContext("Device", device)
-                .Information($"Updating device {device.Name}");
+            // logger
+            //     .ForContext("Device", device)
+            //     .Information($"Updating device {device.Name}");
             deviceRepository.Set(devices);
             }
             catch(Exception ex)

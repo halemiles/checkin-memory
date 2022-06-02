@@ -9,6 +9,7 @@ using FluentAssertions;
 using Serilog;
 using Checkin.Services.Interfaces;
 using AutoMapper;
+using Checkin.Tests.Helpers;
 
 namespace Checkin.Tests
 {
@@ -20,7 +21,7 @@ namespace Checkin.Tests
         private IMapper mapper;
         private Mock<ILogger> mockLogger;
         private DeviceService NewDeviceService() =>
-            new DeviceService(
+            new(
                     mockDeviceRepository.Object,
                     mapper,
                     mockLogger.Object
@@ -61,7 +62,7 @@ namespace Checkin.Tests
         }
 
         [TestMethod]
-        public void Add_WhenNoPings_ReturnsFailure()
+        public void Add_WhenNoDevices_ReturnsFailure()
         {
             // Arrange
             mockDeviceRepository.Setup(x => x.GetAll()).Returns(new List<Device>());
@@ -72,6 +73,22 @@ namespace Checkin.Tests
 
             //Assert
             mockDeviceRepository.Verify(x => x.GetAll(), Times.Once);
+            mockDeviceRepository.Verify(x => x.Set(It.IsAny<List<Device>>()), Times.Once);
+        }
+
+        [TestMethod]
+        public void Add_WhenExistingDevices_ReturnsFailure()
+        {
+            // Arrange
+            List<Device> devices = DeviceGenerationHelpers.GenerateMultiple();
+            mockDeviceRepository.Setup(x => x.GetAll()).Returns(devices);
+            var sut = NewDeviceService();
+
+            // Act
+            sut.Add(defaultDevice);
+
+            //Assert
+            mockDeviceRepository.Verify(x => x.GetAll(), Times.Exactly(2));
             mockDeviceRepository.Verify(x => x.Set(It.IsAny<List<Device>>()), Times.Once);
         }
     }
