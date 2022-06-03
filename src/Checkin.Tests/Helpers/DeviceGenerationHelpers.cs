@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Checkin.Models;
+using AutoFixture;
 
 namespace Checkin.Tests.Helpers
 {
@@ -8,17 +9,21 @@ namespace Checkin.Tests.Helpers
     {
         public static List<Device> GenerateMultiple()
         {
-            List<Device> devices = new List<Device>();
+            List<Device> devices = new();
             for(int i=0;i <5; i++)
             {
+                // var fixture = new Fixture();
+                // var device = fixture.Create<Device>();
+                // devices.Add(device);
                 devices.Add(new Device()
                 {
                     Id = 0,
-                    CreatedDate = DateTime.Now,
+                    CreatedDate = new DateTime(2022,1,1),
                     IpAddress = $"192.168.0.{i}",
+                    Name=$"Device {i}",
                     ExternalNetwork = new DeviceNetwork()
                     {
-                        ExternalIpAddress = "1.2.3.4",
+                        ExternalIpAddress = "1.2.3.4", 
                         IspName = "Major ISP",
                         LastModified = new DateTime(2022,1,1),
                         DateCreated = new DateTime(2022,1,1)
@@ -32,6 +37,7 @@ namespace Checkin.Tests.Helpers
                         }
                     }
                 });
+                
             }
             return devices;
         }

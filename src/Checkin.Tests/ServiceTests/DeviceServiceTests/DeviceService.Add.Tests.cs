@@ -69,7 +69,7 @@ namespace Checkin.Tests
             var sut = NewDeviceService();
 
             // Act
-            sut.Add(defaultDevice);
+            sut.CreateOrUpdate(defaultDevice);
 
             //Assert
             mockDeviceRepository.Verify(x => x.GetAll(), Times.Once);
@@ -85,10 +85,10 @@ namespace Checkin.Tests
             var sut = NewDeviceService();
 
             // Act
-            sut.Add(defaultDevice);
+            sut.CreateOrUpdate(defaultDevice);
 
             //Assert
-            mockDeviceRepository.Verify(x => x.GetAll(), Times.Exactly(2));
+            mockDeviceRepository.Verify(x => x.GetAll(), Times.Once);
             mockDeviceRepository.Verify(x => x.Set(It.IsAny<List<Device>>()), Times.Once);
         }
     }

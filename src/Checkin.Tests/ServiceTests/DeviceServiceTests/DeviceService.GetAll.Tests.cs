@@ -46,7 +46,7 @@ namespace Checkin.Tests
         }
 
         [TestMethod]
-        public void GetAll_WithMultiplePings_ReturnsPings()
+        public void GetAll_WhenMultipleDevicesReturned_ReturnsMultipleDevices()
         {
             // Arrange
             mockDeviceRepository.Setup(x => x.GetAll()).Returns(DeviceGenerationHelpers.GenerateMultiple());
@@ -76,8 +76,7 @@ namespace Checkin.Tests
         }
 
         [TestMethod]
-        [Ignore("Issue with snapshot updating")]
-        public void GetAll_WhenMultipleDevicesReturned_ ()
+        public void GetAll_WhenMultipleDevicesReturned_MatchesSnapshot()
         {
             // Arrange
             mockDeviceRepository.Setup(x => x.GetAll()).Returns(DeviceGenerationHelpers.GenerateMultiple());
@@ -91,7 +90,6 @@ namespace Checkin.Tests
         }
 
         [TestMethod]
-        [Ignore("Issue with snapshot updating")]
         public void GetAll_WhenRepositoryReturnsNull_MatchesSnapshot()
         {
             // Arrange

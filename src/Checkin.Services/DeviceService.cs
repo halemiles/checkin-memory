@@ -27,7 +27,7 @@ namespace Checkin.Services
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public bool Add(Device device)
+        public bool CreateOrUpdate(Device device)
         {
             //No devices exist
             var devices = deviceRepository.GetAll() ?? new List<Device>();
@@ -53,30 +53,10 @@ namespace Checkin.Services
             }
             else //Update existing
             {
-                return Update(device);
+                var mergedDevice = mapper.Map(device, existingDevice);
+                deviceRepository.Set(devices);
             }
 
-            return true;
-        }
-
-        public bool Update(Device device)
-        {
-            try{
-            var devices = deviceRepository.GetAll();
-            var existingDevice = devices
-                                    .Find(x => x.Id == device.Id);
-
-            var mergedDevice = mapper.Map(device, existingDevice);
-            // logger
-            //     .ForContext("Device", device)
-            //     .Information($"Updating device {device.Name}");
-            deviceRepository.Set(devices);
-            }
-            catch(Exception ex)
-            {
-                Log.Fatal(ex.ToString());
-                return false;
-            }
             return true;
         }
 

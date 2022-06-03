@@ -54,7 +54,7 @@ namespace Checkin.Api.Controllers
                 .ForContext("HttpContext",HttpContext)
                 .Debug("Creating Device");
             var device = mapper.Map<Device>(deviceDto);
-            deviceService.Add(device);
+            deviceService.CreateOrUpdate(device);
             return Ok();
         }
 
@@ -62,7 +62,7 @@ namespace Checkin.Api.Controllers
         public IActionResult UpdateDevice([FromBody] DeviceDto deviceDto)
         {
             var device = mapper.Map<Device>(deviceDto);
-            deviceService.Update(device);
+            deviceService.CreateOrUpdate(device);
             return Ok();
         }
 
