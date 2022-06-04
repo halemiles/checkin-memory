@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using Checkin.Models;
 using System.Linq;
 using Serilog;
+using Checkin.Services.Interfaces;
 
 namespace Checkin.Repositories
 {

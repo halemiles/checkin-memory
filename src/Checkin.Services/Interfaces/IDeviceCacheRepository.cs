@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Checkin.Models;
 
-namespace Checkin.Repositories
+namespace Checkin.Services.Interfaces
 {
     public interface IDeviceCacheRepository
     {

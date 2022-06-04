@@ -10,6 +10,7 @@ using Microsoft.Extensions.Caching.Memory;
 using System.Linq;
 using System.Threading;
 using Serilog;
+using Checkin.Services.Interfaces;
 
 namespace Checkin.Tests
 {

@@ -9,6 +9,7 @@ using System.Linq;
 using System;
 using Serilog;
 using Serilog.Exceptions;
+using Checkin.Services.Interfaces;
 
 namespace Checkin.Repositories
 {

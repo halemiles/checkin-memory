@@ -9,6 +9,7 @@ using FluentAssertions;
 using AutoMapper;
 using Checkin.Tests.Helpers;
 using Serilog;
+using Checkin.Services.Interfaces;
 
 namespace Checkin.Tests
 {
@@ -44,14 +45,14 @@ namespace Checkin.Tests
         }
 
         [TestMethod]
-        public void Add_WhenNoPings_ReturnsFailure()
+        public void Update_WhenNoDevices_CreatesNew()
         {
             // Arrange
             mockDeviceRepository.Setup(x => x.GetAll()).Returns(new List<Device>());
             var sut = NewDnsService();
 
             // Act
-            sut.Add(defaultDevice);
+            sut.CreateOrUpdate(defaultDevice);
 
             //Assert
             mockDeviceRepository.Verify(x => x.GetAll(), Times.Once);
@@ -59,33 +60,18 @@ namespace Checkin.Tests
         }
 
         [TestMethod]
-        public void GetAll_WithMultiplePings_ReturnsPings()
+        public void Update_WhenDeviceExists_ExistingIsUpdated()
         {
             // Arrange
-            mockDeviceRepository.Setup(x => x.GetAll()).Returns(DeviceGenerationHelpers.GenerateMultiple());
+            mockDeviceRepository.Setup(x => x.GetAll()).Returns(new List<Device>());
             var sut = NewDnsService();
 
             // Act
-            var results = sut.GetAll();
+            sut.CreateOrUpdate(defaultDevice);
 
             //Assert
-            results.Count.Should().Be(5);
             mockDeviceRepository.Verify(x => x.GetAll(), Times.Once);
-        }
-
-        [TestMethod]
-        public void GetAll_WhenRepositoryReturnsNull_ReturnsEmptyResult()
-        {
-            // Arrange
-            mockDeviceRepository.Setup(x => x.GetAll()).Returns((List<Device>)null);
-            var sut = NewDnsService();
-
-            // Act
-            var results = sut.GetAll();
-
-            //Assert
-            results.Should().NotBeNull();
-            results.Count.Should().Be(0);
+            mockDeviceRepository.Verify(x => x.Set(It.IsAny<List<Device>>()), Times.Once);
         }
     }
 }

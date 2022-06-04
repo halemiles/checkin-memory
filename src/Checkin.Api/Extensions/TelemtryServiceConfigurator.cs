@@ -1,5 +1,6 @@
 using Checkin.Api.Models;
 using Checkin.Repositories;
+using Checkin.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
