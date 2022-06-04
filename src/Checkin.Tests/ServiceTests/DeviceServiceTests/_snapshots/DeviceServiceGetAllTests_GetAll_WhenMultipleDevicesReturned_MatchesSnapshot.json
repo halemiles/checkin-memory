@@ -16,13 +16,18 @@
           "Status": 1
         }
       ],
-      "Batteries": null,
+      "Batteries": [
+        {
+          "Name": "Battery 1",
+          "BatteryLevel": 100
+        }
+      ],
       "CreatedDate": "2022-01-01T00:00:00",
       "ModifiedDate": "0001-01-01T00:00:00",
       "ModifiedDateString": null
     },
     {
-      "Id": 0,
+      "Id": 1,
       "Name": "Device 1",
       "IpAddress": "192.168.0.1",
       "ExternalNetwork": {
@@ -37,13 +42,18 @@
           "Status": 1
         }
       ],
-      "Batteries": null,
+      "Batteries": [
+        {
+          "Name": "Battery 1",
+          "BatteryLevel": 100
+        }
+      ],
       "CreatedDate": "2022-01-01T00:00:00",
       "ModifiedDate": "0001-01-01T00:00:00",
       "ModifiedDateString": null
     },
     {
-      "Id": 0,
+      "Id": 2,
       "Name": "Device 2",
       "IpAddress": "192.168.0.2",
       "ExternalNetwork": {
@@ -58,13 +68,18 @@
           "Status": 1
         }
       ],
-      "Batteries": null,
+      "Batteries": [
+        {
+          "Name": "Battery 1",
+          "BatteryLevel": 100
+        }
+      ],
       "CreatedDate": "2022-01-01T00:00:00",
       "ModifiedDate": "0001-01-01T00:00:00",
       "ModifiedDateString": null
     },
     {
-      "Id": 0,
+      "Id": 3,
       "Name": "Device 3",
       "IpAddress": "192.168.0.3",
       "ExternalNetwork": {
@@ -79,13 +94,18 @@
           "Status": 1
         }
       ],
-      "Batteries": null,
+      "Batteries": [
+        {
+          "Name": "Battery 1",
+          "BatteryLevel": 100
+        }
+      ],
       "CreatedDate": "2022-01-01T00:00:00",
       "ModifiedDate": "0001-01-01T00:00:00",
       "ModifiedDateString": null
     },
     {
-      "Id": 0,
+      "Id": 4,
       "Name": "Device 4",
       "IpAddress": "192.168.0.4",
       "ExternalNetwork": {
@@ -100,7 +120,12 @@
           "Status": 1
         }
       ],
-      "Batteries": null,
+      "Batteries": [
+        {
+          "Name": "Battery 1",
+          "BatteryLevel": 100
+        }
+      ],
       "CreatedDate": "2022-01-01T00:00:00",
       "ModifiedDate": "0001-01-01T00:00:00",
       "ModifiedDateString": null

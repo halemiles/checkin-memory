@@ -61,6 +61,7 @@ namespace Checkin.Api
                 mapperConfig.AddProfile<DeviceDtoToDeviceProfile>();
                 mapperConfig.AddProfile<DeviceToDeviceMergeProfile>();
                 mapperConfig.AddProfile<DeviceNetworkToDeviceNetworkDtoProfile>();
+                mapperConfig.AddProfile<DeviceBatterToDeviceBatteryDtoProfile>();
             });
             
 

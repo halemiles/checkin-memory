@@ -15,7 +15,7 @@ using Checkin.Services.Interfaces;
 namespace Checkin.Tests
 {
     [TestClass]
-    public class DeviceServiceGetAllTests
+    public class DeviceServiceSearchTests
     {
         private Mock<IDeviceCacheRepository> mockDeviceRepository;
         private Mock<IMapper> mockMapper;
@@ -46,61 +46,32 @@ namespace Checkin.Tests
         }
 
         [TestMethod]
-        public void GetAll_WhenMultipleDevicesReturned_ReturnsMultipleDevices()
+        public void GetAll_WhenNoDevicesExist_ReturnsEmptyResults()
         {
             // Arrange
-            mockDeviceRepository.Setup(x => x.GetAll()).Returns(DeviceGenerationHelpers.GenerateMultiple());
             var sut = NewDeviceService();
 
             // Act
-            var results = sut.GetAll();
+            var results = sut.Search(null, string.Empty);
 
             //Assert
-            results.Count.Should().Be(5);
-            mockDeviceRepository.Verify(x => x.GetAll(), Times.Once);
-        }
-
-        [TestMethod]
-        public void GetAll_WhenRepositoryReturnsNull_ReturnsEmptyResult()
-        {
-            // Arrange
-            mockDeviceRepository.Setup(x => x.GetAll()).Returns((List<Device>)null);
-            var sut = NewDeviceService();
-
-            // Act
-            var results = sut.GetAll();
-
-            //Assert
-            results.Should().NotBeNull();
             results.Count.Should().Be(0);
+            
         }
 
         [TestMethod]
-        public void GetAll_WhenMultipleDevicesReturned_MatchesSnapshot()
+        public void GetAll_WhenDevicesExist_WithCorrectSearchParams_ReturnsOneResult()
         {
             // Arrange
-            mockDeviceRepository.Setup(x => x.GetAll()).Returns(DeviceGenerationHelpers.GenerateMultiple());
+            mockDeviceRepository.Setup(x => x.Search(It.IsAny<int?>(), It.IsAny<string>())).Returns(new List<Device>() { defaultDevice });
             var sut = NewDeviceService();
 
             // Act
-            var results = sut.GetAll();
+            var results = sut.Search(0, "192.168.0.0");
 
             //Assert
-            results.ShouldMatchSnapshot();
-        }
-
-        [TestMethod]
-        public void GetAll_WhenRepositoryReturnsNull_MatchesSnapshot()
-        {
-            // Arrange
-            mockDeviceRepository.Setup(x => x.GetAll()).Returns((List<Device>)null);
-            var sut = NewDeviceService();
-
-            // Act
-            var results = sut.GetAll();
-
-            //Assert
-            results.ShouldMatchSnapshot();
+            results.Count.Should().Be(1);
+            
         }
     }
 }

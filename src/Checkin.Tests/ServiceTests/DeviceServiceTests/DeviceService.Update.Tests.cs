@@ -19,7 +19,7 @@ namespace Checkin.Tests
         private Mock<IDeviceCacheRepository> mockDeviceRepository;
         private Mock<IMapper> mockMapper;
         private Mock<ILogger> mockLogger;
-        private DeviceService NewDnsService() =>
+        private DeviceService NewDeviceService() =>
             new(
                     mockDeviceRepository.Object,
                     mockMapper.Object,
@@ -49,7 +49,7 @@ namespace Checkin.Tests
         {
             // Arrange
             mockDeviceRepository.Setup(x => x.GetAll()).Returns(new List<Device>());
-            var sut = NewDnsService();
+            var sut = NewDeviceService();
 
             // Act
             sut.CreateOrUpdate(defaultDevice);
@@ -64,7 +64,7 @@ namespace Checkin.Tests
         {
             // Arrange
             mockDeviceRepository.Setup(x => x.GetAll()).Returns(new List<Device>());
-            var sut = NewDnsService();
+            var sut = NewDeviceService();
 
             // Act
             sut.CreateOrUpdate(defaultDevice);

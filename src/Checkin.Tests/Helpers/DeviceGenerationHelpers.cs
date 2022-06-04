@@ -17,7 +17,7 @@ namespace Checkin.Tests.Helpers
                 // devices.Add(device);
                 devices.Add(new Device()
                 {
-                    Id = 0,
+                    Id = i,
                     CreatedDate = new DateTime(2022,1,1),
                     IpAddress = $"192.168.0.{i}",
                     Name=$"Device {i}",
@@ -34,6 +34,14 @@ namespace Checkin.Tests.Helpers
                         {
                             Name = "Docker",
                             Status = DeviceServiceStatus.UP
+                        }
+                    },
+                    Batteries = new List<DeviceBattery>()
+                    {
+                        new DeviceBattery()
+                        {
+                            Name = "Battery 1",
+                            BatteryLevel = 100
                         }
                     }
                 });
