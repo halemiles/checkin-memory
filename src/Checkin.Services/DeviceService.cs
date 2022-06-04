@@ -47,7 +47,7 @@ namespace Checkin.Services
                 }
                 catch(Exception ex)
                 {
-                    Log.Fatal(ex.ToString());
+                    logger.Fatal(ex.ToString());
                     return false;
                 }
             }

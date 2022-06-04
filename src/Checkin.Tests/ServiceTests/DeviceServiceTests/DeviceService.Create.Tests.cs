@@ -62,22 +62,39 @@ namespace Checkin.Tests
         }
 
         [TestMethod]
-        public void Add_WhenNoDevices_ReturnsFailure()
+        public void Add_WhenRepositoryReturnsNull_DeviceCreated_ReturnsSuccess()
+        {
+            // Arrange
+            mockDeviceRepository.Setup(x => x.GetAll()).Returns<List<Device>>(null);
+            var sut = NewDeviceService();
+
+            // Act
+            var result = sut.CreateOrUpdate(defaultDevice);
+
+            //Assert
+            mockDeviceRepository.Verify(x => x.GetAll(), Times.Once);
+            mockDeviceRepository.Verify(x => x.Set(It.IsAny<List<Device>>()), Times.Once);
+            result.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void Add_WhenNoDevices_DeviceCreated_ReturnsSuccess()
         {
             // Arrange
             mockDeviceRepository.Setup(x => x.GetAll()).Returns(new List<Device>());
             var sut = NewDeviceService();
 
             // Act
-            sut.CreateOrUpdate(defaultDevice);
+            var result = sut.CreateOrUpdate(defaultDevice);
 
             //Assert
             mockDeviceRepository.Verify(x => x.GetAll(), Times.Once);
             mockDeviceRepository.Verify(x => x.Set(It.IsAny<List<Device>>()), Times.Once);
+            result.Should().BeTrue();
         }
 
         [TestMethod]
-        public void Add_WhenExistingDevices_ReturnsFailure()
+        public void Add_WhenExistingDevices_DeviceUpdated_ReturnsSuccess()
         {
             // Arrange
             List<Device> devices = DeviceGenerationHelpers.GenerateMultiple();
@@ -85,11 +102,31 @@ namespace Checkin.Tests
             var sut = NewDeviceService();
 
             // Act
-            sut.CreateOrUpdate(defaultDevice);
+            var result = sut.CreateOrUpdate(defaultDevice);
 
             //Assert
             mockDeviceRepository.Verify(x => x.GetAll(), Times.Once);
             mockDeviceRepository.Verify(x => x.Set(It.IsAny<List<Device>>()), Times.Once);
+            result.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void Add_WhenExistingDevices_ReturnsFailure()
+        {
+            // Arrange
+            List<Device> devices = new();
+            mockDeviceRepository.Setup(x => x.GetAll()).Returns(devices);
+            mockDeviceRepository.Setup(x => x.Set(It.IsAny<List<Device>>())).Throws(new Exception());
+            var sut = NewDeviceService();
+
+            // Act
+            var result = sut.CreateOrUpdate(defaultDevice);
+
+            //Assert
+            mockDeviceRepository.Verify(x => x.GetAll(), Times.Once);
+            mockDeviceRepository.Verify(x => x.Set(It.IsAny<List<Device>>()), Times.Once);
+            mockLogger.Verify(x => x.Fatal(It.IsAny<string>()), Times.Once);
+            result.Should().BeFalse();
         }
     }
 }
