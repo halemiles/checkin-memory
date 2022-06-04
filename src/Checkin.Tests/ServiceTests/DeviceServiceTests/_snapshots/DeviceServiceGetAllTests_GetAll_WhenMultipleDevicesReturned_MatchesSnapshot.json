@@ -16,7 +16,12 @@
           "Status": 1
         }
       ],
-      "Batteries": null,
+      "Batteries": [
+        {
+          "Name": "Battery 1",
+          "BatteryLevel": 100
+        }
+      ],
       "CreatedDate": "2022-01-01T00:00:00",
       "ModifiedDate": "0001-01-01T00:00:00",
       "ModifiedDateString": null
@@ -37,7 +42,12 @@
           "Status": 1
         }
       ],
-      "Batteries": null,
+      "Batteries": [
+        {
+          "Name": "Battery 1",
+          "BatteryLevel": 100
+        }
+      ],
       "CreatedDate": "2022-01-01T00:00:00",
       "ModifiedDate": "0001-01-01T00:00:00",
       "ModifiedDateString": null
@@ -58,7 +68,12 @@
           "Status": 1
         }
       ],
-      "Batteries": null,
+      "Batteries": [
+        {
+          "Name": "Battery 1",
+          "BatteryLevel": 100
+        }
+      ],
       "CreatedDate": "2022-01-01T00:00:00",
       "ModifiedDate": "0001-01-01T00:00:00",
       "ModifiedDateString": null
@@ -79,7 +94,12 @@
           "Status": 1
         }
       ],
-      "Batteries": null,
+      "Batteries": [
+        {
+          "Name": "Battery 1",
+          "BatteryLevel": 100
+        }
+      ],
       "CreatedDate": "2022-01-01T00:00:00",
       "ModifiedDate": "0001-01-01T00:00:00",
       "ModifiedDateString": null
@@ -100,7 +120,12 @@
           "Status": 1
         }
       ],
-      "Batteries": null,
+      "Batteries": [
+        {
+          "Name": "Battery 1",
+          "BatteryLevel": 100
+        }
+      ],
       "CreatedDate": "2022-01-01T00:00:00",
       "ModifiedDate": "0001-01-01T00:00:00",
       "ModifiedDateString": null

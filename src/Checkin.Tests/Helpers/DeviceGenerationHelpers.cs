@@ -35,6 +35,14 @@ namespace Checkin.Tests.Helpers
                             Name = "Docker",
                             Status = DeviceServiceStatus.UP
                         }
+                    },
+                    Batteries = new List<DeviceBattery>()
+                    {
+                        new DeviceBattery()
+                        {
+                            Name = "Battery 1",
+                            BatteryLevel = 100
+                        }
                     }
                 });
                 
