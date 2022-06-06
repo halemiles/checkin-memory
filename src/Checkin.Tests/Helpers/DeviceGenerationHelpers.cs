@@ -23,7 +23,7 @@ namespace Checkin.Tests.Helpers
                     Name=$"Device {i}",
                     ExternalNetwork = new DeviceNetwork()
                     {
-                        ExternalIpAddress = "1.2.3.4", 
+                        ExternalIpAddress = $"1.2.3.{i}",
                         IspName = "Major ISP",
                         LastModified = new DateTime(2022,1,1),
                         DateCreated = new DateTime(2022,1,1)
@@ -45,7 +45,6 @@ namespace Checkin.Tests.Helpers
                         }
                     }
                 });
-                
             }
             return devices;
         }

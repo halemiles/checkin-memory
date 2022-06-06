@@ -4,16 +4,21 @@ namespace Checkin.Models.Extensions
 {
     public static class PrettyDate
     {
+        public static string GetPrettyDate(this DateTime d)
+        {
+            return GetPrettyDate(d, DateTime.Now);
+        }
+
         public static string GetPrettyDate(this DateTime d, DateTime? nowOverride = null)
         {
             // 1.
             // Get time span elapsed since the date.
             TimeSpan s = nowOverride?.Subtract(d) ?? DateTime.Now.Subtract(d);
-            
+
             // 2.
             // Get total number of days elapsed.
             int dayDiff = (int)s.TotalDays;
-            
+
             // 3.
             // Get total number of seconds elapsed.
             int secDiff = (int)s.TotalSeconds;
@@ -24,7 +29,7 @@ namespace Checkin.Models.Extensions
             {
                 return null;
             }
-            
+
             // 5.
             // Handle same-day times.
             if (dayDiff == 0)

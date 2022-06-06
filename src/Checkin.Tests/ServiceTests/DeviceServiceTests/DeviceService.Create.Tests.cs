@@ -10,6 +10,7 @@ using Serilog;
 using Checkin.Services.Interfaces;
 using AutoMapper;
 using Checkin.Tests.Helpers;
+using AutoFixture;
 
 namespace Checkin.Tests
 {
@@ -43,22 +44,10 @@ namespace Checkin.Tests
                 cfg.AddProfile<DeviceNetworkToDeviceNetworkDtoProfile>();
             });
             mapper = mapperConfig.CreateMapper();
+            Fixture deviceFixture = new Fixture();
+            defaultDevice = deviceFixture.Create<Device>();
 
-            defaultDevice = new Device()
-            {
-                Id = 0,
-                CreatedDate = DateTime.Now,
-                Name = "Test Device",
-                IpAddress = "127.0.0.1"
-            };
-
-            newDeviceDetails = new Device()
-            {
-                Id = 0,
-                CreatedDate = DateTime.Now,
-                Name = "Updated Name",
-                IpAddress = "192.168.0.195"
-            };
+            newDeviceDetails = deviceFixture.Create<Device>();
         }
 
         [TestMethod]

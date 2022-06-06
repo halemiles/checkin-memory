@@ -57,7 +57,6 @@ namespace Checkin.Repositories
                 if(result != null)
                 {
                     devices = JsonSerializer.Deserialize<List<Device>>(result);
-                    
                 }
 
                 if(deviceId.HasValue)
@@ -76,7 +75,6 @@ namespace Checkin.Repositories
                 logger
                     .ForContext("Exception",ex)
                     .Error("An exception was thrown when attempting to search from distributed cache");
-            
             }
 
             return new List<Device>();
