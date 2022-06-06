@@ -104,14 +104,6 @@ namespace Checkin.Tests
                 Name = "Updated Name",
                 IpAddress = "Updated IP Address",
             };
-            var expectedDevicesToBeWritten = new List<Device>
-            {
-                updatedDevice,
-                new Device{Id = 1,IpAddress = "127.0.0.1"},
-                new Device{Id = 2,IpAddress = "127.0.0.1"},
-                new Device{Id = 3,IpAddress = "127.0.0.1"},
-                new Device{Id = 4,IpAddress = "127.0.0.1"},
-            };
             mockCacheRepository.Setup(x => x.GetAll()).Returns(GenerateMultiple());
 
             // Act
