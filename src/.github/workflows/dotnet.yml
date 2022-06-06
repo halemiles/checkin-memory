@@ -2,7 +2,7 @@ name: .NET
 
 on:
   push:
-    branches: [ ci, develop ]
+    branches: [ ci, develop, "refactor/**" ]
   pull_request:
     branches: [ main, develop ]
 

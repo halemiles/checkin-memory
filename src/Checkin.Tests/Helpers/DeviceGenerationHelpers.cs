@@ -12,33 +12,30 @@ namespace Checkin.Tests.Helpers
             List<Device> devices = new();
             for(int i=0;i <5; i++)
             {
-                // var fixture = new Fixture();
-                // var device = fixture.Create<Device>();
-                // devices.Add(device);
-                devices.Add(new Device()
+                devices.Add(new Device
                 {
                     Id = i,
                     CreatedDate = new DateTime(2022,1,1),
                     IpAddress = $"192.168.0.{i}",
                     Name=$"Device {i}",
-                    ExternalNetwork = new DeviceNetwork()
+                    ExternalNetwork = new DeviceNetwork
                     {
                         ExternalIpAddress = $"1.2.3.{i}",
                         IspName = "Major ISP",
                         LastModified = new DateTime(2022,1,1),
                         DateCreated = new DateTime(2022,1,1)
                     },
-                    Services = new List<ServiceStatus>()
+                    Services = new List<ServiceStatus>
                     {
-                        new ServiceStatus()
+                        new ServiceStatus
                         {
                             Name = "Docker",
                             Status = DeviceServiceStatus.UP
                         }
                     },
-                    Batteries = new List<DeviceBattery>()
+                    Batteries = new List<DeviceBattery>
                     {
-                        new DeviceBattery()
+                        new DeviceBattery
                         {
                             Name = "Battery 1",
                             BatteryLevel = 100
