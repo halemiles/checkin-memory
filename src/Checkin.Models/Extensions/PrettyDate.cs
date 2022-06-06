@@ -9,11 +9,11 @@ namespace Checkin.Models.Extensions
             return GetPrettyDate(d, DateTime.Now);
         }
 
-        public static string GetPrettyDate(this DateTime d, DateTime? nowOverride = null)
+        public static string GetPrettyDate(this DateTime d, DateTime nowOverride)
         {
             // 1.
             // Get time span elapsed since the date.
-            TimeSpan s = nowOverride?.Subtract(d) ?? DateTime.Now.Subtract(d);
+            TimeSpan s = nowOverride.Subtract(d);
 
             // 2.
             // Get total number of days elapsed.
