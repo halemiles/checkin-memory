@@ -4,6 +4,11 @@ namespace Checkin.Models.Extensions
 {
     public static class PrettyDate
     {
+        public static string GetPrettyDate(this DateTime d)
+        {
+            return GetPrettyDate(d, DateTime.Now);
+        }
+        
         public static string GetPrettyDate(this DateTime d, DateTime? nowOverride = null)
         {
             // 1.
