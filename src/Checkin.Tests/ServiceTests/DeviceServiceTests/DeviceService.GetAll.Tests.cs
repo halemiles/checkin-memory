@@ -36,7 +36,7 @@ namespace Checkin.Tests
             mockMapper = new Mock<IMapper>();
             mockLogger = new Mock<ILogger>();
 
-            defaultDevice = new Device()
+            defaultDevice = new Device
             {
                 Id = 0,
                 CreatedDate = DateTime.Now,

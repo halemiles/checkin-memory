@@ -36,7 +36,7 @@ namespace Checkin.Tests
             mockMapper = new Mock<IMapper>();
             mockLogger = new Mock<ILogger>();
 
-            defaultDevice = new Device()
+            defaultDevice = new Device
             {
                 Id = 0,
                 CreatedDate = DateTime.Now,
@@ -62,7 +62,7 @@ namespace Checkin.Tests
         public void GetAll_WhenDevicesExist_WithCorrectSearchParams_ReturnsOneResult()
         {
             // Arrange
-            mockDeviceRepository.Setup(x => x.Search(It.IsAny<int?>(), It.IsAny<string>())).Returns(new List<Device>() { defaultDevice });
+            mockDeviceRepository.Setup(x => x.Search(It.IsAny<int?>(), It.IsAny<string>())).Returns(new List<Device>{ defaultDevice });
             var sut = NewDeviceService();
 
             // Act
