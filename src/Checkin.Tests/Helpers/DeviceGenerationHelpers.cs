@@ -12,9 +12,6 @@ namespace Checkin.Tests.Helpers
             List<Device> devices = new();
             for(int i=0;i <5; i++)
             {
-                // var fixture = new Fixture();
-                // var device = fixture.Create<Device>();
-                // devices.Add(device);
                 devices.Add(new Device()
                 {
                     Id = i,
