@@ -11,10 +11,8 @@ namespace Checkin.Api.Extensions
     {
         public static IServiceCollection ConfigureTelemetry(this IServiceCollection services, IConfiguration configuration)
         {
-            
-
             var memoryProviderSettings = configuration.GetSection("MemoryProvider").Get<MemoryProviderSettings>();
-            
+
             if(memoryProviderSettings.Name == "DistributedCache")
             {
                 Log.Information("Using distributed cache");
@@ -30,7 +28,7 @@ namespace Checkin.Api.Extensions
                 Log.Information("Using IMemoryCache");
                 services.AddMemoryCache();
                 services.AddScoped<IDeviceCacheRepository, DeviceCacheRepository>();
-            }   
+            }
 
             return services;
         }

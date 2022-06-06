@@ -33,7 +33,6 @@ namespace Checkin.Repositories
                 logger
                     .ForContext("Exception",ex)
                     .Error("An exception was thrown when attempting to read from distributed cache");
-            
             }
         }
 
@@ -46,7 +45,7 @@ namespace Checkin.Repositories
         public void Update(Device device)
         {
             var devices = cache.GetAll();
-            var existing = devices.FirstOrDefault(x => x.Id == device.Id) ?? new Device();
+            var existing = devices.FirstOrDefault(x => x.Id == device.Id) ?? new();
             existing = device; //TODO - Refactor this. Use pattern matching?
             cache.Set(devices);
         }

@@ -29,7 +29,7 @@ namespace Checkin.Repositories
 
         public List<Device> Search(int? deviceId, string ipAddress)
         {
-            List<Device> existingItems = new List<Device>();
+            List<Device> existingItems = new();
             if(memoryCache.TryGetValue(cacheKey, out List<Device> cacheItems))
             {
                 existingItems = cacheItems;

@@ -1,16 +1,14 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Checkin.Repositories;
 using Moq;
-using Checkin.Services;
 using System.Collections.Generic;
 using Checkin.Models;
 using System;
 using FluentAssertions;
-using Microsoft.Extensions.Caching.Memory;
-using System.Linq;
-using System.Threading;
 using Serilog;
 using Checkin.Services.Interfaces;
+using AutoFixture;
+using System.Linq;
 
 namespace Checkin.Tests
 {
@@ -19,8 +17,8 @@ namespace Checkin.Tests
     {
         private Mock<IDeviceCacheRepository> mockCacheRepository;
         private Mock<ILogger> mockLogger;
-        private LocalDeviceRepository NewDeviceRepository() => 
-            new LocalDeviceRepository(
+        private LocalDeviceRepository NewDeviceRepository() =>
+            new(
                     mockCacheRepository.Object,
                     mockLogger.Object
                 );
@@ -32,16 +30,8 @@ namespace Checkin.Tests
         {
             mockCacheRepository = new Mock<IDeviceCacheRepository>();
             mockLogger = new Mock<ILogger>();
-
-            defaultDevices = new()
-            {
-                new Device()
-                {
-                    Id = 0,
-                    CreatedDate = DateTime.Now,
-                    IpAddress = "127.0.0.1"
-                }
-            };
+            Fixture defaultDeviceFixture = new();
+            defaultDevices = defaultDeviceFixture.CreateMany<Device>(10).ToList();
         }
 
         [TestMethod]
@@ -99,7 +89,6 @@ namespace Checkin.Tests
 
             mockCacheRepository.Verify(x => x.GetAll(), Times.Once);
             result.Count.Should().Be(5);
-
         }
 
         [TestMethod]
@@ -113,7 +102,7 @@ namespace Checkin.Tests
                 Id = 0,
                 CreatedDate = DateTime.Now,
                 Name = "Updated Name",
-                IpAddress = "192.168.0.11"
+                IpAddress = "Updated IP Address",
             };
             var expectedDevicesToBeWritten = new List<Device>()
             {
@@ -132,13 +121,11 @@ namespace Checkin.Tests
             mockCacheRepository.Verify(x => x.Set(
                     It.IsAny<List<Device>>()
                 ), Times.Once);
-
         }
 
         private static List<Device> GenerateMultiple()
         {
             List<Device> devices = new();
-            DateTime timestamp = DateTime.Now;
             for(int i=0;i <5; i++)
             {
                 devices.Add(new Device()

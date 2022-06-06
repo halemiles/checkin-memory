@@ -15,7 +15,6 @@ namespace Checkin.Api.Controllers
     [Route("[controller]")]
     public class ProbeController : ControllerBase
     {
-
         private readonly ILogger<ProbeController> logger;
         public ProbeController(
             ILogger<ProbeController> logger
@@ -29,13 +28,6 @@ namespace Checkin.Api.Controllers
         {
             logger.LogInformation("Accessing version");
             return Ok("v0.1");
-        }
-
-        [HttpGet("exception")]
-        public IActionResult SimulateException()
-        {
-            logger.LogInformation("Simulating exception...");
-            throw new Exception("Test exception");
         }
     }
 }

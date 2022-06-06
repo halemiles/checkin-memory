@@ -56,7 +56,6 @@ namespace Checkin.Tests
 
             //Assert
             results.Count.Should().Be(0);
-            
         }
 
         [TestMethod]
@@ -71,7 +70,6 @@ namespace Checkin.Tests
 
             //Assert
             results.Count.Should().Be(1);
-            
         }
     }
 }

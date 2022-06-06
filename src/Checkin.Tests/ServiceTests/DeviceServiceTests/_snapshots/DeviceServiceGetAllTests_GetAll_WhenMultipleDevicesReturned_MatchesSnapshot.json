@@ -5,7 +5,7 @@
       "Name": "Device 0",
       "IpAddress": "192.168.0.0",
       "ExternalNetwork": {
-        "ExternalIpAddress": "1.2.3.4",
+        "ExternalIpAddress": "1.2.3.0",
         "IspName": "Major ISP",
         "LastModified": "2022-01-01T00:00:00",
         "DateCreated": "2022-01-01T00:00:00"
@@ -31,7 +31,7 @@
       "Name": "Device 1",
       "IpAddress": "192.168.0.1",
       "ExternalNetwork": {
-        "ExternalIpAddress": "1.2.3.4",
+        "ExternalIpAddress": "1.2.3.1",
         "IspName": "Major ISP",
         "LastModified": "2022-01-01T00:00:00",
         "DateCreated": "2022-01-01T00:00:00"
@@ -57,7 +57,7 @@
       "Name": "Device 2",
       "IpAddress": "192.168.0.2",
       "ExternalNetwork": {
-        "ExternalIpAddress": "1.2.3.4",
+        "ExternalIpAddress": "1.2.3.2",
         "IspName": "Major ISP",
         "LastModified": "2022-01-01T00:00:00",
         "DateCreated": "2022-01-01T00:00:00"
@@ -83,7 +83,7 @@
       "Name": "Device 3",
       "IpAddress": "192.168.0.3",
       "ExternalNetwork": {
-        "ExternalIpAddress": "1.2.3.4",
+        "ExternalIpAddress": "1.2.3.3",
         "IspName": "Major ISP",
         "LastModified": "2022-01-01T00:00:00",
         "DateCreated": "2022-01-01T00:00:00"

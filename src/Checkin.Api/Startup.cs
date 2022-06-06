@@ -37,9 +37,9 @@ namespace Checkin.Api
         {
             // The following line enables Application Insights telemetry collection.
             //services.AddApplicationInsightsTelemetry();
-            
+
             var logger = new LoggerConfiguration()
-                .WriteTo.Console()                
+                .WriteTo.Console()
                 .Enrich.FromLogContext()
                 .Enrich.WithExceptionDetails();
 
@@ -56,14 +56,13 @@ namespace Checkin.Api
             Log.Information("Configuring services");
             services.AddSingleton(Log.Logger);
             services.ConfigureTelemetry(Configuration);
-            
+
             services.AddAutoMapper(mapperConfig => {
                 mapperConfig.AddProfile<DeviceDtoToDeviceProfile>();
                 mapperConfig.AddProfile<DeviceToDeviceMergeProfile>();
                 mapperConfig.AddProfile<DeviceNetworkToDeviceNetworkDtoProfile>();
                 mapperConfig.AddProfile<DeviceBatterToDeviceBatteryDtoProfile>();
             });
-            
 
             services.AddScoped<IDeviceService, DeviceService>();
 
@@ -80,7 +79,7 @@ namespace Checkin.Api
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Checkin.Api v1"));
             }
-            
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
