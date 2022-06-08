@@ -38,7 +38,7 @@ namespace Checkin.Tests
             defaultDevice = new Device
             {
                 Id = 0,
-                CreatedDate = DateTime.Now,
+                CreatedDate = new DateTime(2000,1,1),
                 Name = "Test Device",
                 IpAddress = "127.0.0.1"
             };
@@ -63,7 +63,18 @@ namespace Checkin.Tests
         public void Update_WhenDeviceExists_ExistingIsUpdated()
         {
             // Arrange
-            mockDeviceRepository.Setup(x => x.GetAll()).Returns(new List<Device>());
+            var existingDevices = new List<Device>() {
+                new Device
+            {
+                Id = 0,
+                CreatedDate = new DateTime(2000,1,1),
+                Name = "Test Device",
+                IpAddress = "127.0.0.2"
+            }
+            };
+
+            var expectedDevices = new List<Device>() {defaultDevice};
+            mockDeviceRepository.Setup(x => x.GetAll()).Returns(existingDevices);
             var sut = NewDeviceService();
 
             // Act
@@ -71,7 +82,8 @@ namespace Checkin.Tests
 
             //Assert
             mockDeviceRepository.Verify(x => x.GetAll(), Times.Once);
-            mockDeviceRepository.Verify(x => x.Set(It.IsAny<List<Device>>()), Times.Once);
+            mockMapper.Verify(x => x.Map(It.IsAny<Device>(), It.IsAny<Device>()), Times.Once);
+            mockDeviceRepository.Verify(x => x.Set(expectedDevices), Times.Once);
         }
     }
 }
