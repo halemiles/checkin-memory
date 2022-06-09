@@ -82,7 +82,32 @@ namespace Checkin.Tests
 
             //Assert
             mockDeviceRepository.Verify(x => x.GetAll(), Times.Once);
-            mockMapper.Verify(x => x.Map(It.IsAny<Device>(), It.IsAny<Device>()), Times.Once);
+            mockMapper.Verify(x => x.Map(It.IsAny<Device>(), It.IsAny<Device>()), Times.Once);            
+        }
+
+        [TestMethod]
+        [Ignore("Needs more thought")]
+        public void Update_WhenDeviceExists_DeviceChangesAreMerged()
+        {
+            // Arrange
+            var existingDevices = new List<Device>() {
+                new Device
+            {
+                Id = 0,
+                CreatedDate = new DateTime(2000,1,1),
+                Name = "Test Device",
+                IpAddress = "127.0.0.2"
+            }
+            };
+
+            var expectedDevices = new List<Device>() {defaultDevice};
+            mockDeviceRepository.Setup(x => x.GetAll()).Returns(existingDevices);
+            var sut = NewDeviceService();
+
+            // Act
+            sut.CreateOrUpdate(defaultDevice);
+
+            //Assert
             mockDeviceRepository.Verify(x => x.Set(expectedDevices), Times.Once);
         }
     }
