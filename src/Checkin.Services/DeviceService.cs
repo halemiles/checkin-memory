@@ -53,7 +53,7 @@ namespace Checkin.Services
             }
             else //Update existing
             {
-                mapper.Map(device, existingDevice); //TODO - Unit test this call
+                device = mapper.Map(device, existingDevice); //TODO - Unit test this call
                 deviceRepository.Set(devices);
             }
 

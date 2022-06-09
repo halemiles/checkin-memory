@@ -43,7 +43,9 @@ namespace Checkin.Api.Controllers
         [HttpGet]
         public ActionResult GetAll()
         {
-                return Ok(deviceService.GetAll());
+            var devices = deviceService.GetAll();
+            var deviceDto = mapper.Map<List<Device>, List<DeviceDto>>(devices);
+            return Ok(deviceDto);
         }
 
         [HttpPost]
@@ -53,7 +55,7 @@ namespace Checkin.Api.Controllers
                 .ForContext("DeviceName",deviceDto.Name)
                 .ForContext("HttpContext",HttpContext)
                 .Debug("Creating Device");
-            var device = mapper.Map<Device>(deviceDto);
+            var device = mapper.Map<DeviceDto, Device>(deviceDto);
             deviceService.CreateOrUpdate(device);
             return Ok();
         }
@@ -61,7 +63,7 @@ namespace Checkin.Api.Controllers
         [HttpPut]
         public IActionResult UpdateDevice([FromBody] DeviceDto deviceDto)
         {
-            var device = mapper.Map<Device>(deviceDto);
+            var device = mapper.Map<DeviceDto, Device>(deviceDto);
             deviceService.CreateOrUpdate(device);
             return Ok();
         }
