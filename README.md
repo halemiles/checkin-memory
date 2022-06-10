@@ -20,3 +20,10 @@ Running `dotnet test` will run all unit tests (located in Checkin.Tests).
 If you wish to run code coverage, you will need to install reportgenerator: https://github.com/danielpalme/ReportGenerator. You can then run the `./generate-coverage.sh` shell script. 
 
 This will only work in Linux systems for now, however if you inspect the coverage shell script you can see the dotnet and reportgenerator commands which should also work on Windows/macOS systems.
+
+## Deploy
+### Docker
+If you have docker installed, you can run the following:
+  - `docker-compose up -d` from the **src** folder. The default port is 8500.
+
+Running docker-compose should auto build the image, however if you wish to build yourself you can run `docker build -t checkin-memory .`. This might be nessesary if you have made changes which have not been applied when using docker-compose.
