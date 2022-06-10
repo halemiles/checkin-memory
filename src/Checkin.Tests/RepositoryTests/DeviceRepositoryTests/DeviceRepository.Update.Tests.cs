@@ -7,7 +7,8 @@ using System;
 
 namespace Checkin.Tests
 {
-    public partial class DeviceRepositoryTests
+    [TestClass]
+    public class DeviceRepositoryUpdateTests : DeviceServiceTestSetup
     {
 
         [TestMethod]

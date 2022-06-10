@@ -4,7 +4,8 @@ using FluentAssertions;
 
 namespace Checkin.Tests
 {
-    public partial class DeviceRepositoryTests
+    [TestClass]
+    public class DeviceRepositoryGetAllTests : DeviceServiceTestSetup
     {
         [TestMethod]
         public void GetAll_WithExistingDevice_VerifyCacheReturnsRecords()

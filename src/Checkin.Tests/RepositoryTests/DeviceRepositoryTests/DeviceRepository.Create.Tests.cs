@@ -5,7 +5,8 @@ using Checkin.Models;
 
 namespace Checkin.Tests
 {
-    public partial class DeviceRepositoryTests
+    [TestClass]
+    public class DeviceRepositoryCreateTests : DeviceServiceTestSetup
     {
 
         [TestMethod]
@@ -23,6 +24,7 @@ namespace Checkin.Tests
         }
 
         [TestMethod]
+        
         public void Create_WithMultipleDevices_VerifySetIsCalledOnce()
         {
             // Arrange                   

@@ -8,10 +8,10 @@ using Microsoft.Extensions.Caching.Memory;
 namespace Checkin.Tests
 {
     [TestClass]
-    public class DeviceCacheRepositoryTests : DeviceCacheRepositorySetup
+    public class DeviceCacheRepositorySearchTests : DeviceCacheRepositorySetup
     {
         [TestMethod]
-        public void GetAll_WhenNoDevicesExist_ReturnsEmptyList()
+        public void Search_WhenNoDevicesExist_ReturnsEmptyList()
         {
             // ARRANGE
             var fixture = new Fixture();
@@ -21,7 +21,7 @@ namespace Checkin.Tests
             var deviceCache = NewDeviceCacheRepository();
 
             // ACT
-            var result = deviceCache.GetAll();
+            var result = deviceCache.Search(999, "192.168.0.1");
 
             // ASSERT
             result.Should().NotBeNull();
@@ -29,24 +29,23 @@ namespace Checkin.Tests
         }
 
         [TestMethod]
-        public void GetAll_WhenMultipleDevicesAreCreated_ReturnsMultipleDevices()
+        public void Search_WhenMultipleDevicesAreCreated_ReturnsMultipleDevices()
         {
             // ARRANGE
             var fixture = new Fixture();
             var expected = new List<Device>(){
-                fixture.Create<Device>(),
-                fixture.Create<Device>()
+                fixture.Build<Device>().With(x => x.Id, 999).Create()
             };
             cache.Set(deviceCacheKey, expected);
 
             var deviceCache = NewDeviceCacheRepository();
 
             // ACT
-            var result = deviceCache.GetAll();
+            var result = deviceCache.Search(999, string.Empty);
 
             // ASSERT
             result.Should().NotBeNull();
-            result.Count.Should().Be(2);
+            result.Count.Should().Be(1);
         }
     }
 }

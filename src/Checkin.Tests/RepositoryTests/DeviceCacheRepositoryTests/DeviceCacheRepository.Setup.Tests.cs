@@ -16,10 +16,10 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Checkin.Tests
 {
     [TestClass]
-    public partial class DeviceCacheRepositoryTests
+    public class DeviceCacheRepositorySetup
     {
-        private IMemoryCache cache;
-        private string deviceCacheKey = "Devices";
+        public IMemoryCache cache;
+        public string deviceCacheKey = "Devices";
         public DeviceCacheRepository NewDeviceCacheRepository() =>
             new(
                     cache

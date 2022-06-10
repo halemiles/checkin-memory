@@ -14,7 +14,6 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Checkin.Repositories
 {
-    [ExcludeFromCodeCoverage]
     public class DistributedDeviceCacheRepository : IDeviceCacheRepository
     {
         private readonly string cacheKey = "Devices";

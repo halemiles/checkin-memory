@@ -11,7 +11,7 @@ using System.Linq;
 namespace Checkin.Tests
 {
     [TestClass]
-    public partial class DeviceRepositoryTests
+    public class DeviceServiceTestSetup
     {
         public Mock<IDeviceCacheRepository> mockCacheRepository;
         public Mock<ILogger> mockLogger;
