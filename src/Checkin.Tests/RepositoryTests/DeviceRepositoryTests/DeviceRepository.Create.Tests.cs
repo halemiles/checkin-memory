@@ -1,14 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Checkin.Repositories;
 using Moq;
 using System.Collections.Generic;
 using Checkin.Models;
-using System;
-using FluentAssertions;
-using Serilog;
-using Checkin.Services.Interfaces;
-using AutoFixture;
-using System.Linq;
 
 namespace Checkin.Tests
 {

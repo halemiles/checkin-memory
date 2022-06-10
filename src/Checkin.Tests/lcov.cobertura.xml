@@ -1,127 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<coverage line-rate="0.5815" branch-rate="0.5909" version="1.9" timestamp="1654774268" lines-covered="164" lines-valid="282" branches-covered="39" branches-valid="66">
+<coverage line-rate="0.8676999999999999" branch-rate="0.8478" version="1.9" timestamp="1654846920" lines-covered="164" lines-valid="189" branches-covered="39" branches-valid="46">
   <sources>
     <source>/home/miles/dev/checkin-memory/src/</source>
   </sources>
   <packages>
-    <package name="Checkin.Repositories" line-rate="0.192" branch-rate="0.1153" complexity="31">
+    <package name="Checkin.Repositories" line-rate="0.75" branch-rate="0.5" complexity="9">
       <classes>
-        <class name="Checkin.Repositories.DeviceCacheRepository" filename="Checkin.Repositories/CacheRepository.cs" line-rate="0" branch-rate="0" complexity="10">
-          <methods>
-            <method name="GetAll" signature="()" line-rate="0" branch-rate="0" complexity="2">
-              <lines>
-                <line number="21" hits="0" branch="False" />
-                <line number="22" hits="0" branch="True" condition-coverage="0% (0/2)">
-                  <conditions>
-                    <condition number="22" type="jump" coverage="0%" />
-                  </conditions>
-                </line>
-                <line number="23" hits="0" branch="False" />
-                <line number="24" hits="0" branch="False" />
-                <line number="27" hits="0" branch="False" />
-                <line number="28" hits="0" branch="False" />
-              </lines>
-            </method>
-            <method name="Search" signature="(System.Nullable`1&lt;System.Int32&gt;,System.String)" line-rate="0" branch-rate="0" complexity="6">
-              <lines>
-                <line number="31" hits="0" branch="False" />
-                <line number="32" hits="0" branch="False" />
-                <line number="33" hits="0" branch="True" condition-coverage="0% (0/2)">
-                  <conditions>
-                    <condition number="48" type="jump" coverage="0%" />
-                  </conditions>
-                </line>
-                <line number="34" hits="0" branch="False" />
-                <line number="35" hits="0" branch="False" />
-                <line number="36" hits="0" branch="False" />
-                <line number="38" hits="0" branch="True" condition-coverage="0% (0/2)">
-                  <conditions>
-                    <condition number="69" type="jump" coverage="0%" />
-                  </conditions>
-                </line>
-                <line number="39" hits="0" branch="False" />
-                <line number="40" hits="0" branch="False" />
-                <line number="41" hits="0" branch="False" />
-                <line number="43" hits="0" branch="True" condition-coverage="0% (0/2)">
-                  <conditions>
-                    <condition number="115" type="jump" coverage="0%" />
-                  </conditions>
-                </line>
-                <line number="44" hits="0" branch="False" />
-                <line number="45" hits="0" branch="False" />
-                <line number="46" hits="0" branch="False" />
-                <line number="48" hits="0" branch="False" />
-                <line number="49" hits="0" branch="False" />
-              </lines>
-            </method>
-            <method name="Set" signature="(System.Collections.Generic.List`1&lt;Checkin.Models.Device&gt;)" line-rate="0" branch-rate="1" complexity="1">
-              <lines>
-                <line number="52" hits="0" branch="False" />
-                <line number="53" hits="0" branch="False" />
-                <line number="54" hits="0" branch="False" />
-                <line number="55" hits="0" branch="False" />
-              </lines>
-            </method>
-            <method name=".ctor" signature="(Microsoft.Extensions.Caching.Memory.IMemoryCache)" line-rate="0" branch-rate="1" complexity="1">
-              <lines>
-                <line number="12" hits="0" branch="False" />
-                <line number="15" hits="0" branch="False" />
-                <line number="16" hits="0" branch="False" />
-                <line number="17" hits="0" branch="False" />
-                <line number="18" hits="0" branch="False" />
-              </lines>
-            </method>
-          </methods>
-          <lines>
-            <line number="21" hits="0" branch="False" />
-            <line number="22" hits="0" branch="True" condition-coverage="0% (0/2)">
-              <conditions>
-                <condition number="22" type="jump" coverage="0%" />
-              </conditions>
-            </line>
-            <line number="23" hits="0" branch="False" />
-            <line number="24" hits="0" branch="False" />
-            <line number="27" hits="0" branch="False" />
-            <line number="28" hits="0" branch="False" />
-            <line number="31" hits="0" branch="False" />
-            <line number="32" hits="0" branch="False" />
-            <line number="33" hits="0" branch="True" condition-coverage="0% (0/2)">
-              <conditions>
-                <condition number="48" type="jump" coverage="0%" />
-              </conditions>
-            </line>
-            <line number="34" hits="0" branch="False" />
-            <line number="35" hits="0" branch="False" />
-            <line number="36" hits="0" branch="False" />
-            <line number="38" hits="0" branch="True" condition-coverage="0% (0/2)">
-              <conditions>
-                <condition number="69" type="jump" coverage="0%" />
-              </conditions>
-            </line>
-            <line number="39" hits="0" branch="False" />
-            <line number="40" hits="0" branch="False" />
-            <line number="41" hits="0" branch="False" />
-            <line number="43" hits="0" branch="True" condition-coverage="0% (0/2)">
-              <conditions>
-                <condition number="115" type="jump" coverage="0%" />
-              </conditions>
-            </line>
-            <line number="44" hits="0" branch="False" />
-            <line number="45" hits="0" branch="False" />
-            <line number="46" hits="0" branch="False" />
-            <line number="48" hits="0" branch="False" />
-            <line number="49" hits="0" branch="False" />
-            <line number="52" hits="0" branch="False" />
-            <line number="53" hits="0" branch="False" />
-            <line number="54" hits="0" branch="False" />
-            <line number="55" hits="0" branch="False" />
-            <line number="12" hits="0" branch="False" />
-            <line number="15" hits="0" branch="False" />
-            <line number="16" hits="0" branch="False" />
-            <line number="17" hits="0" branch="False" />
-            <line number="18" hits="0" branch="False" />
-          </lines>
-        </class>
         <class name="Checkin.Repositories.LocalDeviceRepository" filename="Checkin.Repositories/DeviceRepository.cs" line-rate="0.8" branch-rate="0.5" complexity="8">
           <methods>
             <method name="Create" signature="(System.Collections.Generic.List`1&lt;Checkin.Models.Device&gt;)" line-rate="0.4545" branch-rate="1" complexity="1">
@@ -228,202 +112,18 @@
             <line number="23" hits="5" branch="False" />
           </lines>
         </class>
-        <class name="Checkin.Repositories.DistributedDeviceCacheRepository" filename="Checkin.Repositories/DistributedDeviceCacheRepository.cs" line-rate="0" branch-rate="0" complexity="13">
+        <class name="Checkin.Repositories.MemoryCacheWrapper" filename="Checkin.Repositories/MemoryCacheWrapper.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
-            <method name="GetAll" signature="()" line-rate="0" branch-rate="0" complexity="2">
+            <method name="TryGetValue" signature="(System.String,System.Collections.Generic.List`1&lt;Checkin.Models.Device&gt;&amp;)" line-rate="0" branch-rate="1" complexity="1">
               <lines>
-                <line number="32" hits="0" branch="False" />
-                <line number="34" hits="0" branch="False" />
-                <line number="35" hits="0" branch="False" />
-                <line number="36" hits="0" branch="True" condition-coverage="0% (0/2)">
-                  <conditions>
-                    <condition number="26" type="jump" coverage="0%" />
-                  </conditions>
-                </line>
-                <line number="37" hits="0" branch="False" />
-                <line number="38" hits="0" branch="False" />
-                <line number="39" hits="0" branch="False" />
-                <line number="41" hits="0" branch="False" />
-                <line number="42" hits="0" branch="False" />
-                <line number="43" hits="0" branch="False" />
-                <line number="44" hits="0" branch="False" />
-                <line number="45" hits="0" branch="False" />
-                <line number="46" hits="0" branch="False" />
-                <line number="47" hits="0" branch="False" />
-                <line number="48" hits="0" branch="False" />
-                <line number="49" hits="0" branch="False" />
-              </lines>
-            </method>
-            <method name="Search" signature="(System.Nullable`1&lt;System.Int32&gt;,System.String)" line-rate="0" branch-rate="0" complexity="6">
-              <lines>
-                <line number="52" hits="0" branch="False" />
-                <line number="54" hits="0" branch="False" />
-                <line number="55" hits="0" branch="False" />
-                <line number="56" hits="0" branch="False" />
-                <line number="57" hits="0" branch="True" condition-coverage="0% (0/2)">
-                  <conditions>
-                    <condition number="52" type="jump" coverage="0%" />
-                  </conditions>
-                </line>
-                <line number="58" hits="0" branch="False" />
-                <line number="59" hits="0" branch="False" />
-                <line number="60" hits="0" branch="False" />
-                <line number="62" hits="0" branch="True" condition-coverage="0% (0/2)">
-                  <conditions>
-                    <condition number="79" type="jump" coverage="0%" />
-                  </conditions>
-                </line>
-                <line number="63" hits="0" branch="False" />
-                <line number="64" hits="0" branch="False" />
-                <line number="65" hits="0" branch="False" />
-                <line number="67" hits="0" branch="True" condition-coverage="0% (0/2)">
-                  <conditions>
-                    <condition number="125" type="jump" coverage="0%" />
-                  </conditions>
-                </line>
-                <line number="68" hits="0" branch="False" />
-                <line number="69" hits="0" branch="False" />
-                <line number="70" hits="0" branch="False" />
-                <line number="71" hits="0" branch="False" />
-                <line number="73" hits="0" branch="False" />
-                <line number="74" hits="0" branch="False" />
-                <line number="75" hits="0" branch="False" />
-                <line number="76" hits="0" branch="False" />
-                <line number="77" hits="0" branch="False" />
-                <line number="78" hits="0" branch="False" />
-                <line number="80" hits="0" branch="False" />
-                <line number="81" hits="0" branch="False" />
-              </lines>
-            </method>
-            <method name="Set" signature="(System.Collections.Generic.List`1&lt;Checkin.Models.Device&gt;)" line-rate="0" branch-rate="1" complexity="1">
-              <lines>
-                <line number="84" hits="0" branch="False" />
-                <line number="86" hits="0" branch="False" />
-                <line number="87" hits="0" branch="False" />
-                <line number="88" hits="0" branch="False" />
-                <line number="89" hits="0" branch="False" />
-                <line number="90" hits="0" branch="False" />
-                <line number="91" hits="0" branch="False" />
-                <line number="92" hits="0" branch="False" />
-                <line number="93" hits="0" branch="False" />
-                <line number="94" hits="0" branch="False" />
-                <line number="95" hits="0" branch="False" />
-                <line number="97" hits="0" branch="False" />
-                <line number="98" hits="0" branch="False" />
-              </lines>
-            </method>
-            <method name=".ctor" signature="(Microsoft.Extensions.Caching.Distributed.IDistributedCache,Serilog.ILogger)" line-rate="0" branch-rate="0" complexity="4">
-              <lines>
-                <line number="18" hits="0" branch="False" />
-                <line number="21" hits="0" branch="False" />
-                <line number="22" hits="0" branch="False" />
-                <line number="23" hits="0" branch="False" />
-                <line number="24" hits="0" branch="False" />
-                <line number="25" hits="0" branch="False" />
-                <line number="26" hits="0" branch="False" />
-                <line number="27" hits="0" branch="True" condition-coverage="0% (0/2)">
-                  <conditions>
-                    <condition number="22" type="jump" coverage="0%" />
-                  </conditions>
-                </line>
-                <line number="28" hits="0" branch="True" condition-coverage="0% (0/2)">
-                  <conditions>
-                    <condition number="44" type="jump" coverage="0%" />
-                  </conditions>
-                </line>
-                <line number="29" hits="0" branch="False" />
+                <line number="11" hits="0" branch="False" />
+                <line number="12" hits="0" branch="False" />
               </lines>
             </method>
           </methods>
           <lines>
-            <line number="32" hits="0" branch="False" />
-            <line number="34" hits="0" branch="False" />
-            <line number="35" hits="0" branch="False" />
-            <line number="36" hits="0" branch="True" condition-coverage="0% (0/2)">
-              <conditions>
-                <condition number="26" type="jump" coverage="0%" />
-              </conditions>
-            </line>
-            <line number="37" hits="0" branch="False" />
-            <line number="38" hits="0" branch="False" />
-            <line number="39" hits="0" branch="False" />
-            <line number="41" hits="0" branch="False" />
-            <line number="42" hits="0" branch="False" />
-            <line number="43" hits="0" branch="False" />
-            <line number="44" hits="0" branch="False" />
-            <line number="45" hits="0" branch="False" />
-            <line number="46" hits="0" branch="False" />
-            <line number="47" hits="0" branch="False" />
-            <line number="48" hits="0" branch="False" />
-            <line number="49" hits="0" branch="False" />
-            <line number="52" hits="0" branch="False" />
-            <line number="54" hits="0" branch="False" />
-            <line number="55" hits="0" branch="False" />
-            <line number="56" hits="0" branch="False" />
-            <line number="57" hits="0" branch="True" condition-coverage="0% (0/2)">
-              <conditions>
-                <condition number="52" type="jump" coverage="0%" />
-              </conditions>
-            </line>
-            <line number="58" hits="0" branch="False" />
-            <line number="59" hits="0" branch="False" />
-            <line number="60" hits="0" branch="False" />
-            <line number="62" hits="0" branch="True" condition-coverage="0% (0/2)">
-              <conditions>
-                <condition number="79" type="jump" coverage="0%" />
-              </conditions>
-            </line>
-            <line number="63" hits="0" branch="False" />
-            <line number="64" hits="0" branch="False" />
-            <line number="65" hits="0" branch="False" />
-            <line number="67" hits="0" branch="True" condition-coverage="0% (0/2)">
-              <conditions>
-                <condition number="125" type="jump" coverage="0%" />
-              </conditions>
-            </line>
-            <line number="68" hits="0" branch="False" />
-            <line number="69" hits="0" branch="False" />
-            <line number="70" hits="0" branch="False" />
-            <line number="71" hits="0" branch="False" />
-            <line number="73" hits="0" branch="False" />
-            <line number="74" hits="0" branch="False" />
-            <line number="75" hits="0" branch="False" />
-            <line number="76" hits="0" branch="False" />
-            <line number="77" hits="0" branch="False" />
-            <line number="78" hits="0" branch="False" />
-            <line number="80" hits="0" branch="False" />
-            <line number="81" hits="0" branch="False" />
-            <line number="84" hits="0" branch="False" />
-            <line number="86" hits="0" branch="False" />
-            <line number="87" hits="0" branch="False" />
-            <line number="88" hits="0" branch="False" />
-            <line number="89" hits="0" branch="False" />
-            <line number="90" hits="0" branch="False" />
-            <line number="91" hits="0" branch="False" />
-            <line number="92" hits="0" branch="False" />
-            <line number="93" hits="0" branch="False" />
-            <line number="94" hits="0" branch="False" />
-            <line number="95" hits="0" branch="False" />
-            <line number="97" hits="0" branch="False" />
-            <line number="98" hits="0" branch="False" />
-            <line number="18" hits="0" branch="False" />
-            <line number="21" hits="0" branch="False" />
-            <line number="22" hits="0" branch="False" />
-            <line number="23" hits="0" branch="False" />
-            <line number="24" hits="0" branch="False" />
-            <line number="25" hits="0" branch="False" />
-            <line number="26" hits="0" branch="False" />
-            <line number="27" hits="0" branch="True" condition-coverage="0% (0/2)">
-              <conditions>
-                <condition number="22" type="jump" coverage="0%" />
-              </conditions>
-            </line>
-            <line number="28" hits="0" branch="True" condition-coverage="0% (0/2)">
-              <conditions>
-                <condition number="44" type="jump" coverage="0%" />
-              </conditions>
-            </line>
-            <line number="29" hits="0" branch="False" />
+            <line number="11" hits="0" branch="False" />
+            <line number="12" hits="0" branch="False" />
           </lines>
         </class>
       </classes>
@@ -434,42 +134,42 @@
           <methods>
             <method name="get_Id" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="9" hits="139" branch="False" />
+                <line number="9" hits="141" branch="False" />
               </lines>
             </method>
             <method name="get_Name" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="10" hits="98" branch="False" />
+                <line number="10" hits="100" branch="False" />
               </lines>
             </method>
             <method name="get_IpAddress" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="11" hits="113" branch="False" />
+                <line number="11" hits="115" branch="False" />
               </lines>
             </method>
             <method name="get_ExternalNetwork" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="12" hits="88" branch="False" />
+                <line number="12" hits="90" branch="False" />
               </lines>
             </method>
             <method name="get_Services" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="13" hits="88" branch="False" />
+                <line number="13" hits="90" branch="False" />
               </lines>
             </method>
             <method name="get_Batteries" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="14" hits="88" branch="False" />
+                <line number="14" hits="90" branch="False" />
               </lines>
             </method>
             <method name="get_CreatedDate" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="15" hits="98" branch="False" />
+                <line number="15" hits="100" branch="False" />
               </lines>
             </method>
             <method name="get_ModifiedDate" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="16" hits="88" branch="False" />
+                <line number="16" hits="90" branch="False" />
               </lines>
             </method>
             <method name="get_ModifiedDateString" signature="()" line-rate="1" branch-rate="1" complexity="1">
@@ -479,14 +179,14 @@
             </method>
           </methods>
           <lines>
-            <line number="9" hits="139" branch="False" />
-            <line number="10" hits="98" branch="False" />
-            <line number="11" hits="113" branch="False" />
-            <line number="12" hits="88" branch="False" />
-            <line number="13" hits="88" branch="False" />
-            <line number="14" hits="88" branch="False" />
-            <line number="15" hits="98" branch="False" />
-            <line number="16" hits="88" branch="False" />
+            <line number="9" hits="141" branch="False" />
+            <line number="10" hits="100" branch="False" />
+            <line number="11" hits="115" branch="False" />
+            <line number="12" hits="90" branch="False" />
+            <line number="13" hits="90" branch="False" />
+            <line number="14" hits="90" branch="False" />
+            <line number="15" hits="100" branch="False" />
+            <line number="16" hits="90" branch="False" />
             <line number="19" hits="45" branch="False" />
           </lines>
         </class>
@@ -494,18 +194,18 @@
           <methods>
             <method name="get_Name" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="7" hits="204" branch="False" />
+                <line number="7" hits="210" branch="False" />
               </lines>
             </method>
             <method name="get_BatteryLevel" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="8" hits="204" branch="False" />
+                <line number="8" hits="210" branch="False" />
               </lines>
             </method>
           </methods>
           <lines>
-            <line number="7" hits="204" branch="False" />
-            <line number="8" hits="204" branch="False" />
+            <line number="7" hits="210" branch="False" />
+            <line number="8" hits="210" branch="False" />
           </lines>
         </class>
         <class name="Checkin.Models.DeviceBatteryDto" filename="Checkin.Models/Device/DeviceBatteryDto.cs" line-rate="0" branch-rate="1" complexity="2">
@@ -530,48 +230,48 @@
           <methods>
             <method name="get_ExternalIpAddress" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="7" hits="88" branch="False" />
+                <line number="7" hits="90" branch="False" />
               </lines>
             </method>
             <method name="get_IspName" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="8" hits="88" branch="False" />
+                <line number="8" hits="90" branch="False" />
               </lines>
             </method>
             <method name="get_LastModified" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="9" hits="88" branch="False" />
+                <line number="9" hits="90" branch="False" />
               </lines>
             </method>
             <method name="get_DateCreated" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="10" hits="88" branch="False" />
+                <line number="10" hits="90" branch="False" />
               </lines>
             </method>
           </methods>
           <lines>
-            <line number="7" hits="88" branch="False" />
-            <line number="8" hits="88" branch="False" />
-            <line number="9" hits="88" branch="False" />
-            <line number="10" hits="88" branch="False" />
+            <line number="7" hits="90" branch="False" />
+            <line number="8" hits="90" branch="False" />
+            <line number="9" hits="90" branch="False" />
+            <line number="10" hits="90" branch="False" />
           </lines>
         </class>
         <class name="Checkin.Models.ServiceStatus" filename="Checkin.Models/Device/ServiceStatus.cs" line-rate="1" branch-rate="1" complexity="2">
           <methods>
             <method name="get_Name" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="5" hits="204" branch="False" />
+                <line number="5" hits="210" branch="False" />
               </lines>
             </method>
             <method name="get_Status" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="6" hits="204" branch="False" />
+                <line number="6" hits="210" branch="False" />
               </lines>
             </method>
           </methods>
           <lines>
-            <line number="5" hits="204" branch="False" />
-            <line number="6" hits="204" branch="False" />
+            <line number="5" hits="210" branch="False" />
+            <line number="6" hits="210" branch="False" />
           </lines>
         </class>
         <class name="Checkin.Models.EnumExtensions" filename="Checkin.Models/Extensions/EnumExtensions.cs" line-rate="0" branch-rate="0" complexity="2">

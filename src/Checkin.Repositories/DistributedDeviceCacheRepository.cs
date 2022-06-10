@@ -10,9 +10,11 @@ using System;
 using Serilog;
 using Serilog.Exceptions;
 using Checkin.Services.Interfaces;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Checkin.Repositories
 {
+    [ExcludeFromCodeCoverage]
     public class DistributedDeviceCacheRepository : IDeviceCacheRepository
     {
         private readonly string cacheKey = "Devices";
