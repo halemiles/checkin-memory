@@ -4,9 +4,11 @@ using System.Linq;
 using Checkin.Models;
 using Microsoft.Extensions.Caching.Memory;
 using Checkin.Services.Interfaces;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Checkin.Repositories
 {
+    [ExcludeFromCodeCoverage]
     public class DeviceCacheRepository : IDeviceCacheRepository
     {
         private readonly string cacheKey = "Devices";

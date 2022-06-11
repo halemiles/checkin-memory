@@ -7,31 +7,36 @@ using Serilog;
 using Checkin.Services.Interfaces;
 using AutoFixture;
 using System.Linq;
+using Microsoft.Extensions.Caching.Memory;
+using FluentAssertions;
+using System.Collections.Specialized;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Checkin.Tests
 {
     [TestClass]
-    public class DeviceServiceTestSetup
+    public class DeviceCacheRepositorySetup
     {
-        public Mock<IDeviceCacheRepository> mockCacheRepository;
-        public Mock<ILogger> mockLogger;
-        public LocalDeviceRepository NewDeviceRepository() =>
+        public IMemoryCache cache;
+        public string deviceCacheKey = "Devices";
+        public DeviceCacheRepository NewDeviceCacheRepository() =>
             new(
-                    mockCacheRepository.Object,
-                    mockLogger.Object
+                    cache
                 );
-
-        public List<Device> defaultDevices;
 
         [TestInitialize]
         public void SetUp()
         {
-            mockCacheRepository = new Mock<IDeviceCacheRepository>();
-            mockLogger = new Mock<ILogger>();
-            Fixture defaultDeviceFixture = new();
-            defaultDevices = defaultDeviceFixture.CreateMany<Device>(10).ToList();
+            IHost host = Host.CreateDefaultBuilder()
+            .ConfigureServices(services => services.AddMemoryCache())
+            .Build();
+
+            cache = host.Services.GetRequiredService<IMemoryCache>();
         }
+
         
+
         public static List<Device> GenerateMultiple()
         {
             List<Device> devices = new();
