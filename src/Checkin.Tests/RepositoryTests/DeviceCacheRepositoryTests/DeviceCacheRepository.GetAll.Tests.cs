@@ -8,7 +8,7 @@ using Microsoft.Extensions.Caching.Memory;
 namespace Checkin.Tests
 {
     [TestClass]
-    public class DeviceCacheRepositoryTests : DeviceCacheRepositorySetup
+    public class DeviceCacheRepositoryGetAllTests : DeviceCacheRepositorySetup
     {
         [TestMethod]
         public void GetAll_WhenNoDevicesExist_ReturnsEmptyList()
