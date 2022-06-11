@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Version>1.0.0</Version>
     <PackageReference Include="automapper" Version="11.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.20.0" />
