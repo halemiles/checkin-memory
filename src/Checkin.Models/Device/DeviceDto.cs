@@ -16,7 +16,7 @@ namespace Checkin.Models
         public DeviceNetworkDto ExternalNetwork { get; set; }
         public IEnumerable<ServiceStatusDto> Services { get; set; }
         public IEnumerable<DeviceBatteryDto> Batteries { get; set; }
-        public DateTime CreatedDate {get; set;}
         public IDictionary<string, object> Attributes {get; set;}
+        public string ModifiedDateString { get; set; }
     }
 }
