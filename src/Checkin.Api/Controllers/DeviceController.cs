@@ -44,7 +44,7 @@ namespace Checkin.Api.Controllers
         public ActionResult GetAll()
         {
             var devices = deviceService.GetAll();
-            var deviceDto = mapper.Map<List<Device>, List<DeviceDto>>(devices);
+            var deviceDto = mapper.Map<List<Device>, List<DeviceSummaryDto>>(devices);
             return Ok(deviceDto);
         }
 

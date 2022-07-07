@@ -63,7 +63,7 @@ namespace Checkin.Services
         public List<Device> GetAll()
         {
             logger
-                .Information("Getting all devices");
+                .Debug("Getting all devices");
             return deviceRepository.GetAll() ?? new List<Device>();
         }
 
