@@ -36,7 +36,11 @@ namespace Checkin.Api
         public void ConfigureServices(IServiceCollection services)
         {
             // The following line enables Application Insights telemetry collection.
-            //services.AddApplicationInsightsTelemetry();
+            var appInsightsKey = Configuration.GetSection("ApplicationInsights").Get<ApplicationInsightsSettings>();
+            if(!string.IsNullOrEmpty(appInsightsKey.ConnectionString))
+            {
+                services.AddApplicationInsightsTelemetry();
+            }
 
             var logger = new LoggerConfiguration()
                 .WriteTo.Console()
@@ -64,6 +68,7 @@ namespace Checkin.Api
                 mapperConfig.AddProfile<DeviceBatterToDeviceBatteryDtoProfile>();
                 mapperConfig.AddProfile<ServiceStatusToServiceStatusDtoProfile>();
                 mapperConfig.AddProfile<ServiceStatusDtoToServiceStatusProfile>();
+                mapperConfig.AddProfile<DeviceToDeviceSummaryDtoProfile>();
             });
 
             services.AddScoped<IDeviceService, DeviceService>();
