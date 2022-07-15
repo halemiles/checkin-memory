@@ -11,7 +11,6 @@ namespace Checkin.Repositories
 {
     public class RedisCacheRepository : IDeviceCacheRepository
     {
-        private readonly string cacheKey = "Devices";
         private readonly IConnectionMultiplexer distributedCache;
         private readonly ILogger logger;
         private IDatabase database;
@@ -28,6 +27,7 @@ namespace Checkin.Repositories
 
         public List<Device> GetAll()
 	    {
+            //TODO - Consider gathering hashes and then gather the records needed
             try
             {
                 var result = database.StringGet(cacheKey);
@@ -68,6 +68,7 @@ namespace Checkin.Repositories
 
         public List<Device> Search(int? deviceId, string ipAddress)
         {
+            //TODO - Might need to get all before we can search
             try
             {
                 var result = database.StringGet(cacheKey);
@@ -118,6 +119,7 @@ namespace Checkin.Repositories
 
         public bool Set(List<Device> devices)
         {
+            //TODO - Loop through devices and update each one
             try
             {
                 var json = JsonSerializer.Serialize(devices);

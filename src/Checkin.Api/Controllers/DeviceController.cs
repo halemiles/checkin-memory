@@ -12,7 +12,7 @@ using AutoMapper;
 namespace Checkin.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("[controller]")] //TODO - change to /api/v1/device
     public class DeviceController : ControllerBase
     {
         private readonly IDeviceService deviceService;
@@ -59,7 +59,7 @@ namespace Checkin.Api.Controllers
                 .Debug("Creating Device");
             var device = mapper.Map<DeviceDto, Device>(deviceDto);
             deviceService.CreateOrUpdate(device);
-            return Ok();
+            return Ok(); //TODO - Consider using CreatedAtRoute to return the created device
             //TODO - Return Internal error if the device is not created.
         }
 

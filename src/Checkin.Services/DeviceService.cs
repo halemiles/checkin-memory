@@ -61,7 +61,7 @@ namespace Checkin.Services
             // else //Update existing
             // {
             //     device = mapper.Map(device, existingDevice); //TODO - Unit test this call
-            deviceRepository.Set(device.Id, device);
+            deviceRepository.Set(device.Id, device); //TODO - Set an expiry time for this record
             // }
 
             return true;
