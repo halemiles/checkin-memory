@@ -35,9 +35,9 @@ namespace Checkin.Services
             //* We should use somthing like Device_<IpAddress>_<Name>
             // --
             // --
-
+            var deviceKey = $"device:{device.Name.ToLower()}";
             //No devices exist
-            var devices = deviceRepository.GetByKey(device.Id) ?? new Device();
+            var existingDevice = deviceRepository.GetByKey(deviceKey) ?? new Device();
             // var existingDevice = devices.Find(x => x.Id == device.Id);
 
             // //Doesnt exist
@@ -61,7 +61,7 @@ namespace Checkin.Services
             // else //Update existing
             // {
             //     device = mapper.Map(device, existingDevice); //TODO - Unit test this call
-            deviceRepository.Set(device.Id, device); //TODO - Set an expiry time for this record
+            deviceRepository.Set(deviceKey, device); //TODO - Set an expiry time for this record
             // }
 
             return true;
@@ -84,13 +84,14 @@ namespace Checkin.Services
             return deviceRepository.Search(deviceId, ipAddress) ?? new List<Device>();
         }
 
-        public void Delete(int id)
+        public void Delete(string deviceName)
         {
-            throw new NotImplementedException();
+            deviceRepository.Delete(deviceName);
         }
 
-        public Device GetByKey(string key)
+        public Device GetByKey(string key) //TODO - Rename key to be deviceName
         {
+            var deviceKey = $"device:{key}";
             return deviceRepository.GetByKey(key) ?? new Device();
         }
     }

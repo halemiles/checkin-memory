@@ -44,7 +44,7 @@ namespace Checkin.Api.Controllers
         [HttpGet]
         public ActionResult GetAll(string name)
         {
-            var devices = deviceService.GetByKey($"Device:{name}");
+            var devices = deviceService.GetByKey($"device:{name}"); //tTODO - Use an extension
             //var deviceDto = mapper.Map<List<Device>, List<DeviceSummaryDto>>(devices);
             return Ok(devices);
             //TODO - Return not found if no devices are found
@@ -72,9 +72,9 @@ namespace Checkin.Api.Controllers
             //TODO - Return internal error if the device is not updated.
         }
 
-        public IActionResult DeleteDevice(int id)
+        public IActionResult DeleteDevice(string deviceName)
         {
-            deviceService.Delete(id);
+            deviceService.Delete($"device:{deviceName.ToLower()}"); //TODO - Use an extension
             return Ok();
             //TODO - Return internal error if the device is not deleted.
         }

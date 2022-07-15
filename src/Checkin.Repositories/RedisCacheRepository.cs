@@ -11,18 +11,16 @@ namespace Checkin.Repositories
 {
     public class RedisCacheRepository : IDeviceCacheRepository
     {
-        private readonly IConnectionMultiplexer distributedCache;
         private readonly ILogger logger;
-        private IDatabase database;
+        private readonly IDatabase database;
         public RedisCacheRepository
         (
             IConnectionMultiplexer distributedCache,
             ILogger logger
         )
         {
-            this.distributedCache = distributedCache ?? throw new ArgumentNullException(nameof(distributedCache));
+            database = distributedCache?.GetDatabase() ?? throw new ArgumentNullException(nameof(distributedCache));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            database = distributedCache.GetDatabase();
         }
 
         public List<Device> GetAll()
@@ -30,7 +28,7 @@ namespace Checkin.Repositories
             //TODO - Consider gathering hashes and then gather the records needed
             try
             {
-                var result = database.StringGet(cacheKey);
+                var result = database.StringGet(string.Empty);  //TODO - Use a key for this
                 if(!result.IsNull)
                 {
                     var devices = JsonSerializer.Deserialize<List<Device>>(result);
@@ -71,7 +69,7 @@ namespace Checkin.Repositories
             //TODO - Might need to get all before we can search
             try
             {
-                var result = database.StringGet(cacheKey);
+                var result = database.StringGet(string.Empty);  //TODO - Use a key for this
                 var devices = new List<Device>();
                 if(!result.IsNull)
                 {
@@ -123,7 +121,7 @@ namespace Checkin.Repositories
             try
             {
                 var json = JsonSerializer.Serialize(devices);
-                database.StringSet(cacheKey, json);
+                database.StringSet(string.Empty, json); //TODO - Use a key for this
             }
             catch(Exception ex)
             {
@@ -133,6 +131,11 @@ namespace Checkin.Repositories
                 return false;
             }
             return true;
+        }
+
+        public void Delete(string deviceName)
+        {
+            database.KeyDelete(deviceName);
         }
     }
 }

@@ -10,5 +10,6 @@ namespace Checkin.Services.Interfaces
         Device GetByKey(string key);
         List<Device> GetAll();
         List<Device> Search(int? deviceId, string ipAddress);
+        void Delete(string deviceName);
     }
 }

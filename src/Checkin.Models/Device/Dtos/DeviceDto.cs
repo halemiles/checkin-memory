@@ -9,7 +9,7 @@ namespace Checkin.Models
     public class DeviceDto
     {
         [Required]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; }
         [Required]
         public string IpAddress { get; set; }
