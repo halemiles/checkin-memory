@@ -38,14 +38,16 @@ namespace Checkin.Api.Controllers
         )
         {
                 return Ok(deviceService.Search(deviceId, ipAddress));
+                //TODO - Return not found if no devices are found
         }
 
         [HttpGet]
-        public ActionResult GetAll()
+        public ActionResult GetAll(string name)
         {
-            var devices = deviceService.GetAll();
-            var deviceDto = mapper.Map<List<Device>, List<DeviceSummaryDto>>(devices);
-            return Ok(deviceDto);
+            var devices = deviceService.GetByKey($"Device:{name}");
+            //var deviceDto = mapper.Map<List<Device>, List<DeviceSummaryDto>>(devices);
+            return Ok(devices);
+            //TODO - Return not found if no devices are found
         }
 
         [HttpPost]
@@ -58,6 +60,7 @@ namespace Checkin.Api.Controllers
             var device = mapper.Map<DeviceDto, Device>(deviceDto);
             deviceService.CreateOrUpdate(device);
             return Ok();
+            //TODO - Return Internal error if the device is not created.
         }
 
         [HttpPut]
@@ -66,12 +69,14 @@ namespace Checkin.Api.Controllers
             var device = mapper.Map<DeviceDto, Device>(deviceDto);
             deviceService.CreateOrUpdate(device);
             return Ok();
+            //TODO - Return internal error if the device is not updated.
         }
 
         public IActionResult DeleteDevice(int id)
         {
             deviceService.Delete(id);
             return Ok();
+            //TODO - Return internal error if the device is not deleted.
         }
     }
 }

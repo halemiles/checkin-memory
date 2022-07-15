@@ -29,33 +29,40 @@ namespace Checkin.Services
 
         public bool CreateOrUpdate(Device device)
         {
-            //No devices exist
-            var devices = deviceRepository.GetAll() ?? new List<Device>();
-            var existingDevice = devices.Find(x => x.Id == device.Id);
+            // --
+            // --
+            //TODO: Break this up. Create one key value pair for each device.
+            //* We should use somthing like Device_<IpAddress>_<Name>
+            // --
+            // --
 
-            //Doesnt exist
-            if(!devices.Any(x => x.Id == device.Id))
-            {
-                //TODO - Correct this and uncomment
-                // logger
-                //     .ForContext("Device",device)
-                //     .Information("Adding new device");
-                devices.Add(device);
-                try
-                {
-                    deviceRepository.Set(devices);
-                }
-                catch(Exception ex)
-                {
-                    logger.Fatal(ex.ToString());
-                    return false;
-                }
-            }
-            else //Update existing
-            {
-                device = mapper.Map(device, existingDevice); //TODO - Unit test this call
-                deviceRepository.Set(devices);
-            }
+            //No devices exist
+            var devices = deviceRepository.GetByKey(device.Id) ?? new Device();
+            // var existingDevice = devices.Find(x => x.Id == device.Id);
+
+            // //Doesnt exist
+            // if(!devices.Any(x => x.Id == device.Id))
+            // {
+            //     //TODO - Correct this and uncomment
+            //     // logger
+            //     //     .ForContext("Device",device)
+            //     //     .Information("Adding new device");
+            //     devices.Add(device);
+            //     try
+            //     {
+            //         deviceRepository.Set(devices);
+            //     }
+            //     catch(Exception ex)
+            //     {
+            //         logger.Fatal(ex.ToString());
+            //         return false;
+            //     }
+            // }
+            // else //Update existing
+            // {
+            //     device = mapper.Map(device, existingDevice); //TODO - Unit test this call
+            deviceRepository.Set(device.Id, device);
+            // }
 
             return true;
         }
@@ -80,6 +87,11 @@ namespace Checkin.Services
         public void Delete(int id)
         {
             throw new NotImplementedException();
+        }
+
+        public Device GetByKey(string key)
+        {
+            return deviceRepository.GetByKey(key) ?? new Device();
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Checkin.Models
 {
     public class Device
     {
-        public int Id { get; set; }
+        public string Id { get{ return $"Device:{Name}"; } }
         public string Name { get; set; }
         public string IpAddress { get; set; }
         public DeviceNetwork ExternalNetwork { get; set; }

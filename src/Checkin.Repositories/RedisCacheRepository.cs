@@ -1,40 +1,37 @@
 using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
 using Checkin.Models;
-using Microsoft.Extensions.Caching.Distributed;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Linq;
 using System;
 using Serilog;
-using Serilog.Exceptions;
 using Checkin.Services.Interfaces;
-using System.Diagnostics.CodeAnalysis;
+using StackExchange.Redis;
 
 namespace Checkin.Repositories
 {
-    public class DistributedDeviceCacheRepository : IDeviceCacheRepository
+    public class RedisCacheRepository : IDeviceCacheRepository
     {
         private readonly string cacheKey = "Devices";
-        private readonly IDistributedCache distributedCache;
+        private readonly IConnectionMultiplexer distributedCache;
         private readonly ILogger logger;
-        public DistributedDeviceCacheRepository
+        private IDatabase database;
+        public RedisCacheRepository
         (
-            IDistributedCache distributedCache,
+            IConnectionMultiplexer distributedCache,
             ILogger logger
         )
         {
             this.distributedCache = distributedCache ?? throw new ArgumentNullException(nameof(distributedCache));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            database = distributedCache.GetDatabase();
         }
 
         public List<Device> GetAll()
 	    {
             try
             {
-                var result = distributedCache.GetString(cacheKey);
-                if(result != null)
+                var result = database.StringGet(cacheKey);
+                if(!result.IsNull)
                 {
                     var devices = JsonSerializer.Deserialize<List<Device>>(result);
                     return devices;
@@ -49,21 +46,42 @@ namespace Checkin.Repositories
             return new List<Device>();
 	    }
 
+        public Device GetByKey(string key)
+        {
+            try
+            {
+                var result = database.StringGet(key);
+                if(!result.IsNull)
+                {
+                    var devices = JsonSerializer.Deserialize<Device>(result);
+                    return devices;
+                }
+            }
+            catch(Exception ex)
+            {
+                logger
+                    .ForContext("Exception",ex)
+                    .Error("An exception was thrown when attempting to read from distributed cache");
+            }
+            return new Device();
+        }
+
         public List<Device> Search(int? deviceId, string ipAddress)
         {
             try
             {
-                var result = distributedCache.GetString(cacheKey);
+                var result = database.StringGet(cacheKey);
                 var devices = new List<Device>();
-                if(result != null)
+                if(!result.IsNull)
                 {
                     devices = JsonSerializer.Deserialize<List<Device>>(result);
                 }
 
-                if(deviceId.HasValue)
-                {
-                    devices = devices.Where(x => x.Id == deviceId.Value).ToList();
-                }
+                //TODO - Does this need checking?
+                // if(deviceId.HasValue)
+                // {
+                //     devices = devices.Where(x => x.Id == deviceId.Value).ToList();
+                // }
 
                 if(!string.IsNullOrEmpty(ipAddress))
                 {
@@ -81,12 +99,29 @@ namespace Checkin.Repositories
             return new List<Device>();
         }
 
+        public bool Set(string key, Device device)
+        {
+            try
+            {
+                var json = JsonSerializer.Serialize(device);
+                database.StringSet(key, json);
+            }
+            catch(Exception ex)
+            {
+                logger
+                    .ForContext("Exception",ex)
+                    .Error("An exception was thrown when attempting to set distributed cache");
+                return false;
+            }
+            return true;
+        }
+
         public bool Set(List<Device> devices)
         {
             try
             {
                 var json = JsonSerializer.Serialize(devices);
-                distributedCache.SetString(cacheKey, json);
+                database.StringSet(cacheKey, json);
             }
             catch(Exception ex)
             {
