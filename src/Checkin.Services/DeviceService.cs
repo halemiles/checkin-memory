@@ -70,12 +70,13 @@ namespace Checkin.Services
 
         public List<Device> GetAll()
         {
+            
             logger
                 .Debug("Getting all devices");
             return deviceRepository.GetAll() ?? new List<Device>();
         }
 
-        public  List<Device> Search(int? deviceId, string ipAddress)
+        public  List<Device> Search(Guid? deviceId, string ipAddress)
         {
             //TODO: Fix this in unit tests. Null reference exception
             // logger
@@ -85,14 +86,15 @@ namespace Checkin.Services
             return deviceRepository.Search(deviceId, ipAddress) ?? new List<Device>();
         }
 
-        public void DeleteByDeviceName(string deviceName)
+        public void Delete(string deviceName)
         {
             deviceRepository.Delete(deviceName);
         }
 
-        public Device GetByDeviceName(string deviceName) //TODO - Rename key to be deviceName
+        public Device GetByKey(string key) //TODO - Rename key to be deviceName
         {
-            return deviceRepository.GetByKey(deviceName.ToDeviceKey()) ?? new Device();
+            var deviceKey = $"device:{key}";
+            return deviceRepository.GetByKey(key) ?? new Device();
         }
     }
 }
