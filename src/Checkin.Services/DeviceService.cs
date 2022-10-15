@@ -7,6 +7,7 @@ using AutoMapper;
 using Serilog;
 using System;
 using System.Text.Json;
+using Checkin.Services.Extensions;
 
 namespace Checkin.Services
 {
@@ -84,15 +85,14 @@ namespace Checkin.Services
             return deviceRepository.Search(deviceId, ipAddress) ?? new List<Device>();
         }
 
-        public void Delete(string deviceName)
+        public void DeleteByDeviceName(string deviceName)
         {
             deviceRepository.Delete(deviceName);
         }
 
-        public Device GetByKey(string key) //TODO - Rename key to be deviceName
+        public Device GetByDeviceName(string deviceName) //TODO - Rename key to be deviceName
         {
-            var deviceKey = $"device:{key}";
-            return deviceRepository.GetByKey(key) ?? new Device();
+            return deviceRepository.GetByKey(deviceName.ToDeviceKey()) ?? new Device();
         }
     }
 }
