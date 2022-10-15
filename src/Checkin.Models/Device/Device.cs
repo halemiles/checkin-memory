@@ -6,12 +6,13 @@ namespace Checkin.Models
 {
     public class Device
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
+        public string Key { get { return $"device:{Name?.ToLower() ?? string.Empty }"; } }
         public string Name { get; set; }
         public string IpAddress { get; set; }
         public DeviceNetwork ExternalNetwork { get; set; }
         public IEnumerable<ServiceStatus> Services { get; set; }
-        public IEnumerable<DeviceBattery> Batteries { get; set; }
+        public DevicePower Power {get; set;}
         public DateTime CreatedDate {get; set;}
         public DateTime ModifiedDate {get; set;}
         public string ModifiedDateString

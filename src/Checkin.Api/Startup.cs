@@ -20,6 +20,7 @@ using Serilog;
 using Checkin.Api.Extensions;
 using Serilog.Core;
 using Serilog.Exceptions;
+using StackExchange.Redis;
 
 namespace Checkin.Api
 {
@@ -59,7 +60,6 @@ namespace Checkin.Api
 
             Log.Information("Configuring services");
             services.AddSingleton(Log.Logger);
-            services.ConfigureTelemetry(Configuration);
 
             services.AddAutoMapper(mapperConfig => {
                 mapperConfig.AddProfile<DeviceDtoToDeviceProfile>();
@@ -75,6 +75,14 @@ namespace Checkin.Api
 
             services.AddControllers();
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "Checkin.Api", Version = "v1" }));
+
+            Log.Information("Using distributed cache");
+            var redisSettings = Configuration.GetSection("Redis").Get<RedisProviderSettings>();
+            services.AddSingleton<IConnectionMultiplexer>(sp =>
+                ConnectionMultiplexer.Connect("localhost")
+            );
+
+            services.AddScoped<IDeviceCacheRepository, RedisCacheRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
