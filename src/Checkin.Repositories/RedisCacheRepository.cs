@@ -21,7 +21,7 @@ namespace Checkin.Repositories
         )
         {
             database = distributedCache?.GetDatabase() ?? throw new ArgumentNullException(nameof(distributedCache));
-            var server = distributedCache.GetServer("localhost",6379);
+            var server = distributedCache.GetServer("localhost",6379); //TODO - Use config
             keys = server.Keys();
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
