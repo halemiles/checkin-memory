@@ -7,6 +7,7 @@ using AutoMapper;
 using Serilog;
 using System;
 using System.Text.Json;
+using Checkin.Services.Extensions;
 
 namespace Checkin.Services
 {
