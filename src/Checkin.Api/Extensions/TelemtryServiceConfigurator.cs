@@ -13,22 +13,22 @@ namespace Checkin.Api.Extensions
         {
             var memoryProviderSettings = configuration.GetSection("MemoryProvider").Get<MemoryProviderSettings>();
 
-            if(memoryProviderSettings.Name == "DistributedCache")
-            {
-                Log.Information("Using distributed cache");
-                services.AddDistributedRedisCache(option =>
-            {
-                option.Configuration = "127.0.0.1";
-                option.InstanceName = "master";
-            });
-                services.AddScoped<IDeviceCacheRepository, DistributedDeviceCacheRepository>();
-            }
-            else
-            {
-                Log.Information("Using IMemoryCache");
-                services.AddMemoryCache();
-                services.AddScoped<IDeviceCacheRepository, DeviceCacheRepository>();
-            }
+            // if(memoryProviderSettings.Name == "DistributedCache")
+            // {
+            //     Log.Information("Using distributed cache");
+            //     services.AddDistributedRedisCache(option =>
+            // {
+            //     option.Configuration = "127.0.0.1";
+            //     option.InstanceName = "master";
+            // });
+            //     services.AddScoped<IDeviceCacheRepository, DistributedDeviceCacheRepository>();
+            // }
+            // else 
+            // {
+            //     Log.Information("Using IMemoryCache");
+            //     services.AddMemoryCache();
+            //     services.AddScoped<IDeviceCacheRepository, DeviceCacheRepository>();
+            // }
 
             return services;
         }

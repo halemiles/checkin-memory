@@ -13,6 +13,7 @@ namespace Checkin.Repositories
     {
         private readonly ILogger logger;
         private readonly IDatabase database;
+        private readonly IEnumerable<RedisKey> keys;
         public RedisCacheRepository
         (
             IConnectionMultiplexer distributedCache,
@@ -20,19 +21,25 @@ namespace Checkin.Repositories
         )
         {
             database = distributedCache?.GetDatabase() ?? throw new ArgumentNullException(nameof(distributedCache));
+            var server = distributedCache.GetServer("localhost",6379);
+            keys = server.Keys();
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public List<Device> GetAll()
 	    {
+            List<Device> devices = new();
             //TODO - Consider gathering hashes and then gather the records needed
             try
             {
-                var result = database.StringGet(string.Empty);  //TODO - Use a key for this
-                if(!result.IsNull)
+                foreach(var key in keys)
                 {
-                    var devices = JsonSerializer.Deserialize<List<Device>>(result);
-                    return devices;
+                    var result = database.StringGet(key);  //TODO - Use a key for this
+                    if(!result.IsNull)
+                    {
+                        var device = JsonSerializer.Deserialize<Device>(result);
+                        devices.Add(device);
+                    }
                 }
             }
             catch(Exception ex)
@@ -41,7 +48,7 @@ namespace Checkin.Repositories
                     .ForContext("Exception",ex)
                     .Error("An exception was thrown when attempting to read from distributed cache");
             }
-            return new List<Device>();
+            return devices;
 	    }
 
         public Device GetByKey(string key)
@@ -64,7 +71,7 @@ namespace Checkin.Repositories
             return new Device();
         }
 
-        public List<Device> Search(int? deviceId, string ipAddress)
+        public List<Device> Search(Guid? deviceId, string ipAddress)
         {
             //TODO - Might need to get all before we can search
             try

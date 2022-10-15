@@ -19,6 +19,11 @@ namespace Checkin.Repositories
             this.memoryCache = memoryCache;
         }
 
+        public void Delete(string deviceName)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<Device> GetAll()
         {
             if(memoryCache.TryGetValue(cacheKey, out List<Device> cacheItems))
@@ -29,7 +34,12 @@ namespace Checkin.Repositories
             return new List<Device>();
         }
 
-        public List<Device> Search(int? deviceId, string ipAddress)
+        public Device GetByKey(string key)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Device> Search(Guid? deviceId, string ipAddress)
         {
             List<Device> existingItems = new();
             if(memoryCache.TryGetValue(cacheKey, out List<Device> cacheItems))
@@ -54,6 +64,11 @@ namespace Checkin.Repositories
         {
             memoryCache.Set(cacheKey, value);
             return true;
+        }
+
+        public bool Set(string key, Device value)
+        {
+            throw new NotImplementedException();
         }
     }
 }

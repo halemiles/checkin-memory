@@ -10,7 +10,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/Checkin.Api/bin/Debug/net5.0/Checkin.Api.dll",
+            "program": "${workspaceFolder}/Checkin.Api/bin/Debug/net6.0/Checkin.Api.dll",
             "args": [],
             "cwd": "${workspaceFolder}/Checkin.Api",
             "console": "internalConsole",

@@ -29,6 +29,11 @@ namespace Checkin.Repositories
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
+        public void Delete(string deviceName)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<Device> GetAll()
 	    {
             try
@@ -49,7 +54,12 @@ namespace Checkin.Repositories
             return new List<Device>();
 	    }
 
-        public List<Device> Search(int? deviceId, string ipAddress)
+        public Device GetByKey(string key)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Device> Search(Guid? deviceId, string ipAddress)
         {
             try
             {
@@ -96,6 +106,11 @@ namespace Checkin.Repositories
                 return false;
             }
             return true;
+        }
+
+        public bool Set(string key, Device value)
+        {
+            throw new NotImplementedException();
         }
     }
 }
