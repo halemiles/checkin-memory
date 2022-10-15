@@ -7,8 +7,9 @@ namespace Checkin.Services.Interfaces
     public interface IDeviceService
     {
         List<Device> GetAll();
+        Device GetByDeviceName(string deviceName);
         List<Device> Search(int? deviceId, string ipAddress);
-        void Delete(int id);
+        void DeleteByDeviceName(string deviceName);
         bool CreateOrUpdate(Device device);
     }
 }

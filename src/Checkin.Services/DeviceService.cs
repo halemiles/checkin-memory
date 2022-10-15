@@ -7,6 +7,7 @@ using AutoMapper;
 using Serilog;
 using System;
 using System.Text.Json;
+using Checkin.Services.Extensions;
 
 namespace Checkin.Services
 {
@@ -29,33 +30,40 @@ namespace Checkin.Services
 
         public bool CreateOrUpdate(Device device)
         {
+            // --
+            // --
+            //TODO: Break this up. Create one key value pair for each device.
+            //* We should use somthing like Device_<IpAddress>_<Name>
+            // --
+            // --
+            var deviceKey = $"device:{device.Name.ToLower()}";
             //No devices exist
-            var devices = deviceRepository.GetAll() ?? new List<Device>();
-            var existingDevice = devices.Find(x => x.Id == device.Id);
+            var existingDevice = deviceRepository.GetByKey(deviceKey) ?? new Device();
+            // var existingDevice = devices.Find(x => x.Id == device.Id);
 
-            //Doesnt exist
-            if(!devices.Any(x => x.Id == device.Id))
-            {
-                //TODO - Correct this and uncomment
-                // logger
-                //     .ForContext("Device",device)
-                //     .Information("Adding new device");
-                devices.Add(device);
-                try
-                {
-                    deviceRepository.Set(devices);
-                }
-                catch(Exception ex)
-                {
-                    logger.Fatal(ex.ToString());
-                    return false;
-                }
-            }
-            else //Update existing
-            {
-                device = mapper.Map(device, existingDevice); //TODO - Unit test this call
-                deviceRepository.Set(devices);
-            }
+            // //Doesnt exist
+            // if(!devices.Any(x => x.Id == device.Id))
+            // {
+            //     //TODO - Correct this and uncomment
+            //     // logger
+            //     //     .ForContext("Device",device)
+            //     //     .Information("Adding new device");
+            //     devices.Add(device);
+            //     try
+            //     {
+            //         deviceRepository.Set(devices);
+            //     }
+            //     catch(Exception ex)
+            //     {
+            //         logger.Fatal(ex.ToString());
+            //         return false;
+            //     }
+            // }
+            // else //Update existing
+            // {
+            //     device = mapper.Map(device, existingDevice); //TODO - Unit test this call
+            deviceRepository.Set(deviceKey, device); //TODO - Set an expiry time for this record
+            // }
 
             return true;
         }
@@ -77,9 +85,14 @@ namespace Checkin.Services
             return deviceRepository.Search(deviceId, ipAddress) ?? new List<Device>();
         }
 
-        public void Delete(int id)
+        public void DeleteByDeviceName(string deviceName)
         {
-            throw new NotImplementedException();
+            deviceRepository.Delete(deviceName);
+        }
+
+        public Device GetByDeviceName(string deviceName) //TODO - Rename key to be deviceName
+        {
+            return deviceRepository.GetByKey(deviceName.ToDeviceKey()) ?? new Device();
         }
     }
 }
