@@ -6,6 +6,7 @@ using System;
 using Serilog;
 using Checkin.Services.Interfaces;
 using StackExchange.Redis;
+using System.Net;
 
 namespace Checkin.Repositories
 {
@@ -14,15 +15,15 @@ namespace Checkin.Repositories
         private readonly ILogger logger;
         private readonly IDatabase database;
         private readonly IEnumerable<RedisKey> keys;
+        private readonly IConnectionMultiplexer cache;
         public RedisCacheRepository
         (
             IConnectionMultiplexer distributedCache,
             ILogger logger
         )
         {
+            cache = distributedCache;
             database = distributedCache?.GetDatabase() ?? throw new ArgumentNullException(nameof(distributedCache));
-            var server = distributedCache.GetServer("localhost",6379); //TODO - Use config
-            keys = server.Keys();
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -31,14 +32,25 @@ namespace Checkin.Repositories
             List<Device> devices = new();
             //TODO - Consider gathering hashes and then gather the records needed
             try
-            {
-                foreach(var key in keys)
+            {                
+                foreach(var key in GetKeys())
                 {
                     var result = database.StringGet(key);  //TODO - Use a key for this
                     if(!result.IsNull)
                     {
-                        var device = JsonSerializer.Deserialize<Device>(result);
-                        devices.Add(device);
+                        var device = new Device();
+                        try
+                        {
+                            device = JsonSerializer.Deserialize<Device>(result);
+                            devices.Add(device);
+                        }
+                        catch(Exception valEx)
+                        {
+                            logger
+                                .ForContext("Exception", valEx)
+                                .Error("Could not parse JSON"); 
+                            
+                        }
                     }
                 }
             }
@@ -51,10 +63,18 @@ namespace Checkin.Repositories
             return devices;
 	    }
 
+        private List<RedisKey> GetKeys()
+        {
+            EndPoint endPoint = cache.GetEndPoints().First();
+            var keys = cache.GetServer(endPoint).Keys(pattern: "*").ToList();
+            return keys;
+        }
+
         public Device GetByKey(string key)
         {
             try
             {
+                key = "device:laptop";
                 var result = database.StringGet(key);
                 if(!result.IsNull)
                 {
@@ -71,16 +91,16 @@ namespace Checkin.Repositories
             return new Device();
         }
 
-        public List<Device> Search(Guid? deviceId, string ipAddress)
+        public List<Device> Search(Guid? deviceId, string ipAddress, string name)
         {
             //TODO - Might need to get all before we can search
             try
             {
-                var result = database.StringGet(string.Empty);  //TODO - Use a key for this
-                var devices = new List<Device>();
+                var result = database.StringGet($"device:{name}");  //TODO - Use a key for this
+                var devices = new Device();
                 if(!result.IsNull)
                 {
-                    devices = JsonSerializer.Deserialize<List<Device>>(result);
+                    devices = JsonSerializer.Deserialize<Device>(result);
                 }
 
                 //TODO - Does this need checking?
@@ -89,11 +109,11 @@ namespace Checkin.Repositories
                 //     devices = devices.Where(x => x.Id == deviceId.Value).ToList();
                 // }
 
-                if(!string.IsNullOrEmpty(ipAddress))
-                {
-                    devices = devices.Where(x => x.IpAddress == ipAddress).ToList();
-                }
-                return devices;
+                // if(!string.IsNullOrEmpty(ipAddress))
+                // {
+                //     devices = devices.Where(x => x.IpAddress == ipAddress).ToList();
+                // }
+                return new List<Device> { devices };
             }
             catch(Exception ex)
             {

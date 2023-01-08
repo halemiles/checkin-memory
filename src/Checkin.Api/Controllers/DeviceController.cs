@@ -38,7 +38,7 @@ namespace Checkin.Api.Controllers
             [FromQuery] string name
         )
         {
-                return Ok(deviceService.Search(deviceId, ipAddress));
+                return Ok(deviceService.Search(deviceId, ipAddress, name));
                 //TODO - Return not found if no devices are found
         }
 

@@ -39,7 +39,7 @@ namespace Checkin.Repositories
             throw new NotImplementedException();
         }
 
-        public List<Device> Search(Guid? deviceId, string ipAddress)
+        public List<Device> Search(Guid? deviceId, string ipAddress, string name)
         {
             List<Device> existingItems = new();
             if(memoryCache.TryGetValue(cacheKey, out List<Device> cacheItems))

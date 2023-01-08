@@ -76,14 +76,14 @@ namespace Checkin.Services
             return deviceRepository.GetAll() ?? new List<Device>();
         }
 
-        public  List<Device> Search(Guid? deviceId, string ipAddress)
+        public  List<Device> Search(Guid? deviceId, string ipAddress, string name)
         {
             //TODO: Fix this in unit tests. Null reference exception
             // logger
             //     .ForContext("DeviceId", deviceId ?? 0)
             //     .ForContext("IpAddress", ipAddress)
             //     .Information("Searching for device");
-            return deviceRepository.Search(deviceId, ipAddress) ?? new List<Device>();
+            return deviceRepository.Search(deviceId, ipAddress, name) ?? new List<Device>();
         }
 
         public void Delete(string deviceName)
