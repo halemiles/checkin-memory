@@ -14,7 +14,7 @@ namespace Checkin.Tests.Helpers
             {
                 devices.Add(new Device
                 {
-                    Id = i,
+                    Id =  Guid.Empty,
                     CreatedDate = new DateTime(2022,1,1),
                     IpAddress = $"192.168.0.{i}",
                     Name=$"Device {i}",
@@ -33,12 +33,15 @@ namespace Checkin.Tests.Helpers
                             Status = DeviceServiceStatus.UP
                         }
                     },
-                    Batteries = new List<DeviceBattery>
+                    Power = new DevicePower
                     {
-                        new DeviceBattery
+                        Batteries = new List<DeviceBattery>
                         {
-                            Name = "Battery 1",
-                            BatteryLevel = 100
+                            new DeviceBattery
+                            {
+                                Name = "Battery 1",
+                                BatteryLevel = 100
+                            }
                         }
                     }
                 });

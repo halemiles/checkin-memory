@@ -39,7 +39,7 @@ namespace Checkin.Tests
             {
                 devices.Add(new Device
                 {
-                    Id = i,
+                    Id = Guid.Empty,
                     IpAddress = "127.0.0.1"
                 });
             }

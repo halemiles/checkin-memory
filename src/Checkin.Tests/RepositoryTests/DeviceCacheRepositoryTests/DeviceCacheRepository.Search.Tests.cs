@@ -4,6 +4,7 @@ using Checkin.Models;
 using AutoFixture;
 using FluentAssertions;
 using Microsoft.Extensions.Caching.Memory;
+using System;
 
 namespace Checkin.Tests
 {
@@ -21,7 +22,7 @@ namespace Checkin.Tests
             var deviceCache = NewDeviceCacheRepository();
 
             // ACT
-            var result = deviceCache.Search(999, "192.168.0.1");
+            var result = deviceCache.Search( Guid.Empty, "192.168.0.1", string.Empty);
 
             // ASSERT
             result.Should().NotBeNull();
@@ -34,14 +35,14 @@ namespace Checkin.Tests
             // ARRANGE
             var fixture = new Fixture();
             var expected = new List<Device>(){
-                fixture.Build<Device>().With(x => x.Id, 999).Create()
+                fixture.Build<Device>().With(x => x.Id,  Guid.Empty).Create()
             };
             cache.Set(deviceCacheKey, expected);
 
             var deviceCache = NewDeviceCacheRepository();
 
             // ACT
-            var result = deviceCache.Search(999, string.Empty);
+            var result = deviceCache.Search( Guid.Empty, string.Empty, string.Empty);
 
             // ASSERT
             result.Should().NotBeNull();

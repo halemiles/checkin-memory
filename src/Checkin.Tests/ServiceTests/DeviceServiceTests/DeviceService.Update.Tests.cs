@@ -37,7 +37,7 @@ namespace Checkin.Tests
 
             defaultDevice = new Device
             {
-                Id = 0,
+                Id = Guid.Empty,
                 CreatedDate = new DateTime(2000,1,1),
                 Name = "Test Device",
                 IpAddress = "127.0.0.1"
@@ -66,7 +66,7 @@ namespace Checkin.Tests
             var existingDevices = new List<Device>() {
                 new Device
             {
-                Id = 0,
+                Id =  Guid.Empty,
                 CreatedDate = new DateTime(2000,1,1),
                 Name = "Test Device",
                 IpAddress = "127.0.0.2"
@@ -93,7 +93,7 @@ namespace Checkin.Tests
             var existingDevices = new List<Device>() {
                 new Device
             {
-                Id = 0,
+                Id =  Guid.Empty,
                 CreatedDate = new DateTime(2000,1,1),
                 Name = "Test Device",
                 IpAddress = "127.0.0.2"
