@@ -73,7 +73,6 @@ namespace Checkin.Repositories
         {
             try
             {
-                key = "device:laptop";
                 var result = database.StringGet(key);
                 if(!result.IsNull)
                 {
@@ -95,7 +94,7 @@ namespace Checkin.Repositories
             //TODO - Might need to get all before we can search
             try
             {
-                var result = database.StringGet($"device:{name}");  //TODO - Use a key for this
+                var result = database.StringGet(name);  //TODO - Use a key for this
                 var devices = new Device();
                 if(!result.IsNull)
                 {

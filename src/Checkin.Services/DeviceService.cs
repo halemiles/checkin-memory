@@ -36,9 +36,9 @@ namespace Checkin.Services
             //* We should use somthing like Device_<IpAddress>_<Name>
             // --
             // --
-            var deviceKey = $"device:{device.Name.ToLower()}";
+            var deviceKey = device.Name.ToDeviceKey();
             //No devices exist
-            var existingDevice = deviceRepository.GetByKey(deviceKey) ?? new Device();
+            var existingDevice = deviceRepository.GetByKey(deviceKey.ToDeviceKey()) ?? new Device();
             // var existingDevice = devices.Find(x => x.Id == device.Id);
 
             // //Doesnt exist
@@ -83,7 +83,7 @@ namespace Checkin.Services
             //     .ForContext("DeviceId", deviceId ?? 0)
             //     .ForContext("IpAddress", ipAddress)
             //     .Information("Searching for device");
-            return deviceRepository.Search(deviceId, ipAddress, name) ?? new List<Device>();
+            return deviceRepository.Search(deviceId, ipAddress, name.ToDeviceKey()) ?? new List<Device>();
         }
 
         public void Delete(string deviceName)
@@ -93,8 +93,7 @@ namespace Checkin.Services
 
         public Device GetByKey(string key) //TODO - Rename key to be deviceName
         {
-            var deviceKey = $"device:{key}";
-            return deviceRepository.GetByKey(key) ?? new Device();
+            return deviceRepository.GetByKey(key.ToDeviceKey()) ?? new Device();
         }
     }
 }

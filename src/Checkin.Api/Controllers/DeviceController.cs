@@ -74,7 +74,7 @@ namespace Checkin.Api.Controllers
 
         public IActionResult DeleteDevice(string deviceName)
         {
-            deviceService.Delete($"device:{deviceName.ToLower()}"); //TODO - Use an extension
+            deviceService.Delete(deviceName); //TODO - Use an extension
             return Ok();
             //TODO - Return internal error if the device is not deleted.
         }
