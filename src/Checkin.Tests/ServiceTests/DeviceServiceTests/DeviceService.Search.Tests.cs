@@ -66,7 +66,7 @@ namespace Checkin.Tests
             var sut = NewDeviceService();
 
             // Act
-            var results = sut.Search(Guid.Empty, "192.168.0.0");
+            var results = sut.Search(Guid.Empty, "192.168.0.0", string.Empty);
 
             //Assert
             results.Count.Should().Be(1);

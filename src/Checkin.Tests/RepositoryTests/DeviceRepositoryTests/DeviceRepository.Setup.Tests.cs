@@ -7,6 +7,7 @@ using Serilog;
 using Checkin.Services.Interfaces;
 using AutoFixture;
 using System.Linq;
+using System;
 
 namespace Checkin.Tests
 {
