@@ -30,12 +30,11 @@ namespace Checkin.Repositories
         public List<Device> GetAll()
 	    {
             List<Device> devices = new();
-            //TODO - Consider gathering hashes and then gather the records needed
             try
             {                
                 foreach(var key in GetKeys())
                 {
-                    var result = database.StringGet(key);  //TODO - Use a key for this
+                    var result = database.StringGet(key);
                     if(!result.IsNull)
                     {
                         var device = new Device();

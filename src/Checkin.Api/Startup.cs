@@ -75,7 +75,7 @@ namespace Checkin.Api
             var redisSettings = Configuration.GetSection("Redis").Get<RedisProviderSettings>();
            
             services.AddSingleton<IConnectionMultiplexer>(sp =>
-                ConnectionMultiplexer.Connect(redisSettings.ConnectionString) //TODO  - Use config
+                ConnectionMultiplexer.Connect(redisSettings.ConnectionString)
             );
 
             services.AddScoped<IDeviceCacheRepository, RedisCacheRepository>();

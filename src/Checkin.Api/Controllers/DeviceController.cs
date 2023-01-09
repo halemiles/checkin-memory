@@ -45,8 +45,7 @@ namespace Checkin.Api.Controllers
         [HttpGet]
         public ActionResult GetAll(string name)
         {
-            var devices = deviceService.GetAll(); //.GetByKey($"device:{name}"); //tTODO - Use an extension
-            //var deviceDto = mapper.Map<List<Device>, List<DeviceSummaryDto>>(devices);
+            var devices = deviceService.GetAll();
             return Ok(devices);
             //TODO - Return not found if no devices are found
         }
