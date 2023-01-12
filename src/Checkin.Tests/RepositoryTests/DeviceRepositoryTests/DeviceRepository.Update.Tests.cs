@@ -19,7 +19,7 @@ namespace Checkin.Tests
 
             var updatedDevice = new Device
             {
-                Id = 0,
+                Id = Guid.Empty,
                 CreatedDate = DateTime.Now,
                 Name = "Updated Name",
                 IpAddress = "Updated IP Address",

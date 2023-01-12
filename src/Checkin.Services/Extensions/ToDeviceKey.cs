@@ -4,7 +4,7 @@ namespace Checkin.Services.Extensions
     {
         public static string ToDeviceKey(this string name)
         {
-            return $"device:{name.ToLower()}";
+            return $"device:{name.ToLower().Trim()}";
         }
     }
 }

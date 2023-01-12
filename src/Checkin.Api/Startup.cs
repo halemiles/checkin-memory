@@ -73,8 +73,9 @@ namespace Checkin.Api
 
             Log.Information("Using distributed cache");
             var redisSettings = Configuration.GetSection("Redis").Get<RedisProviderSettings>();
+           
             services.AddSingleton<IConnectionMultiplexer>(sp =>
-                ConnectionMultiplexer.Connect("localhost") //TODO  - Use config
+                ConnectionMultiplexer.Connect(redisSettings.ConnectionString)
             );
 
             services.AddScoped<IDeviceCacheRepository, RedisCacheRepository>();

@@ -38,7 +38,7 @@ namespace Checkin.Tests
 
             defaultDevice = new Device
             {
-                Id = 0,
+                Id =  Guid.Empty,
                 CreatedDate = DateTime.Now,
                 Name = "Test Device",
                 IpAddress = "127.0.0.1"
@@ -52,7 +52,7 @@ namespace Checkin.Tests
             var sut = NewDeviceService();
 
             // Act
-            var results = sut.Search(null, string.Empty);
+            var results = sut.Search(null, string.Empty, string.Empty);
 
             //Assert
             results.Count.Should().Be(0);
@@ -62,11 +62,11 @@ namespace Checkin.Tests
         public void GetAll_WhenDevicesExist_WithCorrectSearchParams_ReturnsOneResult()
         {
             // Arrange
-            mockDeviceRepository.Setup(x => x.Search(It.IsAny<int?>(), It.IsAny<string>())).Returns(new List<Device>{ defaultDevice });
+            mockDeviceRepository.Setup(x => x.Search(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>())).Returns(new List<Device>{ defaultDevice });
             var sut = NewDeviceService();
 
             // Act
-            var results = sut.Search(0, "192.168.0.0");
+            var results = sut.Search(Guid.Empty, "192.168.0.0", string.Empty);
 
             //Assert
             results.Count.Should().Be(1);

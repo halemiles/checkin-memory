@@ -59,7 +59,7 @@ namespace Checkin.Repositories
             throw new NotImplementedException();
         }
 
-        public List<Device> Search(Guid? deviceId, string ipAddress)
+        public List<Device> Search(Guid? deviceId, string ipAddress, string name)
         {
             try
             {

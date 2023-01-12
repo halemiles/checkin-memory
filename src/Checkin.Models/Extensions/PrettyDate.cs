@@ -22,7 +22,6 @@ namespace Checkin.Models.Extensions
             // 3.
             // Get total number of seconds elapsed.
             int secDiff = (int)s.TotalSeconds;
-            Console.WriteLine(dayDiff);
             // 4.
             // Don't allow out of range values.
             if (dayDiff < 0 || dayDiff >= 31)

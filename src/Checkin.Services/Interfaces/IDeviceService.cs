@@ -9,7 +9,7 @@ namespace Checkin.Services.Interfaces
     {
         List<Device> GetAll();
         Device GetByKey(string key);
-        List<Device> Search(Guid? deviceId, string ipAddress);
+        List<Device> Search(Guid? deviceId, string ipAddress, string name);
         void Delete(string deviceName);
         bool CreateOrUpdate(Device device);
     }

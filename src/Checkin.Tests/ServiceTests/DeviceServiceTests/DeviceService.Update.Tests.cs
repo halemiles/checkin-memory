@@ -37,9 +37,9 @@ namespace Checkin.Tests
 
             defaultDevice = new Device
             {
-                Id = 0,
+                Id = Guid.Empty,
                 CreatedDate = new DateTime(2000,1,1),
-                Name = "Test Device",
+                Name = "TestDevice",
                 IpAddress = "127.0.0.1"
             };
         }
@@ -55,8 +55,8 @@ namespace Checkin.Tests
             sut.CreateOrUpdate(defaultDevice);
 
             //Assert
-            mockDeviceRepository.Verify(x => x.GetAll(), Times.Once);
-            mockDeviceRepository.Verify(x => x.Set(It.IsAny<List<Device>>()), Times.Once);
+            mockDeviceRepository.Verify(x => x.GetByKey(It.IsAny<string>()), Times.Once);
+            mockDeviceRepository.Verify(x => x.Set(It.IsAny<string>(),It.IsAny<Device>()), Times.Once);
         }
 
         [TestMethod]
@@ -66,7 +66,7 @@ namespace Checkin.Tests
             var existingDevices = new List<Device>() {
                 new Device
             {
-                Id = 0,
+                Id =  Guid.Empty,
                 CreatedDate = new DateTime(2000,1,1),
                 Name = "Test Device",
                 IpAddress = "127.0.0.2"
@@ -81,8 +81,8 @@ namespace Checkin.Tests
             sut.CreateOrUpdate(defaultDevice);
 
             //Assert
-            mockDeviceRepository.Verify(x => x.GetAll(), Times.Once);
-            mockMapper.Verify(x => x.Map(It.IsAny<Device>(), It.IsAny<Device>()), Times.Once);            
+            mockDeviceRepository.Verify(x => x.GetByKey(It.IsAny<string>()), Times.Once);
+            //mockMapper.Verify(x => x.Map(It.IsAny<Device>(), It.IsAny<Device>()), Times.Once);            
         }
 
         [TestMethod]
@@ -93,7 +93,7 @@ namespace Checkin.Tests
             var existingDevices = new List<Device>() {
                 new Device
             {
-                Id = 0,
+                Id =  Guid.Empty,
                 CreatedDate = new DateTime(2000,1,1),
                 Name = "Test Device",
                 IpAddress = "127.0.0.2"

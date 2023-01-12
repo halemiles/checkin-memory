@@ -38,7 +38,7 @@ namespace Checkin.Tests
 
             defaultDevice = new Device
             {
-                Id = 0,
+                Id = Guid.Empty,
                 CreatedDate = DateTime.Now,
                 Name = "Test Device",
                 IpAddress = "127.0.0.1"
