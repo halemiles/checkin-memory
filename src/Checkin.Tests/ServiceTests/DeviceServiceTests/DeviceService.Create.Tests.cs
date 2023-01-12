@@ -61,8 +61,8 @@ namespace Checkin.Tests
             var result = sut.CreateOrUpdate(defaultDevice);
 
             //Assert
-            mockDeviceRepository.Verify(x => x.GetAll(), Times.Once);
-            mockDeviceRepository.Verify(x => x.Set(It.IsAny<List<Device>>()), Times.Once);
+            mockDeviceRepository.Verify(x => x.GetByKey(It.IsAny<string>()), Times.Once);
+            mockDeviceRepository.Verify(x => x.Set(It.IsAny<string>(),It.IsAny<Device>()), Times.Once);
             result.Should().BeTrue();
         }
 
@@ -77,8 +77,8 @@ namespace Checkin.Tests
             var result = sut.CreateOrUpdate(defaultDevice);
 
             //Assert
-            mockDeviceRepository.Verify(x => x.GetAll(), Times.Once);
-            mockDeviceRepository.Verify(x => x.Set(It.IsAny<List<Device>>()), Times.Once);
+            mockDeviceRepository.Verify(x => x.GetByKey(It.IsAny<string>()), Times.Once);
+            mockDeviceRepository.Verify(x => x.Set(It.IsAny<string>(),It.IsAny<Device>()), Times.Once);
             result.Should().BeTrue();
         }
 
@@ -86,16 +86,18 @@ namespace Checkin.Tests
         public void Add_WhenExistingDevices_DeviceUpdated_ReturnsSuccess()
         {
             // Arrange
-            List<Device> devices = DeviceGenerationHelpers.GenerateMultiple();
-            mockDeviceRepository.Setup(x => x.GetAll()).Returns(devices);
+            //List<Device> devices = DeviceGenerationHelpers();
+
+            mockDeviceRepository.Setup(x => x.GetByKey(It.IsAny<string>())).Returns(new Device());
+            mockDeviceRepository.Setup(x => x.Set(It.IsAny<List<Device>>())).Returns(true);
             var sut = NewDeviceService();
 
             // Act
             var result = sut.CreateOrUpdate(defaultDevice);
 
             //Assert
-            mockDeviceRepository.Verify(x => x.GetAll(), Times.Once);
-            mockDeviceRepository.Verify(x => x.Set(It.IsAny<List<Device>>()), Times.Once);
+            mockDeviceRepository.Verify(x => x.GetByKey(It.IsAny<string>()), Times.Once);
+            mockDeviceRepository.Verify(x => x.Set(It.IsAny<string>(),It.IsAny<Device>()), Times.Once);
             result.Should().BeTrue();
         }
 
@@ -103,17 +105,17 @@ namespace Checkin.Tests
         public void Add_WhenExistingDevices_ReturnsFailure()
         {
             // Arrange
-            List<Device> devices = new();
-            mockDeviceRepository.Setup(x => x.GetAll()).Returns(devices);
-            mockDeviceRepository.Setup(x => x.Set(It.IsAny<List<Device>>())).Throws(new Exception());
+            Device devices = new();
+            mockDeviceRepository.Setup(x => x.GetByKey(It.IsAny<string>())).Returns(devices);
+            mockDeviceRepository.Setup(x => x.Set(It.IsAny<string>(),It.IsAny<Device>())).Throws(new Exception());
             var sut = NewDeviceService();
 
             // Act
             var result = sut.CreateOrUpdate(defaultDevice);
 
             //Assert
-            mockDeviceRepository.Verify(x => x.GetAll(), Times.Once);
-            mockDeviceRepository.Verify(x => x.Set(It.IsAny<List<Device>>()), Times.Once);
+            mockDeviceRepository.Verify(x => x.GetByKey(It.IsAny<string>()), Times.Once);
+            mockDeviceRepository.Verify(x => x.Set(It.IsAny<string>(),It.IsAny<Device>()), Times.Once);
             mockLogger.Verify(x => x.Fatal(It.IsAny<string>()), Times.Once);
             result.Should().BeFalse();
         }

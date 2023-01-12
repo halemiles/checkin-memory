@@ -36,7 +36,13 @@ namespace Checkin.Repositories
 
         public Device GetByKey(string key)
         {
-            throw new NotImplementedException();
+            List<Device> existingItems = new();
+            if(memoryCache.TryGetValue(cacheKey, out List<Device> cacheItems))
+            {
+                existingItems = cacheItems;
+            }
+
+            return existingItems.FirstOrDefault(x => x.Key == key);
         }
 
         public List<Device> Search(Guid? deviceId, string ipAddress, string name)
