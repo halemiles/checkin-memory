@@ -4,12 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Checkin.Models;
 using Checkin.Services;
@@ -17,6 +14,8 @@ using Checkin.Services.Interfaces;
 using Checkin.Repositories;
 using Checkin.Api.Models;
 using Serilog;
+using Serilog.Exceptions;
+using StackExchange.Redis;
 
 namespace Checkin.Api
 {
@@ -32,40 +31,54 @@ namespace Checkin.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            Log.Logger = new LoggerConfiguration()
-                .WriteTo.Console()
-                .CreateLogger();
+            // The following line enables Application Insights telemetry collection.
+            var appInsightsKey = Configuration.GetSection("ApplicationInsights").Get<ApplicationInsightsSettings>();
+            if(!string.IsNullOrEmpty(appInsightsKey.ConnectionString))
+            {
+                services.AddApplicationInsightsTelemetry();
+            }
 
-            Log.Information("Starting API");
-            
+            var logger = new LoggerConfiguration()
+                .WriteTo.Console()
+                .Enrich.FromLogContext()
+                .Enrich.WithExceptionDetails();
+
+            // We only want to add Seq if we have defined a host
+            var seqSettings = Configuration.GetSection("Seq").Get<SeqSettings>();
+            if(seqSettings.UseSeq)
+            {
+                logger.WriteTo.Seq(seqSettings.Host,
+                 apiKey: seqSettings.ApiKey);
+            }
+
+            Log.Logger = logger.CreateLogger();
+
+            Log.Information("Configuring services");
+            services.AddSingleton(Log.Logger);
+
             services.AddAutoMapper(mapperConfig => {
                 mapperConfig.AddProfile<DeviceDtoToDeviceProfile>();
                 mapperConfig.AddProfile<DeviceToDeviceMergeProfile>();
                 mapperConfig.AddProfile<DeviceNetworkToDeviceNetworkDtoProfile>();
+                mapperConfig.AddProfile<DeviceBatterToDeviceBatteryDtoProfile>();
+                mapperConfig.AddProfile<ServiceStatusToServiceStatusDtoProfile>();
+                mapperConfig.AddProfile<ServiceStatusDtoToServiceStatusProfile>();
+                mapperConfig.AddProfile<DeviceToDeviceSummaryDtoProfile>();
             });
-            var memoryProviderSettings = Configuration.GetSection("MemoryProvider").Get<MemoryProviderSettings>();
-            
-            if(memoryProviderSettings.Name == "DistributedCache")
-            {
-                Log.Information("Using distributed cache");
-                services.AddDistributedRedisCache(option =>
-            {
-                option.Configuration = "127.0.0.1";
-                option.InstanceName = "master";
-            });
-                services.AddScoped<IDeviceCacheRepository, DistributedDeviceCacheRepository>();
-            }
-            else
-            {
-                Log.Information("Using IMemoryCache");
-                services.AddMemoryCache();
-                services.AddScoped<IDeviceCacheRepository, DeviceCacheRepository>();
-            }
 
             services.AddScoped<IDeviceService, DeviceService>();
 
             services.AddControllers();
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "Checkin.Api", Version = "v1" }));
+
+            Log.Information("Using distributed cache");
+            var redisSettings = Configuration.GetSection("Redis").Get<RedisProviderSettings>();
+           
+            services.AddSingleton<IConnectionMultiplexer>(sp =>
+                ConnectionMultiplexer.Connect(redisSettings.ConnectionString)
+            );
+
+            services.AddScoped<IDeviceCacheRepository, RedisCacheRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

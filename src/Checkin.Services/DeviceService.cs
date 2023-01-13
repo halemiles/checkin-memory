@@ -1,10 +1,13 @@
 using System.Collections.Generic;
 using Checkin.Services.Interfaces;
 using Checkin.Models;
-using Checkin.Repositories;
+
 using System.Linq;
 using AutoMapper;
-using System.Threading.Tasks;
+using Serilog;
+using System;
+using System.Text.Json;
+using Checkin.Services.Extensions;
 
 namespace Checkin.Services
 {
@@ -12,72 +15,94 @@ namespace Checkin.Services
     {
         private readonly IDeviceCacheRepository deviceRepository;
         private readonly IMapper mapper;
+        private readonly ILogger logger;
 
         public DeviceService(
             IDeviceCacheRepository deviceRepository,
-            IMapper mapper
+            IMapper mapper,
+            ILogger logger
         )
         {
-            this.deviceRepository = deviceRepository;
-            this.mapper = mapper;
+            this.deviceRepository = deviceRepository ?? throw new ArgumentNullException(nameof(deviceRepository));
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public bool Add(Device device)
+        public bool CreateOrUpdate(Device device)
         {
-            //No devices exist
-            var devices = deviceRepository.GetAll() ?? new List<Device>();
-            var existingDevice = devices.Find(x => x.Id == device.Id);
-
-            //Doesnt exist
-            if(!devices.Any(x => x.Id == device.Id))
+            // --
+            // --
+            //TODO: Break this up. Create one key value pair for each device.
+            //* We should use somthing like Device_<IpAddress>_<Name>
+            // --
+            // --
+            try
             {
-                 devices.Add(device);
+                var deviceKey = device.Name.ToDeviceKey();
+                //No devices exist
+                var existingDevice = deviceRepository.GetByKey(deviceKey) ?? new Device();
+                // var existingDevice = devices.Find(x => x.Id == device.Id);
+
+                // //Doesnt exist
+                // if(!devices.Any(x => x.Id == device.Id))
+                // {
+                //     //TODO - Correct this and uncomment
+                //     // logger
+                //     //     .ForContext("Device",device)
+                //     //     .Information("Adding new device");
+                //     devices.Add(device);
+                //     try
+                //     {
+                //         deviceRepository.Set(devices);
+                //     }
+                //     catch(Exception ex)
+                //     {
+                //         logger.Fatal(ex.ToString());
+                //         return false;
+                //     }
+                // }
+                // else //Update existing
+                // {
+                //     device = mapper.Map(device, existingDevice); //TODO - Unit test this call
+                deviceRepository.Set(deviceKey, device); //TODO - Set an expiry time for this record
+                // }
             }
-            else //Update existing
+            catch(Exception err)
             {
-                mapper.Map(device, existingDevice);
+                logger
+                    .Fatal("Could not create or update device");
+                return false;
             }
 
-            deviceRepository.Set(devices);
             return true;
-        }
-
-        public void Update(Device device)
-        {
-            var devices = deviceRepository.GetAll();
-            var existingDevice = devices
-                                    .Find(x => x.Id == device.Id);
-
-            var mergedDevice = mapper.Map(device, existingDevice);
-            deviceRepository.Set(devices);
         }
 
         public List<Device> GetAll()
         {
+            
+            logger
+                .Debug("Getting all devices");
             return deviceRepository.GetAll() ?? new List<Device>();
         }
 
-        public Device GetByIp(string ipAddress)
+        public  List<Device> Search(Guid? deviceId, string ipAddress, string name)
         {
-            if(deviceRepository.GetAll() is List<Device> devices)
-            {
-                return devices.Find(x => x.IpAddress == ipAddress);
-            }
-            return new Device();
+            //TODO: Fix this in unit tests. Null reference exception
+            // logger
+            //     .ForContext("DeviceId", deviceId ?? 0)
+            //     .ForContext("IpAddress", ipAddress)
+            //     .Information("Searching for device");
+            return deviceRepository.Search(deviceId, ipAddress, name.ToDeviceKey()) ?? new List<Device>();
         }
 
-        public Device GetByDevice(int deviceId)
+        public void Delete(string deviceName)
         {
-            if(deviceRepository.GetAll() is List<Device> devices)
-            {
-                return devices.Find(x => x.Id == deviceId);
-            }
-            return new Device();
+            deviceRepository.Delete(deviceName);
         }
 
-        public void Delete(int id)
+        public Device GetByKey(string key) //TODO - Rename key to be deviceName
         {
-
+            return deviceRepository.GetByKey(key.ToDeviceKey()) ?? new Device();
         }
     }
 }

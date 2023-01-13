@@ -7,7 +7,7 @@ namespace Checkin.Models
         public DeviceToDeviceMergeProfile()
         {
             CreateMap<Device, Device>()
-                .ForAllMembers(o => o.Condition((source, destination, member) => member != null));
+                .ForAllMembers(o => o.Condition((_, _, member) => member != null));
         }
     }
 }

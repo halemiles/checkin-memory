@@ -28,5 +28,19 @@ namespace Checkin.Tests
             var config = new MapperConfiguration(cfg => cfg.AddProfile<DeviceNetworkToDeviceNetworkDtoProfile>());
             config.AssertConfigurationIsValid();
         }
+
+        [TestMethod]
+        public void ServiceStatusDtoToServiceStatusProfile_ReturnsValid()
+        {
+            var config = new MapperConfiguration(cfg => cfg.AddProfile<ServiceStatusDtoToServiceStatusProfile>());
+            config.AssertConfigurationIsValid();
+        }
+
+        [TestMethod]
+        public void DeviceBatterToDeviceBatteryDtoProfile_ReturnsValid()
+        {
+            var config = new MapperConfiguration(cfg => cfg.AddProfile<DeviceBatterToDeviceBatteryDtoProfile>());
+            config.AssertConfigurationIsValid();
+        }
     }
 }

@@ -9,6 +9,8 @@ using FluentAssertions;
 using AutoMapper;
 using Checkin.Tests.Helpers;
 using Snapper;
+using Serilog;
+using Checkin.Services.Interfaces;
 
 namespace Checkin.Tests
 {
@@ -17,10 +19,12 @@ namespace Checkin.Tests
     {
         private Mock<IDeviceCacheRepository> mockDeviceRepository;
         private Mock<IMapper> mockMapper;
-        private DeviceService NewDnsService() =>
+        private Mock<ILogger> mockLogger;
+        private DeviceService NewDeviceService() =>
             new(
                     mockDeviceRepository.Object,
-                    mockMapper.Object
+                    mockMapper.Object,
+                    mockLogger.Object
                 );
 
         private Device defaultDevice;
@@ -30,10 +34,11 @@ namespace Checkin.Tests
         {
             mockDeviceRepository = new Mock<IDeviceCacheRepository>();
             mockMapper = new Mock<IMapper>();
+            mockLogger = new Mock<ILogger>();
 
-            defaultDevice = new Device()
+            defaultDevice = new Device
             {
-                Id = 0,
+                Id = Guid.Empty,
                 CreatedDate = DateTime.Now,
                 Name = "Test Device",
                 IpAddress = "127.0.0.1"
@@ -41,11 +46,11 @@ namespace Checkin.Tests
         }
 
         [TestMethod]
-        public void GetAll_WithMultiplePings_ReturnsPings()
+        public void GetAll_WhenMultipleDevicesReturned_ReturnsMultipleDevices()
         {
             // Arrange
             mockDeviceRepository.Setup(x => x.GetAll()).Returns(DeviceGenerationHelpers.GenerateMultiple());
-            var sut = NewDnsService();
+            var sut = NewDeviceService();
 
             // Act
             var results = sut.GetAll();
@@ -60,7 +65,7 @@ namespace Checkin.Tests
         {
             // Arrange
             mockDeviceRepository.Setup(x => x.GetAll()).Returns((List<Device>)null);
-            var sut = NewDnsService();
+            var sut = NewDeviceService();
 
             // Act
             var results = sut.GetAll();
@@ -71,12 +76,11 @@ namespace Checkin.Tests
         }
 
         [TestMethod]
-        [Ignore("Issue with snapshot updating")]
-        public void GetAll_WhenMultipleDevicesReturned_ ()
+        public void GetAll_WhenMultipleDevicesReturned_MatchesSnapshot()
         {
             // Arrange
             mockDeviceRepository.Setup(x => x.GetAll()).Returns(DeviceGenerationHelpers.GenerateMultiple());
-            var sut = NewDnsService();
+            var sut = NewDeviceService();
 
             // Act
             var results = sut.GetAll();
@@ -86,12 +90,11 @@ namespace Checkin.Tests
         }
 
         [TestMethod]
-        [Ignore("Issue with snapshot updating")]
         public void GetAll_WhenRepositoryReturnsNull_MatchesSnapshot()
         {
             // Arrange
             mockDeviceRepository.Setup(x => x.GetAll()).Returns((List<Device>)null);
-            var sut = NewDnsService();
+            var sut = NewDeviceService();
 
             // Act
             var results = sut.GetAll();

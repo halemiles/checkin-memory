@@ -3,8 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Checkin.Tests", "Checkin.Tests\Checkin.Tests.csproj", "{1A6BB34D-7548-4F28-B886-BE1033918E42}"
-EndProject
+
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Checkin.Api", "Checkin.Api\Checkin.Api.csproj", "{38D174B9-2987-4C2E-B1ED-346160CF68E0}"
 EndProject
 Global

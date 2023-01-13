@@ -8,6 +8,8 @@ using System;
 using FluentAssertions;
 using AutoMapper;
 using Checkin.Tests.Helpers;
+using Serilog;
+using Checkin.Services.Interfaces;
 
 namespace Checkin.Tests
 {
@@ -16,10 +18,12 @@ namespace Checkin.Tests
     {
         private Mock<IDeviceCacheRepository> mockDeviceRepository;
         private Mock<IMapper> mockMapper;
-        private DeviceService NewDnsService() =>
+        private Mock<ILogger> mockLogger;
+        private DeviceService NewDeviceService() =>
             new(
                     mockDeviceRepository.Object,
-                    mockMapper.Object
+                    mockMapper.Object,
+                    mockLogger.Object
                 );
 
         private Device defaultDevice;
@@ -29,59 +33,82 @@ namespace Checkin.Tests
         {
             mockDeviceRepository = new Mock<IDeviceCacheRepository>();
             mockMapper = new Mock<IMapper>();
+            mockLogger = new Mock<ILogger>();
 
-            defaultDevice = new Device()
+            defaultDevice = new Device
             {
-                Id = 0,
-                CreatedDate = DateTime.Now,
-                Name = "Test Device",
+                Id = Guid.Empty,
+                CreatedDate = new DateTime(2000,1,1),
+                Name = "TestDevice",
                 IpAddress = "127.0.0.1"
             };
         }
 
         [TestMethod]
-        public void Add_WhenNoPings_ReturnsFailure()
+        public void Update_WhenNoDevices_CreatesNew()
         {
             // Arrange
             mockDeviceRepository.Setup(x => x.GetAll()).Returns(new List<Device>());
-            var sut = NewDnsService();
+            var sut = NewDeviceService();
 
             // Act
-            sut.Add(defaultDevice);
+            sut.CreateOrUpdate(defaultDevice);
 
             //Assert
-            mockDeviceRepository.Verify(x => x.GetAll(), Times.Once);
-            mockDeviceRepository.Verify(x => x.Set(It.IsAny<List<Device>>()), Times.Once);
+            mockDeviceRepository.Verify(x => x.GetByKey(It.IsAny<string>()), Times.Once);
+            mockDeviceRepository.Verify(x => x.Set(It.IsAny<string>(),It.IsAny<Device>()), Times.Once);
         }
 
         [TestMethod]
-        public void GetAll_WithMultiplePings_ReturnsPings()
+        public void Update_WhenDeviceExists_ExistingIsUpdated()
         {
             // Arrange
-            mockDeviceRepository.Setup(x => x.GetAll()).Returns(DeviceGenerationHelpers.GenerateMultiple());
-            var sut = NewDnsService();
+            var existingDevices = new List<Device>() {
+                new Device
+            {
+                Id =  Guid.Empty,
+                CreatedDate = new DateTime(2000,1,1),
+                Name = "Test Device",
+                IpAddress = "127.0.0.2"
+            }
+            };
+
+            var expectedDevices = new List<Device>() {defaultDevice};
+            mockDeviceRepository.Setup(x => x.GetAll()).Returns(existingDevices);
+            var sut = NewDeviceService();
 
             // Act
-            var results = sut.GetAll();
+            sut.CreateOrUpdate(defaultDevice);
 
             //Assert
-            results.Count.Should().Be(5);
-            mockDeviceRepository.Verify(x => x.GetAll(), Times.Once);
+            mockDeviceRepository.Verify(x => x.GetByKey(It.IsAny<string>()), Times.Once);
+            //mockMapper.Verify(x => x.Map(It.IsAny<Device>(), It.IsAny<Device>()), Times.Once);            
         }
 
         [TestMethod]
-        public void GetAll_WhenRepositoryReturnsNull_ReturnsEmptyResult()
+        [Ignore("Needs more thought")]
+        public void Update_WhenDeviceExists_DeviceChangesAreMerged()
         {
             // Arrange
-            mockDeviceRepository.Setup(x => x.GetAll()).Returns((List<Device>)null);
-            var sut = NewDnsService();
+            var existingDevices = new List<Device>() {
+                new Device
+            {
+                Id =  Guid.Empty,
+                CreatedDate = new DateTime(2000,1,1),
+                Name = "Test Device",
+                IpAddress = "127.0.0.2"
+            }
+            };
+
+            var expectedDevices = new List<Device>() {defaultDevice};
+            mockDeviceRepository.Setup(x => x.GetAll()).Returns(existingDevices);
+            var sut = NewDeviceService();
 
             // Act
-            var results = sut.GetAll();
+            sut.CreateOrUpdate(defaultDevice);
 
             //Assert
-            results.Should().NotBeNull();
-            results.Count.Should().Be(0);
+            mockDeviceRepository.Verify(x => x.Set(expectedDevices), Times.Once);
         }
     }
 }

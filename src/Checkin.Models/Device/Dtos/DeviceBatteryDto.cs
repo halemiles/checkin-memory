@@ -1,11 +1,12 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Checkin.Models
 {
     [ExcludeFromCodeCoverage]
-    public class ServiceStatusDto
+    public class DeviceBatteryDto
     {
         public string Name { get; set; }
-        public DeviceServiceStatus Status { get; set; }
+        public int BatteryLevel { get; set; }
     }
 }

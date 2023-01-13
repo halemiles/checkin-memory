@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using Serilog;
 using Checkin.Models;
 using Checkin.Services;
 using Checkin.Services.Interfaces;
@@ -12,52 +12,71 @@ using AutoMapper;
 namespace Checkin.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("[controller]")] //TODO - change to /api/v1/device
     public class DeviceController : ControllerBase
     {
         private readonly IDeviceService deviceService;
         private readonly IMapper mapper;
 
-        private readonly ILogger<DeviceController> logger;
+        private readonly ILogger logger;
 
         public DeviceController(
             IDeviceService deviceService,
             IMapper mapper,
-            ILogger<DeviceController> logger
+            ILogger logger
         )
         {
-            this.deviceService = deviceService; //TODO: Null ref check
-            this.mapper = mapper; //TODO: Null ref check
-            this.logger = logger; //TODO: Null ref check
+            this.deviceService = deviceService ?? throw new ArgumentNullException(nameof(deviceService));
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
+
+        [HttpGet("search")]
+        public ActionResult Search(
+            [FromQuery] Guid? deviceId,
+            [FromQuery] string ipAddress,
+            [FromQuery] string name
+        )
+        {
+                return Ok(deviceService.Search(deviceId, ipAddress, name));
+                //TODO - Return not found if no devices are found
         }
 
         [HttpGet]
-        public ActionResult GetAll()
+        public ActionResult GetAll(string name)
         {
-            return Ok(deviceService.GetAll());
+            var devices = deviceService.GetAll();
+            return Ok(devices);
+            //TODO - Return not found if no devices are found
         }
 
         [HttpPost]
         public ActionResult CreateDevice([FromBody]DeviceDto deviceDto)
         {
-            logger.LogInformation("Creating Device");
-            var device = mapper.Map<Device>(deviceDto);
-            deviceService.Add(device);
-            return Ok();
+            logger
+                .ForContext("DeviceName",deviceDto.Name)
+                .ForContext("HttpContext",HttpContext)
+                .Debug("Creating Device");
+            var device = mapper.Map<DeviceDto, Device>(deviceDto);
+            deviceService.CreateOrUpdate(device);
+            return Ok(); //TODO - Consider using CreatedAtRoute to return the created device
+            //TODO - Return Internal error if the device is not created.
         }
 
         [HttpPut]
         public IActionResult UpdateDevice([FromBody] DeviceDto deviceDto)
         {
-            var device = mapper.Map<Device>(deviceDto);
-            deviceService.Update(device);
+            var device = mapper.Map<DeviceDto, Device>(deviceDto);
+            deviceService.CreateOrUpdate(device);
             return Ok();
+            //TODO - Return internal error if the device is not updated.
         }
 
-        public IActionResult DeleteDevice(int id)
+        public IActionResult DeleteDevice(string deviceName)
         {
-            deviceService.Delete(id);
+            deviceService.Delete(deviceName); //TODO - Use an extension
             return Ok();
+            //TODO - Return internal error if the device is not deleted.
         }
     }
 }
