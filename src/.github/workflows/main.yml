@@ -1,40 +1,37 @@
-name: .NET
+name: build and test
 
 on:
   push:
-    branches: [ develop, ci, main ]
   pull_request:
-    branches: [ develop, main ]
+    branches: [ main ]
+    paths:
+    - '**.cs'
+    - '**.csproj'
+
+env:
+  DOTNET_VERSION: '7.0.101' # The .NET SDK version to use
 
 jobs:
-  build:
-    env:
-      working-directory: ./src
+  build-and-test:
 
-    runs-on: ubuntu-latest
+    name: build-and-test-${{matrix.os}}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
 
     steps:
     - uses: actions/checkout@v3
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 7.0.x
-    - name: Restore dependencies
-      run: dotnet restore
-      working-directory: ${{ env.working-directory }}
-    - name: Build
-      run: dotnet build --no-restore
-      working-directory: ${{ env.working-directory }}
-    - name: Test
-      run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura  --no-build --verbosity normal
-      working-directory: ${{ env.working-directory }}
-    - name: Debug
-      run: ls && ls src && ls src/Checkin.Tests
-    - name: Codacy Coverage Reporter
-      uses: codacy/codacy-coverage-reporter-action@v1.3.0
-      with:
-        project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-        # or
-        # api-token: ${{ secrets.CODACY_API_TOKEN }}
-        coverage-reports: src/Checkin.Tests/coverage.cobertura.xml
+        dotnet-version: ${{ env.DOTNET_VERSION }}
 
+    - name: Install dependencies
+      run: dotnet restore
+      
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+    
+    - name: Test
+      run: dotnet test --no-restore --verbosity normal

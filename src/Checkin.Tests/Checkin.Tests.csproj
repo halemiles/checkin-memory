@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-    <ProduceReferenceAssemblyInOutDir>true</ProduceReferenceAssemblyInOutDir>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
@@ -22,6 +21,7 @@
     <PackageReference Include="Serilog" Version="2.12.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
     <PackageReference Include="snapper" Version="2.4.0" />
+    <PackageReference Include="ReportGenerator" Version="5.1.10" />
   </ItemGroup>
 
   <ItemGroup>
