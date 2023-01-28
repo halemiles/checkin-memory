@@ -17,9 +17,9 @@ namespace Checkin.Models
     {
         public ServiceStatusToServiceStatusDtoProfile()
         {
-            CreateMap<ServiceStatus, ServiceStatusDto>()
-                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
-                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status));
+            CreateMap<DeviceServices, DeviceServiceDto>()
+                .ForMember(dest => dest.DockerServices, opt => opt.MapFrom(src => src.DockerServices))
+                ;
         }
     }
 }
