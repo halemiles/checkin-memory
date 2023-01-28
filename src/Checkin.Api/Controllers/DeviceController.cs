@@ -66,7 +66,7 @@ namespace Checkin.Api.Controllers
         [HttpPut]
         public IActionResult UpdateDevice([FromBody] DeviceDto deviceDto)
         {
-            var device = mapper.Map<DeviceDto, Device>(deviceDto);
+                var device = mapper.Map<DeviceDto, Device>(deviceDto);
             deviceService.CreateOrUpdate(device);
             return Ok();
             //TODO - Return internal error if the device is not updated.

@@ -65,6 +65,8 @@ namespace Checkin.Api
                 mapperConfig.AddProfile<ServiceStatusDtoToServiceStatusProfile>();
                 mapperConfig.AddProfile<DeviceToDeviceSummaryDtoProfile>();
                 mapperConfig.AddProfile<DockerServiceDtoToDockerServiceProfile>();
+                mapperConfig.AddProfile<DeviceServiceDtoToDeviceServiceProfile>();
+
             });
 
             services.AddScoped<IDeviceService, DeviceService>();

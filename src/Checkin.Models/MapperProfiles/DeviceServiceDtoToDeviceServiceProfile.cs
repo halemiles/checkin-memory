@@ -13,6 +13,16 @@ namespace Checkin.Models
         }
     }
 
+    public class DeviceServiceDtoToDeviceServiceProfile : Profile
+    {
+        public DeviceServiceDtoToDeviceServiceProfile()
+        {
+            CreateMap<DeviceServiceDto, DeviceServices>()
+                .ForMember(dest => dest.DockerServices, opt => opt.MapFrom(src => src.DockerServices))
+                .ReverseMap();
+        }
+    }
+
     public class ServiceStatusToServiceStatusDtoProfile : Profile
     {
         public ServiceStatusToServiceStatusDtoProfile()
