@@ -61,9 +61,12 @@ namespace Checkin.Api
                 mapperConfig.AddProfile<DeviceToDeviceMergeProfile>();
                 mapperConfig.AddProfile<DeviceNetworkToDeviceNetworkDtoProfile>();
                 mapperConfig.AddProfile<DeviceBatterToDeviceBatteryDtoProfile>();
-                mapperConfig.AddProfile<ServiceStatusToServiceStatusDtoProfile>();
+                mapperConfig.AddProfile<ServiceStatusToServiceStatusDtoProfile>();  
                 mapperConfig.AddProfile<ServiceStatusDtoToServiceStatusProfile>();
                 mapperConfig.AddProfile<DeviceToDeviceSummaryDtoProfile>();
+                mapperConfig.AddProfile<DockerServiceDtoToDockerServiceProfile>();
+                mapperConfig.AddProfile<DeviceServiceDtoToDeviceServiceProfile>();
+
             });
 
             services.AddScoped<IDeviceService, DeviceService>();

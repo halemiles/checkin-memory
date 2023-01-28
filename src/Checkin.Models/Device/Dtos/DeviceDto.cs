@@ -14,7 +14,7 @@ namespace Checkin.Models
         [Required]
         public string IpAddress { get; set; }
         public DeviceNetworkDto ExternalNetwork { get; set; }
-        public DeviceServices Services { get; set; }
+        public DeviceServiceDto Services { get; set; }
         public DevicePower Power { get; set; }
         public IDictionary<string, object> Attributes {get; set;}
         public string ModifiedDateString { get; set; }

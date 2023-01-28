@@ -25,12 +25,11 @@ namespace Checkin.Tests.Helpers
                         LastModified = new DateTime(2022,1,1),
                         DateCreated = new DateTime(2022,1,1)
                     },
-                    Services = new List<ServiceStatus>
+                    Services = new DeviceServices
                     {
-                        new ServiceStatus
-                        {
-                            Name = "Docker",
-                            Status = DeviceServiceStatus.UP
+                        DockerServices = new List<DockerService>
+                        {                        
+                            new DockerService() { ContainerName = "Docker", Port=123}
                         }
                     },
                     Power = new DevicePower

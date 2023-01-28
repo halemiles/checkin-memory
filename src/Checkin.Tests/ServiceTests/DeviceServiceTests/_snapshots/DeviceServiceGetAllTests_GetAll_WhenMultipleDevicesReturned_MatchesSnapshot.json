@@ -11,12 +11,15 @@
         "LastModified": "2022-01-01T00:00:00",
         "DateCreated": "2022-01-01T00:00:00"
       },
-      "Services": [
-        {
-          "Name": "Docker",
-          "Status": 1
-        }
-      ],
+      "Services": {
+        "DockerServices": [
+          {
+            "ContainerName": "Docker",
+            "Port": 123,
+            "Status": null
+          }
+        ]
+      },
       "Power": {
         "Type": null,
         "Batteries": [
@@ -41,12 +44,15 @@
         "LastModified": "2022-01-01T00:00:00",
         "DateCreated": "2022-01-01T00:00:00"
       },
-      "Services": [
-        {
-          "Name": "Docker",
-          "Status": 1
-        }
-      ],
+      "Services": {
+        "DockerServices": [
+          {
+            "ContainerName": "Docker",
+            "Port": 123,
+            "Status": null
+          }
+        ]
+      },
       "Power": {
         "Type": null,
         "Batteries": [
@@ -71,12 +77,15 @@
         "LastModified": "2022-01-01T00:00:00",
         "DateCreated": "2022-01-01T00:00:00"
       },
-      "Services": [
-        {
-          "Name": "Docker",
-          "Status": 1
-        }
-      ],
+      "Services": {
+        "DockerServices": [
+          {
+            "ContainerName": "Docker",
+            "Port": 123,
+            "Status": null
+          }
+        ]
+      },
       "Power": {
         "Type": null,
         "Batteries": [
@@ -101,12 +110,15 @@
         "LastModified": "2022-01-01T00:00:00",
         "DateCreated": "2022-01-01T00:00:00"
       },
-      "Services": [
-        {
-          "Name": "Docker",
-          "Status": 1
-        }
-      ],
+      "Services": {
+        "DockerServices": [
+          {
+            "ContainerName": "Docker",
+            "Port": 123,
+            "Status": null
+          }
+        ]
+      },
       "Power": {
         "Type": null,
         "Batteries": [
@@ -131,12 +143,15 @@
         "LastModified": "2022-01-01T00:00:00",
         "DateCreated": "2022-01-01T00:00:00"
       },
-      "Services": [
-        {
-          "Name": "Docker",
-          "Status": 1
-        }
-      ],
+      "Services": {
+        "DockerServices": [
+          {
+            "ContainerName": "Docker",
+            "Port": 123,
+            "Status": null
+          }
+        ]
+      },
       "Power": {
         "Type": null,
         "Batteries": [
