@@ -29,7 +29,7 @@ namespace Checkin.Tests.Helpers
                     {
                         DockerServices = new List<DockerService>
                         {                        
-                            new DockerService() { ContainerName = "Docker", Port=123}
+                            new DockerService() { ContainerName = "Docker"}
                         }
                     },
                     Power = new DevicePower

@@ -15,7 +15,7 @@
         "DockerServices": [
           {
             "ContainerName": "Docker",
-            "Port": 123,
+            "Ports": null,
             "Status": null
           }
         ]
@@ -48,7 +48,7 @@
         "DockerServices": [
           {
             "ContainerName": "Docker",
-            "Port": 123,
+            "Ports": null,
             "Status": null
           }
         ]
@@ -81,7 +81,7 @@
         "DockerServices": [
           {
             "ContainerName": "Docker",
-            "Port": 123,
+            "Ports": null,
             "Status": null
           }
         ]
@@ -114,7 +114,7 @@
         "DockerServices": [
           {
             "ContainerName": "Docker",
-            "Port": 123,
+            "Ports": null,
             "Status": null
           }
         ]
@@ -147,7 +147,7 @@
         "DockerServices": [
           {
             "ContainerName": "Docker",
-            "Port": 123,
+            "Ports": null,
             "Status": null
           }
         ]
