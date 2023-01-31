@@ -68,16 +68,17 @@ namespace Checkin.Api.Controllers
             try
             {
                 var device = mapper.Map<DeviceDto, Device>(deviceDto);
+                deviceService.CreateOrUpdate(device);
             }    
             catch(Exception ex)
             {
                 logger
-                    .Exception(ex);
+                    .Fatal(ex.ToString());
                 
                 return StatusCode(500);
             }
             
-            deviceService.CreateOrUpdate(device);
+            
             return Ok();
         }
 
@@ -87,16 +88,17 @@ namespace Checkin.Api.Controllers
              try
             {
                 var device = mapper.Map<DeviceDto, Device>(deviceDto);
+                deviceService.CreateOrUpdate(device);
             }    
             catch(Exception ex)
             {
                 logger
-                    .Exception(ex);
+                    .Fatal(ex.ToString());
                 
                 return StatusCode(500);
             }
 
-            deviceService.CreateOrUpdate(device);
+            
             return Ok();
             //TODO - Return internal error if the device is not updated.
         }
