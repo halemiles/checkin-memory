@@ -58,6 +58,14 @@ namespace Checkin.Api.Controllers
             //TODO - Return not found if no devices are found
         }
 
+        [HttpGet("summary")]
+        public ActionResult Summary(string name)
+        {
+            var devices = deviceService.GetAll();
+            var mappedSummary = devices.Select(x => mapper.Map<Device, DeviceSummaryDto>(x));
+            return Ok(mappedSummary);
+        }
+
         [HttpPost]
         public ActionResult CreateDevice([FromBody]DeviceDto deviceDto)
         {
