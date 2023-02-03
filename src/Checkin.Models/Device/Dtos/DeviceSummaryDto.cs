@@ -12,8 +12,6 @@ namespace Checkin.Models
         public string Status { get; set; }
         public string ModifiedDateString { get; set; }
         public string IpAddress { get; set; }
-        public string IspHostName { get; set; }
-        public IEnumerable<ServiceStatusDto> Services { get; set; }
         public int BatteryLevel { get; set; }
     }
 }

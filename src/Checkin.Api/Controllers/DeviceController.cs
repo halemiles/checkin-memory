@@ -50,6 +50,14 @@ namespace Checkin.Api.Controllers
             //TODO - Return not found if no devices are found
         }
 
+        [HttpGet("summary")]
+        public ActionResult Summary(string name)
+        {
+            var devices = deviceService.GetAll();
+            var mappedSummary = devices.Select(x => mapper.Map<Device, DeviceSummaryDto>(x));
+            return Ok(mappedSummary);
+        }
+
         [HttpPost]
         public ActionResult CreateDevice([FromBody]DeviceDto deviceDto)
         {
@@ -66,7 +74,7 @@ namespace Checkin.Api.Controllers
         [HttpPut]
         public IActionResult UpdateDevice([FromBody] DeviceDto deviceDto)
         {
-                var device = mapper.Map<DeviceDto, Device>(deviceDto);
+            var device = mapper.Map<DeviceDto, Device>(deviceDto);
             deviceService.CreateOrUpdate(device);
             return Ok();
             //TODO - Return internal error if the device is not updated.
