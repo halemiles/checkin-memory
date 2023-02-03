@@ -38,14 +38,22 @@ namespace Checkin.Api.Controllers
             [FromQuery] string name
         )
         {
-                return Ok(deviceService.Search(deviceId, ipAddress, name));
-                //TODO - Return not found if no devices are found
+            var result = deviceService.Search(deviceId, ipAddress, name);
+
+                
+            if(result.Count == 0){
+                return StatusCode(404);
+            }
+
+            return Ok(result);
         }
 
         [HttpGet]
         public ActionResult GetAll(string name)
         {
             var devices = deviceService.GetAll();
+
+
             return Ok(devices);
             //TODO - Return not found if no devices are found
         }
@@ -65,17 +73,40 @@ namespace Checkin.Api.Controllers
                 .ForContext("DeviceName",deviceDto.Name)
                 .ForContext("HttpContext",HttpContext)
                 .Debug("Creating Device");
-            var device = mapper.Map<DeviceDto, Device>(deviceDto);
-            deviceService.CreateOrUpdate(device);
-            return Ok(); //TODO - Consider using CreatedAtRoute to return the created device
-            //TODO - Return Internal error if the device is not created.
+            try
+            {
+                var device = mapper.Map<DeviceDto, Device>(deviceDto);
+                deviceService.CreateOrUpdate(device);
+            }    
+            catch(Exception ex)
+            {
+                logger
+                    .Fatal(ex.ToString());
+                
+                return StatusCode(500);
+            }
+            
+            
+            return Ok();
         }
 
         [HttpPut]
         public IActionResult UpdateDevice([FromBody] DeviceDto deviceDto)
         {
-            var device = mapper.Map<DeviceDto, Device>(deviceDto);
-            deviceService.CreateOrUpdate(device);
+             try
+            {
+                var device = mapper.Map<DeviceDto, Device>(deviceDto);
+                deviceService.CreateOrUpdate(device);
+            }    
+            catch(Exception ex)
+            {
+                logger
+                    .Fatal(ex.ToString());
+                
+                return StatusCode(500);
+            }
+
+            
             return Ok();
             //TODO - Return internal error if the device is not updated.
         }

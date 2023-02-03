@@ -7,7 +7,7 @@ namespace Checkin.Models
     public class DockerServiceDto
     {
         public string ContainerName { get; set; }
-        public int Port { get; set; }
+        public List<DockerPort> Ports { get; set; }
         public string Status { get; set; }
     }
 }
