@@ -56,6 +56,7 @@ namespace Checkin.Api
             Log.Information("Configuring services");
             services.AddSingleton(Log.Logger);
 
+            //TODO - Move to extension method
             services.AddAutoMapper(mapperConfig => {
                 mapperConfig.AddProfile<DeviceDtoToDeviceProfile>();
                 mapperConfig.AddProfile<DeviceToDeviceMergeProfile>();
@@ -66,7 +67,6 @@ namespace Checkin.Api
                 mapperConfig.AddProfile<DeviceToDeviceSummaryDtoProfile>();
                 mapperConfig.AddProfile<DockerServiceDtoToDockerServiceProfile>();
                 mapperConfig.AddProfile<DeviceServiceDtoToDeviceServiceProfile>();
-
             });
 
             services.AddScoped<IDeviceService, DeviceService>();
@@ -81,7 +81,7 @@ namespace Checkin.Api
                 ConnectionMultiplexer.Connect(redisSettings.ConnectionString)
             );
 
-            services.AddScoped<IDeviceCacheRepository, RedisCacheRepository>();
+            services.AddScoped<IDeviceCacheRepository, RedisDeviceCacheRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

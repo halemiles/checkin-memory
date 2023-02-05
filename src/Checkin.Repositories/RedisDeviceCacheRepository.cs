@@ -10,13 +10,13 @@ using System.Net;
 
 namespace Checkin.Repositories
 {
-    public class RedisCacheRepository : IDeviceCacheRepository
+    public class RedisDeviceCacheRepository : IDeviceCacheRepository
     {
         private readonly ILogger logger;
         private readonly IDatabase database;
         private readonly IEnumerable<RedisKey> keys;
         private readonly IConnectionMultiplexer cache;
-        public RedisCacheRepository
+        public RedisDeviceCacheRepository
         (
             IConnectionMultiplexer distributedCache,
             ILogger logger

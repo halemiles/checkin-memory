@@ -1,10 +1,11 @@
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 
 namespace Checkin.Api.Extensions
 {
     public static class Telemetry
     {
-        public static IWebHostBuilder UseCustomTelemetry(this IWebHostBuilder webBuilder)
+        public static IWebHostBuilder UseCustomTelemetry(this IWebHostBuilder webBuilder, IConfiguration configuration)
         {
             // Add your custom logging providers or telemetry here
             webBuilder.UseSentry(o =>
