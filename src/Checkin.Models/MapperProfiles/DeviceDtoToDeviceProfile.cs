@@ -16,6 +16,7 @@ namespace Checkin.Models
                 .ForMember(dest => dest.Services, opt => opt.MapFrom(src => src.Services))
                 .ForMember(dest => dest.Power, opt => opt.MapFrom(src => src.Power))
                 .ForMember(dest => dest.ModifiedDateString, opt => opt.MapFrom(src => src.ModifiedDateString))
+                .ForMember(dest => dest.Attributes, opt => opt.MapFrom(src => src.Attributes))
                 .ReverseMap();
         }
     }
