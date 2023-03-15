@@ -29,6 +29,8 @@ namespace Checkin.Repositories
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
+
+        //TODO - Finish this
         public void Delete(string deviceName)
         {
             throw new NotImplementedException();
@@ -54,6 +56,8 @@ namespace Checkin.Repositories
             return new List<Device>();
 	    }
 
+
+        //TODO - Do we need this anymore?
         public Device GetByKey(string key)
         {
             throw new NotImplementedException();
@@ -108,6 +112,7 @@ namespace Checkin.Repositories
             return true;
         }
 
+        //TODO - Do we need this anymore?
         public bool Set(string key, Device value)
         {
             throw new NotImplementedException();

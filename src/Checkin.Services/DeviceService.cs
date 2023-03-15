@@ -30,46 +30,19 @@ namespace Checkin.Services
 
         public bool CreateOrUpdate(Device device)
         {
-            // --
-            // --
-            //TODO: Break this up. Create one key value pair for each device.
-            //* We should use somthing like Device_<IpAddress>_<Name>
-            // --
-            // --
             try
             {
                 var deviceKey = device.Name.ToDeviceKey();
                 //No devices exist
                 var existingDevice = deviceRepository.GetByKey(deviceKey) ?? new Device();
-                // var existingDevice = devices.Find(x => x.Id == device.Id);
-
-                // //Doesnt exist
-                // if(!devices.Any(x => x.Id == device.Id))
-                // {
-                //     //TODO - Correct this and uncomment
-                //     // logger
-                //     //     .ForContext("Device",device)
-                //     //     .Information("Adding new device");
-                //     devices.Add(device);
-                //     try
-                //     {
-                //         deviceRepository.Set(devices);
-                //     }
-                //     catch(Exception ex)
-                //     {
-                //         logger.Fatal(ex.ToString());
-                //         return false;
-                //     }
-                // }
-                // else //Update existing
-                // {
-                //     device = mapper.Map(device, existingDevice); //TODO - Unit test this call
-                deviceRepository.Set(deviceKey, device); //TODO - Set an expiry time for this record
-                // }
+                
+                deviceRepository.Set(deviceKey, device); 
             }
             catch(Exception err)
             {
                 logger
+                    .ForContext("DeviceName", device.Name)
+                    .ForContext("Device IP", device.IpAddress)
                     .Fatal("Could not create or update device");
                 return false;
             }
@@ -87,11 +60,10 @@ namespace Checkin.Services
 
         public  List<Device> Search(Guid? deviceId, string ipAddress, string name)
         {
-            //TODO: Fix this in unit tests. Null reference exception
-            // logger
-            //     .ForContext("DeviceId", deviceId ?? 0)
-            //     .ForContext("IpAddress", ipAddress)
-            //     .Information("Searching for device");
+            logger
+                .ForContext("DeviceId", deviceId ?? Guid.Empty)
+                .ForContext("IpAddress", ipAddress)
+                .Information("Searching for device");
             return deviceRepository.Search(deviceId, ipAddress, name.ToDeviceKey()) ?? new List<Device>();
         }
 
