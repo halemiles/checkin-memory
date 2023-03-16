@@ -33,8 +33,16 @@ namespace Checkin.Services
             try
             {
                 var deviceKey = device.Name.ToDeviceKey();
-                //No devices exist
-                var existingDevice = deviceRepository.GetByKey(deviceKey) ?? new Device();
+                var existingDevice = deviceRepository.GetByKey(deviceKey);
+                
+                if(existingDevice.Id == Guid.Empty)
+                {
+                    logger
+                        .ForContext("DeviceName", device.Name)
+                        .ForContext("DeviceIP", device.IpAddress)
+                        .Information("Device does not exist. We will try and create one");
+                    device.Id = Guid.NewGuid();
+                }
                 
                 deviceRepository.Set(deviceKey, device); 
             }
@@ -43,6 +51,7 @@ namespace Checkin.Services
                 logger
                     .ForContext("DeviceName", device.Name)
                     .ForContext("Device IP", device.IpAddress)
+                    .ForContext("Exception", err.ToString())
                     .Fatal("Could not create or update device");
                 return false;
             }
@@ -51,8 +60,7 @@ namespace Checkin.Services
         }
 
         public List<Device> GetAll()
-        {
-            
+        {            
             logger
                 .Debug("Getting all devices");
             return deviceRepository.GetAll() ?? new List<Device>();
@@ -69,12 +77,7 @@ namespace Checkin.Services
 
         public void Delete(string deviceName)
         {
-            deviceRepository.Delete(deviceName);
-        }
-
-        public Device GetByKey(string key) //TODO - Rename key to be deviceName
-        {
-            return deviceRepository.GetByKey(key.ToDeviceKey()) ?? new Device();
+            deviceRepository.Delete(deviceName.ToDeviceKey());
         }
     }
 }
