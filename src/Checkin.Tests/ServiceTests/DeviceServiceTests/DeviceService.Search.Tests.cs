@@ -53,7 +53,7 @@ namespace Checkin.Tests
             var results = sut.Search(null, string.Empty, string.Empty);
 
             //Assert
-            results.Count.Should().Be(0);
+            results.Payload.Count.Should().Be(0);
         }
 
         [TestMethod]
@@ -68,7 +68,7 @@ namespace Checkin.Tests
             var results = sut.Search(Guid.Empty, "192.168.0.0", string.Empty);
 
             //Assert
-            results.Count.Should().Be(1);
+            results.Payload.Count.Should().Be(1);
         }
     }
 }

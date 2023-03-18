@@ -56,7 +56,7 @@ namespace Checkin.Tests
             var results = sut.GetAll();
 
             //Assert
-            results.Count.Should().Be(5);
+            results.Payload.Count.Should().Be(5);
             mockDeviceRepository.Verify(x => x.GetAll(), Times.Once);
         }
 
@@ -72,7 +72,7 @@ namespace Checkin.Tests
 
             //Assert
             results.Should().NotBeNull();
-            results.Count.Should().Be(0);
+            results.Payload.Count.Should().Be(0);
         }
 
         [TestMethod]

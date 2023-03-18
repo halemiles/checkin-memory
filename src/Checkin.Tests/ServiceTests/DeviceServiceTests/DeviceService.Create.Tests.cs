@@ -63,7 +63,7 @@ namespace Checkin.Tests
             //Assert
             mockDeviceRepository.Verify(x => x.GetByKey(It.IsAny<string>()), Times.Once);
             mockDeviceRepository.Verify(x => x.Set(It.IsAny<string>(),It.IsAny<Device>()), Times.Once);
-            result.Should().BeTrue();
+            result.Payload.Should().BeTrue();
         }
 
         [TestMethod]
@@ -79,7 +79,7 @@ namespace Checkin.Tests
             //Assert
             mockDeviceRepository.Verify(x => x.GetByKey(It.IsAny<string>()), Times.Once);
             mockDeviceRepository.Verify(x => x.Set(It.IsAny<string>(),It.IsAny<Device>()), Times.Once);
-            result.Should().BeTrue();
+            result.Payload.Should().BeTrue();
         }
 
         [TestMethod]
@@ -98,7 +98,7 @@ namespace Checkin.Tests
             //Assert
             mockDeviceRepository.Verify(x => x.GetByKey(It.IsAny<string>()), Times.Once);
             mockDeviceRepository.Verify(x => x.Set(It.IsAny<string>(),It.IsAny<Device>()), Times.Once);
-            result.Should().BeTrue();
+            result.Payload.Should().BeTrue();
         }
 
         [TestMethod]
@@ -117,7 +117,7 @@ namespace Checkin.Tests
             mockDeviceRepository.Verify(x => x.GetByKey(It.IsAny<string>()), Times.Once);
             mockDeviceRepository.Verify(x => x.Set(It.IsAny<string>(),It.IsAny<Device>()), Times.Once);
             mockLogger.Verify(x => x.Fatal(It.IsAny<string>()), Times.Once);
-            result.Should().BeFalse();
+            result.Payload.Should().BeFalse();
         }
     }
 }

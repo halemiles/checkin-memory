@@ -11,7 +11,7 @@ namespace Checkin.Models
 
     public class DevicePower
     {
-        public string Type {get; set;} //TODO: Turn this into an enum
+        public PowerType Type => PowerType.MAINS;
         public IEnumerable<DeviceBattery> Batteries { get; set; }
     }
 }
