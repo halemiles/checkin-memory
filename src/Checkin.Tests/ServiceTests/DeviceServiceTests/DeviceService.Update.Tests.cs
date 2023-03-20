@@ -35,9 +35,12 @@ namespace Checkin.Tests
             mockMapper = new Mock<IMapper>();
             mockLogger = new Mock<ILogger>();
 
+            mockLogger.Setup(x => x.Information(It.IsAny<string>())).Verifiable();
+            mockLogger.Setup(x => x.ForContext(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<bool>())).Returns(mockLogger.Object);
+
             defaultDevice = new Device
             {
-                Id = Guid.Empty,
+                Id = new Guid("11e1c0fc-95ac-4cfb-9869-de581d4708af"),
                 CreatedDate = new DateTime(2000,1,1),
                 Name = "TestDevice",
                 IpAddress = "127.0.0.1"
@@ -48,7 +51,7 @@ namespace Checkin.Tests
         public void Update_WhenNoDevices_CreatesNew()
         {
             // Arrange
-            mockDeviceRepository.Setup(x => x.GetAll()).Returns(new List<Device>());
+            mockDeviceRepository.Setup(x => x.GetByKey(It.IsAny<string>())).Returns(new Device());
             var sut = NewDeviceService();
 
             // Act

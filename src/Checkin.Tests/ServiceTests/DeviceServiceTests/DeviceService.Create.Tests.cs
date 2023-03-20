@@ -48,13 +48,16 @@ namespace Checkin.Tests
             defaultDevice = deviceFixture.Create<Device>();
 
             newDeviceDetails = deviceFixture.Create<Device>();
+
+            mockLogger.Setup(x => x.Information(It.IsAny<string>())).Verifiable();
+            mockLogger.Setup(x => x.ForContext(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<bool>())).Returns(mockLogger.Object);
         }
 
         [TestMethod]
         public void Add_WhenRepositoryReturnsNull_DeviceCreated_ReturnsSuccess()
         {
             // Arrange
-            mockDeviceRepository.Setup(x => x.GetAll()).Returns<List<Device>>(null);
+            mockDeviceRepository.Setup(x => x.GetByKey(It.IsAny<string>())).Returns(new Device());
             var sut = NewDeviceService();
 
             // Act
@@ -70,7 +73,7 @@ namespace Checkin.Tests
         public void Add_WhenNoDevices_DeviceCreated_ReturnsSuccess()
         {
             // Arrange
-            mockDeviceRepository.Setup(x => x.GetAll()).Returns(new List<Device>());
+            mockDeviceRepository.Setup(x => x.GetByKey(It.IsAny<string>())).Returns(new Device());
             var sut = NewDeviceService();
 
             // Act

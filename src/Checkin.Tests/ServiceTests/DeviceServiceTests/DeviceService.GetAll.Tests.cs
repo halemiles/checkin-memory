@@ -86,7 +86,7 @@ namespace Checkin.Tests
             var results = sut.GetAll();
 
             //Assert
-            results.ShouldMatchSnapshot();
+            results.Payload.ShouldMatchSnapshot();
         }
 
         [TestMethod]
@@ -100,7 +100,7 @@ namespace Checkin.Tests
             var results = sut.GetAll();
 
             //Assert
-            results.ShouldMatchSnapshot();
+            results.Payload.ShouldMatchSnapshot();
         }
     }
 }
