@@ -35,6 +35,7 @@ namespace Checkin.Repositories
                 foreach(var key in GetKeys())
                 {
                     var result = database.StringGet(key);
+                    
                     if(!result.IsNull)
                     {
                         var device = new Device();
@@ -73,6 +74,7 @@ namespace Checkin.Repositories
         {
             try
             {
+                
                 var result = database.StringGet(key);
                 if(!result.IsNull)
                 {
@@ -95,10 +97,11 @@ namespace Checkin.Repositories
             try
             {
                 var result = database.StringGet(name);  //TODO - Use a key for this
-                var devices = new Device();
+                var devices = new List<Device>();
                 if(!result.IsNull)
                 {
-                    devices = JsonSerializer.Deserialize<Device>(result);
+                    var device = JsonSerializer.Deserialize<Device>(result);
+                    devices.Add(device);
                 }
 
                 //TODO - Does this need checking?
@@ -111,7 +114,7 @@ namespace Checkin.Repositories
                 // {
                 //     devices = devices.Where(x => x.IpAddress == ipAddress).ToList();
                 // }
-                return new List<Device> { devices };
+                return devices;
             }
             catch(Exception ex)
             {

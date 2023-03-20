@@ -28,7 +28,7 @@ namespace Checkin.Services
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public bool CreateOrUpdate(Device device)
+        public ApiResponse<bool> CreateOrUpdate(Device device)
         {
             try
             {
@@ -53,31 +53,38 @@ namespace Checkin.Services
                     .ForContext("Device IP", device.IpAddress)
                     .ForContext("Exception", err.ToString())
                     .Fatal("Could not create or update device");
-                return false;
+                return new ApiResponse<bool>("Could not create or update device", false, ResultCode.INTERNALERROR);
             }
 
-            return true;
+            return new ApiResponse<bool>( "Crated device", true, ResultCode.SUCCESS);
         }
 
-        public List<Device> GetAll()
+        public ApiResponse<List<Device>> GetAll()
         {            
             logger
                 .Debug("Getting all devices");
-            return deviceRepository.GetAll() ?? new List<Device>();
+            return new ApiResponse<List<Device>>("Success", deviceRepository.GetAll() ?? new List<Device>(), ResultCode.SUCCESS);
         }
 
-        public  List<Device> Search(Guid? deviceId, string ipAddress, string name)
+        public  ApiResponse<List<Device>> Search(Guid? deviceId, string ipAddress, string name)
         {
             logger
                 .ForContext("DeviceId", deviceId ?? Guid.Empty)
                 .ForContext("IpAddress", ipAddress)
                 .Information("Searching for device");
-            return deviceRepository.Search(deviceId, ipAddress, name.ToDeviceKey()) ?? new List<Device>();
+            var results = deviceRepository.Search(deviceId, ipAddress, name.ToDeviceKey());
+
+            if(results.Count() > 0)
+            {
+                return new ApiResponse<List<Device>>( "Success", results, ResultCode.SUCCESS);
+            }
+            return new ApiResponse<List<Device>>( "Not Found", results , ResultCode.NOTFOUND);
         }
 
-        public void Delete(string deviceName)
+        public ApiResponse<bool> Delete(string deviceName)
         {
             deviceRepository.Delete(deviceName.ToDeviceKey());
+            return new ApiResponse<bool>("Success", true, ResultCode.SUCCESS);
         }
     }
 }

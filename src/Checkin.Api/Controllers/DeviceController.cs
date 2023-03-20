@@ -40,10 +40,7 @@ namespace Checkin.Api.Controllers
         {
             var result = deviceService.Search(deviceId, ipAddress, name);
 
-                
-            if(result.Count == 0){
-                return StatusCode(404);
-            }
+              
 
             return Ok(result);
         }
@@ -62,7 +59,7 @@ namespace Checkin.Api.Controllers
         public ActionResult Summary(string name)
         {
             var devices = deviceService.GetAll();
-            var mappedSummary = devices.Select(x => mapper.Map<Device, DeviceSummaryDto>(x));
+            var mappedSummary = devices.Payload.Select(x => mapper.Map<Device, DeviceSummaryDto>(x));
             return Ok(mappedSummary);
         }
 
@@ -116,6 +113,7 @@ namespace Checkin.Api.Controllers
             deviceService.Delete(deviceName); //TODO - Use an extension
             return Ok();
             //TODO - Return internal error if the device is not deleted.
+            //TODO - Return not found if the device does not exist
         }
     }
 }
