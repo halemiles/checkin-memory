@@ -17,7 +17,7 @@ namespace Checkin.Tests
     public class DeviceServiceCtorTests
     {
         private Mock<IDeviceCacheRepository> mockDeviceRepository;
-
+        private Mock<IMetricsService> mockMetricsService;
         private IMapper mapper;
         private Mock<ILogger> mockLogger;
 
@@ -25,6 +25,8 @@ namespace Checkin.Tests
         public void SetUp()
         {
             mockDeviceRepository = new Mock<IDeviceCacheRepository>();
+            mockMetricsService = new Mock<IMetricsService>();
+            mockMetricsService.Setup(x => x.RecordDeviceMetrics(It.IsAny<Device>())).Verifiable();
             mapper = new Mapper(new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<DeviceDtoToDeviceProfile>();
@@ -41,6 +43,7 @@ namespace Checkin.Tests
             // Arrange
             Action sut = () => new DeviceService(
                 mockDeviceRepository.Object,
+                mockMetricsService.Object,
                 mapper,
                 mockLogger.Object
             );
@@ -57,6 +60,7 @@ namespace Checkin.Tests
             // Arrange
             Action sut = () => new DeviceService(
                 null,
+                mockMetricsService.Object,
                 mapper,
                 mockLogger.Object
             );
@@ -73,6 +77,7 @@ namespace Checkin.Tests
             // Arrange
             Action sut = () => new DeviceService(
                 mockDeviceRepository.Object,
+                mockMetricsService.Object,
                 null,
                 mockLogger.Object
             );
@@ -89,6 +94,7 @@ namespace Checkin.Tests
             // Arrange
             Action sut = () => new DeviceService(
                 mockDeviceRepository.Object,
+                mockMetricsService.Object,
                 mapper,
                 null
             );

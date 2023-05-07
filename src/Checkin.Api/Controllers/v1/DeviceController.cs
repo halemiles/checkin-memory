@@ -12,7 +12,7 @@ using AutoMapper;
 namespace Checkin.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")] //TODO - change to /api/v1/device
+    [Route("v1/[controller]")] //TODO - change to /api/v1/device
     public class DeviceController : ControllerBase
     {
         private readonly IDeviceService deviceService;
@@ -114,6 +114,12 @@ namespace Checkin.Api.Controllers
             return Ok();
             //TODO - Return internal error if the device is not deleted.
             //TODO - Return not found if the device does not exist
+        }
+
+        [HttpGet("metrics")]
+        public IActionResult GetPrometheusMetrics()
+        {
+            return Ok();
         }
     }
 }

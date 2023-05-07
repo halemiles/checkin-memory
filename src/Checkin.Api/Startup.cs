@@ -16,6 +16,7 @@ using Checkin.Api.Models;
 using Serilog;
 using Serilog.Exceptions;
 using StackExchange.Redis;
+using Prometheus;
 
 namespace Checkin.Api
 {
@@ -70,6 +71,7 @@ namespace Checkin.Api
             });
 
             services.AddScoped<IDeviceService, DeviceService>();
+            services.AddScoped<IMetricsService, MetricsService>();
 
             services.AddControllers();
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "Checkin.Api", Version = "v1" }));
@@ -82,6 +84,7 @@ namespace Checkin.Api
             );
 
             services.AddScoped<IDeviceCacheRepository, RedisDeviceCacheRepository>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -93,6 +96,9 @@ namespace Checkin.Api
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Checkin.Api v1"));
             }
+
+            app.UseHttpMetrics();
+            app.UseMetricServer(5000, "/metrics");  // starts exporter
 
             app.UseHttpsRedirection();
 

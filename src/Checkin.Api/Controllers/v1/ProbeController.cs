@@ -12,7 +12,7 @@ using AutoMapper;
 namespace Checkin.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("v1/[controller]")]
     public class ProbeController : ControllerBase
     {
         private readonly ILogger<ProbeController> logger;

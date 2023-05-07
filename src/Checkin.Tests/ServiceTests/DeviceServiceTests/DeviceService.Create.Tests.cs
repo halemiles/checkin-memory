@@ -18,12 +18,13 @@ namespace Checkin.Tests
     public class DeviceServiceAddTests
     {
         private Mock<IDeviceCacheRepository> mockDeviceRepository;
-
+        private Mock<IMetricsService> mockMetricsService;
         private IMapper mapper;
         private Mock<ILogger> mockLogger;
         private DeviceService NewDeviceService() =>
             new(
                     mockDeviceRepository.Object,
+                    mockMetricsService.Object,
                     mapper,
                     mockLogger.Object
                 );
@@ -36,6 +37,8 @@ namespace Checkin.Tests
         {
             mockDeviceRepository = new Mock<IDeviceCacheRepository>();
             mockLogger = new Mock<ILogger>();
+            mockMetricsService = new Mock<IMetricsService>();
+            mockMetricsService.Setup(x => x.RecordDeviceMetrics(It.IsAny<Device>())).Verifiable();
             var mapperConfig = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<DeviceDtoToDeviceProfile>();

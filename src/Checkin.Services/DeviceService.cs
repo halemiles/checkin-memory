@@ -14,16 +14,19 @@ namespace Checkin.Services
     public class DeviceService : IDeviceService
     {
         private readonly IDeviceCacheRepository deviceRepository;
+        private readonly IMetricsService metricsService;
         private readonly IMapper mapper;
         private readonly ILogger logger;
 
         public DeviceService(
             IDeviceCacheRepository deviceRepository,
+            IMetricsService metricsService,
             IMapper mapper,
             ILogger logger
         )
         {
             this.deviceRepository = deviceRepository ?? throw new ArgumentNullException(nameof(deviceRepository));
+            this.metricsService = metricsService ?? throw new ArgumentNullException(nameof(metricsService));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
@@ -45,6 +48,7 @@ namespace Checkin.Services
                 }
                 
                 deviceRepository.Set(deviceKey, device); 
+                metricsService.RecordDeviceMetrics(device);
             }
             catch(Exception err)
             {

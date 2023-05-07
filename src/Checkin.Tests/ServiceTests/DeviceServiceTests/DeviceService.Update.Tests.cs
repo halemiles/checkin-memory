@@ -17,11 +17,13 @@ namespace Checkin.Tests
     public class DeviceServiceUpdateTests
     {
         private Mock<IDeviceCacheRepository> mockDeviceRepository;
+        private Mock<IMetricsService> mockMetricsService;
         private Mock<IMapper> mockMapper;
         private Mock<ILogger> mockLogger;
         private DeviceService NewDeviceService() =>
             new(
                     mockDeviceRepository.Object,
+                    mockMetricsService.Object,
                     mockMapper.Object,
                     mockLogger.Object
                 );
@@ -32,11 +34,14 @@ namespace Checkin.Tests
         public void SetUp()
         {
             mockDeviceRepository = new Mock<IDeviceCacheRepository>();
+            mockMetricsService = new Mock<IMetricsService>();
             mockMapper = new Mock<IMapper>();
             mockLogger = new Mock<ILogger>();
 
             mockLogger.Setup(x => x.Information(It.IsAny<string>())).Verifiable();
             mockLogger.Setup(x => x.ForContext(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<bool>())).Returns(mockLogger.Object);
+
+            mockMetricsService.Setup(x => x.RecordDeviceMetrics(It.IsAny<Device>())).Verifiable();
 
             defaultDevice = new Device
             {
