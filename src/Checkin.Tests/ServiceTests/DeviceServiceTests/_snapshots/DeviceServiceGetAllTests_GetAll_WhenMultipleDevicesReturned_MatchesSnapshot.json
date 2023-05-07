@@ -31,8 +31,10 @@
       },
       "CreatedDate": "2022-01-01T00:00:00",
       "ModifiedDate": "0001-01-01T00:00:00",
+      "CheckinDate": "0001-01-01T00:00:00",
       "Attributes": null,
-      "ModifiedDateString": null
+      "ModifiedDateString": null,
+      "CheckinDateString": null
     },
     {
       "Id": "00000000-0000-0000-0000-000000000000",
@@ -65,8 +67,10 @@
       },
       "CreatedDate": "2022-01-01T00:00:00",
       "ModifiedDate": "0001-01-01T00:00:00",
+      "CheckinDate": "0001-01-01T00:00:00",
       "Attributes": null,
-      "ModifiedDateString": null
+      "ModifiedDateString": null,
+      "CheckinDateString": null
     },
     {
       "Id": "00000000-0000-0000-0000-000000000000",
@@ -99,8 +103,10 @@
       },
       "CreatedDate": "2022-01-01T00:00:00",
       "ModifiedDate": "0001-01-01T00:00:00",
+      "CheckinDate": "0001-01-01T00:00:00",
       "Attributes": null,
-      "ModifiedDateString": null
+      "ModifiedDateString": null,
+      "CheckinDateString": null
     },
     {
       "Id": "00000000-0000-0000-0000-000000000000",
@@ -133,8 +139,10 @@
       },
       "CreatedDate": "2022-01-01T00:00:00",
       "ModifiedDate": "0001-01-01T00:00:00",
+      "CheckinDate": "0001-01-01T00:00:00",
       "Attributes": null,
-      "ModifiedDateString": null
+      "ModifiedDateString": null,
+      "CheckinDateString": null
     },
     {
       "Id": "00000000-0000-0000-0000-000000000000",
@@ -167,8 +175,10 @@
       },
       "CreatedDate": "2022-01-01T00:00:00",
       "ModifiedDate": "0001-01-01T00:00:00",
+      "CheckinDate": "0001-01-01T00:00:00",
       "Attributes": null,
-      "ModifiedDateString": null
+      "ModifiedDateString": null,
+      "CheckinDateString": null
     }
   ]
 }
