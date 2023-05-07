@@ -43,7 +43,7 @@ namespace Checkin.Services
                         .Information("Device does not exist. We will try and create one");
                     device.Id = Guid.NewGuid();
                 }
-                
+                device.CheckinDate = DateTime.Now; //TODO - This may change in the future if we want to use another service and nmap to map out a network
                 deviceRepository.Set(deviceKey, device); 
             }
             catch(Exception err)

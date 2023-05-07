@@ -15,12 +15,18 @@ namespace Checkin.Models
         public DevicePower Power {get; set;}
         public DateTime CreatedDate {get; set;}
         public DateTime ModifiedDate {get; set;}
+        public DateTime CheckinDate {get; set;}
 
         public IDictionary<string, object> Attributes {get; set;}
 
         public string ModifiedDateString
         {
             get { return ModifiedDate.GetPrettyDate(); }
+        }
+
+        public string CheckinDateString
+        {
+            get { return CheckinDate.GetPrettyDate(); }
         }
     }
 }
