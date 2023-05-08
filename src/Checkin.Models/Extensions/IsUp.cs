@@ -1,6 +1,6 @@
 using System;
 
-namespace Moneyman.Services.Extensions
+namespace Moneyman.Models.Extensions
 {
     public static class DeviceServiceExtensions
     {

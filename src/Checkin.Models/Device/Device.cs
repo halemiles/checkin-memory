@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Checkin.Models.Extensions;
+using Moneyman.Models.Extensions;
 
 namespace Checkin.Models
 {
@@ -16,6 +17,7 @@ namespace Checkin.Models
         public DateTime CreatedDate {get; set;}
         public DateTime ModifiedDate {get; set;}
         public DateTime CheckinDate {get; set;}
+        public bool IsUp { get {return CheckinDate.IsUp();}}
 
         public IDictionary<string, object> Attributes {get; set;}
 

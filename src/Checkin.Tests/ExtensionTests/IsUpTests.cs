@@ -1,6 +1,6 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moneyman.Services.Extensions;
+using Moneyman.Models.Extensions;
 using FluentAssertions;
 
 namespace Checkin.Tests
