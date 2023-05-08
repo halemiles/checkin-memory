@@ -59,11 +59,13 @@ namespace Checkin.Services
             return new ApiResponse<bool>( "Crated device", true, ResultCode.SUCCESS);
         }
 
-        public ApiResponse<List<Device>> GetAll()
-        {            
+        public ApiResponse<List<DeviceDto>> GetAll()
+        {         
+            var devices = deviceRepository.GetAll(); 
+            var mappedDevices = devices.Select(x => mapper.Map<Device, DeviceDto>(x)).ToList();
             logger
                 .Debug("Getting all devices");
-            return new ApiResponse<List<Device>>("Success", deviceRepository.GetAll() ?? new List<Device>(), ResultCode.SUCCESS);
+            return new ApiResponse<List<DeviceDto>>("Success", mappedDevices, ResultCode.SUCCESS);
         }
 
         public  ApiResponse<List<Device>> Search(Guid? deviceId, string ipAddress, string name)

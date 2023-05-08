@@ -6,8 +6,9 @@ namespace Moneyman.Models.Extensions
     {
         public static bool IsUp(this DateTime checkinDate)
         {
-            var limit = DateTime.Now.AddMinutes(-5).AddSeconds(-1);
-            if(checkinDate >= limit)
+            int limit = 10;
+            var checkinLimit = DateTime.Now.AddMinutes(-limit); //.AddSeconds(-1);
+            if(checkinDate >= checkinLimit)
             {
                 return true;
             }

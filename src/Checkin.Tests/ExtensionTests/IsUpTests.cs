@@ -9,8 +9,8 @@ namespace Checkin.Tests
     public class IsUpTests
     {
         [DataTestMethod]
-        [DataRow(6)]
         [DataRow(10)]
+        [DataRow(11)]
         public void GetPrettyDate_WhenWithinRanges_ReturnsFalse(int minutes)
         {
             var date = DateTime.Now;
@@ -21,8 +21,8 @@ namespace Checkin.Tests
 
         [DataTestMethod]
         [DataRow(0)]
-        [DataRow(4)]
         [DataRow(5)]
+        [DataRow(9)]
         public void GetPrettyDate_WhenWithinRanges_ReturnsTrue(int minutes)
         {
             var date = DateTime.Now;
