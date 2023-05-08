@@ -8,6 +8,7 @@ using Serilog;
 using System;
 using System.Text.Json;
 using Checkin.Services.Extensions;
+using Moneyman.Models.Extensions;
 
 namespace Checkin.Services
 {
@@ -68,13 +69,23 @@ namespace Checkin.Services
             return new ApiResponse<List<DeviceDto>>("Success", mappedDevices, ResultCode.SUCCESS);
         }
 
-        public  ApiResponse<List<Device>> Search(Guid? deviceId, string ipAddress, string name)
+        public  ApiResponse<List<Device>> Search(
+            Guid? deviceId,
+            string ipAddress,
+            string name,
+            bool? isUp
+        )
         {
             logger
                 .ForContext("DeviceId", deviceId ?? Guid.Empty)
                 .ForContext("IpAddress", ipAddress)
                 .Information("Searching for device");
             var results = deviceRepository.Search(deviceId, ipAddress, name.ToDeviceKey());
+
+            if(isUp.HasValue)
+            {
+                results = (List<Device>)results.Where(x => x.CheckinDate.IsUp() == isUp.Value);
+            }
 
             if(results.Count() > 0)
             {

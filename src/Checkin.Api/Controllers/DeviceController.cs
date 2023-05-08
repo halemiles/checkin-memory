@@ -35,10 +35,11 @@ namespace Checkin.Api.Controllers
         public ActionResult Search(
             [FromQuery] Guid? deviceId,
             [FromQuery] string ipAddress,
-            [FromQuery] string name
+            [FromQuery] string name,
+            [FromQuery] bool? isUp
         )
         {
-            var result = deviceService.Search(deviceId, ipAddress, name);
+            var result = deviceService.Search(deviceId, ipAddress, name, isUp);
 
               
 

@@ -8,7 +8,7 @@ namespace Checkin.Services.Interfaces
     public interface IDeviceService
     {
         ApiResponse<List<DeviceDto>> GetAll();
-        ApiResponse<List<Device>> Search(Guid? deviceId, string ipAddress, string name);
+        ApiResponse<List<Device>> Search(Guid? deviceId, string ipAddress, string name, bool? isUp);
         ApiResponse<bool> Delete(string deviceName);
         ApiResponse<bool> CreateOrUpdate(Device device);
     }

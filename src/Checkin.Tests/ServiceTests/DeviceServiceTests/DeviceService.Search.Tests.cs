@@ -50,7 +50,7 @@ namespace Checkin.Tests
             var sut = NewDeviceService();
 
             // Act
-            var results = sut.Search(null, string.Empty, string.Empty);
+            var results = sut.Search(null, string.Empty, string.Empty, null);
 
             //Assert
             results.Payload.Count.Should().Be(0);
@@ -65,7 +65,7 @@ namespace Checkin.Tests
             var sut = NewDeviceService();
 
             // Act
-            var results = sut.Search(Guid.Empty, "192.168.0.0", string.Empty);
+            var results = sut.Search(Guid.Empty, "192.168.0.0", string.Empty, null);
 
             //Assert
             results.Payload.Count.Should().Be(1);
