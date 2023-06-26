@@ -127,12 +127,12 @@ namespace Checkin.Repositories
             return new List<Device>();
         }
 
-        public bool Set(string key, Device device)
+        public async Task<bool> Set(string key, Device device)
         {
             try
             {
                 var json = JsonSerializer.Serialize(device);
-                database.StringSet(key, json);
+                await database.StringSetAsync(key, json);
             }
             catch(Exception ex)
             {

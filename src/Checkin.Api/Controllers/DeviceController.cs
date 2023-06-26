@@ -64,7 +64,7 @@ namespace Checkin.Api.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateDevice([FromBody]DeviceDto deviceDto)
+        public async Task<ActionResult> CreateDevice([FromBody]DeviceDto deviceDto)
         {
             logger
                 .ForContext("DeviceName",deviceDto.Name)
@@ -73,7 +73,7 @@ namespace Checkin.Api.Controllers
             try
             {
                 var device = mapper.Map<DeviceDto, Device>(deviceDto);
-                deviceService.CreateOrUpdate(device);
+                await deviceService.CreateOrUpdate(device);
             }    
             catch(Exception ex)
             {
@@ -88,12 +88,12 @@ namespace Checkin.Api.Controllers
         }
 
         [HttpPut]
-        public IActionResult UpdateDevice([FromBody] DeviceDto deviceDto)
+        public async Task<ActionResult> UpdateDevice([FromBody] DeviceDto deviceDto)
         {
              try
             {
                 var device = mapper.Map<DeviceDto, Device>(deviceDto);
-                deviceService.CreateOrUpdate(device);
+                await deviceService.CreateOrUpdate(device);
             }    
             catch(Exception ex)
             {
