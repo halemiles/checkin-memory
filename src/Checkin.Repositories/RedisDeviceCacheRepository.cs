@@ -7,6 +7,7 @@ using Serilog;
 using Checkin.Services.Interfaces;
 using StackExchange.Redis;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace Checkin.Repositories
 {
@@ -70,12 +71,12 @@ namespace Checkin.Repositories
             return keys;
         }
 
-        public Device GetByKey(string key)
+        public async Task<Device> GetByKey(string key)
         {
             try
             {
                 
-                var result = database.StringGet(key);
+                var result = await database.StringGetAsync(key);
                 if(!result.IsNull)
                 {
                     var devices = JsonSerializer.Deserialize<Device>(result);
