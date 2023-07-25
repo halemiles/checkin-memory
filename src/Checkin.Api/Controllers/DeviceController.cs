@@ -108,9 +108,10 @@ namespace Checkin.Api.Controllers
             //TODO - Return internal error if the device is not updated.
         }
 
+        [HttpDelete]
         public IActionResult DeleteDevice(string deviceName)
         {
-            deviceService.Delete(deviceName); //TODO - Use an extension
+            deviceService.Delete(deviceName);
             return Ok();
             //TODO - Return internal error if the device is not deleted.
             //TODO - Return not found if the device does not exist

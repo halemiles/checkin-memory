@@ -35,8 +35,14 @@ namespace Checkin.Services
                 var deviceKey = device.Name.ToDeviceKey();
                 var existingDevice = deviceRepository.GetByKey(deviceKey);
                 
+                if(!device.IsCheckin.HasValue || !device.IsCheckin.Value)
+                {
+                    device.LastCheckinDate = existingDevice.LastCheckinDate;
+                }
+
                 if(existingDevice.Id == Guid.Empty)
                 {
+                    
                     logger
                         .ForContext("DeviceName", device.Name)
                         .ForContext("DeviceIP", device.IpAddress)
