@@ -8,6 +8,7 @@ using Serilog;
 using System;
 using System.Text.Json;
 using Checkin.Services.Extensions;
+using System.Threading.Tasks;
 
 namespace Checkin.Services
 {
@@ -28,12 +29,12 @@ namespace Checkin.Services
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public ApiResponse<bool> CreateOrUpdate(Device device)
+        public async Task<ApiResponse<bool>> CreateOrUpdate(Device device)
         {
             try
             {
                 var deviceKey = device.Name.ToDeviceKey();
-                var existingDevice = deviceRepository.GetByKey(deviceKey);
+                var existingDevice = await deviceRepository.GetByKey(deviceKey);
                 
                 if(existingDevice.Id == Guid.Empty)
                 {

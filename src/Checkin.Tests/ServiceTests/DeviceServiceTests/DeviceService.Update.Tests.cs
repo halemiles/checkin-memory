@@ -10,6 +10,7 @@ using AutoMapper;
 using Checkin.Tests.Helpers;
 using Serilog;
 using Checkin.Services.Interfaces;
+using System.Threading.Tasks;
 
 namespace Checkin.Tests
 {
@@ -48,14 +49,14 @@ namespace Checkin.Tests
         }
 
         [TestMethod]
-        public void Update_WhenNoDevices_CreatesNew()
+        public async Task Update_WhenNoDevices_CreatesNew()
         {
             // Arrange
-            mockDeviceRepository.Setup(x => x.GetByKey(It.IsAny<string>())).Returns(new Device());
+            mockDeviceRepository.Setup(x => x.GetByKey(It.IsAny<string>())).ReturnsAsync(new Device());
             var sut = NewDeviceService();
 
             // Act
-            sut.CreateOrUpdate(defaultDevice);
+            await sut.CreateOrUpdate(defaultDevice);
 
             //Assert
             mockDeviceRepository.Verify(x => x.GetByKey(It.IsAny<string>()), Times.Once);

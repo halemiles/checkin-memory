@@ -10,6 +10,6 @@ namespace Checkin.Services.Interfaces
         ApiResponse<List<Device>> GetAll();
         ApiResponse<List<Device>> Search(Guid? deviceId, string ipAddress, string name);
         ApiResponse<bool> Delete(string deviceName);
-        ApiResponse<bool> CreateOrUpdate(Device device);
+        Task<ApiResponse<bool>> CreateOrUpdate(Device device);
     }
 }
