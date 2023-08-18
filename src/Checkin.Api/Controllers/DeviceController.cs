@@ -32,13 +32,9 @@ namespace Checkin.Api.Controllers
         }
 
         [HttpGet("search")]
-        public ActionResult Search(
-            [FromQuery] Guid? deviceId,
-            [FromQuery] string ipAddress,
-            [FromQuery] string name
-        )
+        public ActionResult Search([FromBody] DeviceSearchRequest request)
         {
-            var result = deviceService.Search(deviceId, ipAddress, name);
+            var result = deviceService.Search(request);
 
               
 

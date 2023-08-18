@@ -67,13 +67,13 @@ namespace Checkin.Services
             return new ApiResponse<List<Device>>("Success", deviceRepository.GetAll() ?? new List<Device>(), ResultCode.SUCCESS);
         }
 
-        public  ApiResponse<List<Device>> Search(Guid? deviceId, string ipAddress, string name)
+        public  ApiResponse<List<Device>> Search(DeviceSearchRequest searchRequest)
         {
             logger
-                .ForContext("DeviceId", deviceId ?? Guid.Empty)
-                .ForContext("IpAddress", ipAddress)
+                .ForContext("DeviceId", searchRequest.DeviceId ?? Guid.Empty)
+                .ForContext("IpAddress", searchRequest.IpAddress)
                 .Information("Searching for device");
-            var results = deviceRepository.Search(deviceId, ipAddress, name.ToDeviceKey());
+            var results = deviceRepository.Search(searchRequest.DeviceId, searchRequest.IpAddress, searchRequest.DeviceName.ToDeviceKey());
 
             if(results.Count() > 0)
             {
