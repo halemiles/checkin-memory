@@ -47,8 +47,7 @@ namespace Checkin.Api.Controllers
         [HttpGet]
         public ActionResult GetAll(string name)
         {
-            var devices = deviceService.GetAll();
-
+            var devices = deviceService.GetAll(); //TODO - Return the DeviceDto
 
             return Ok(devices);
             //TODO - Return not found if no devices are found
@@ -58,7 +57,7 @@ namespace Checkin.Api.Controllers
         public ActionResult Summary(string name)
         {
             var devices = deviceService.GetAll();
-            var mappedSummary = devices.Payload.Select(x => mapper.Map<Device, DeviceSummaryDto>(x));
+            var mappedSummary = devices.Payload.Select(x => mapper.Map<DeviceDto, DeviceSummaryDto>(x));
             return Ok(mappedSummary);
         }
 

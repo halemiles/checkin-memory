@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
+using Moneyman.Models.Extensions;
 
 namespace Checkin.Models.Dto
 {
@@ -16,7 +17,10 @@ namespace Checkin.Models.Dto
         public DeviceNetworkDto ExternalNetwork { get; set; }
         public DeviceServiceDto Services { get; set; }
         public DevicePower Power { get; set; }
+        public DateTime CheckinDate {get; set;}
+        public bool IsUp { get {return CheckinDate.IsUp();}}
         public IDictionary<string, object> Attributes {get; set;}
         public string ModifiedDateString { get; set; }
+        public string CheckinDateString { get; set; }
     }
 }

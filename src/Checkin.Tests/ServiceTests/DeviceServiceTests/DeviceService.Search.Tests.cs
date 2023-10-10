@@ -67,7 +67,7 @@ namespace Checkin.Tests
 
             // Act
             var results = sut.Search(new SearchDto());
-
+            
             //Assert
             results.Payload.Count.Should().Be(1);
         }
