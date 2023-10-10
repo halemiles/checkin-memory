@@ -11,6 +11,6 @@ namespace Checkin.Services.Interfaces
         ApiResponse<List<DeviceDto>> GetAll();
         ApiResponse<List<Device>> Search(SearchDto searchDto);
         ApiResponse<bool> Delete(string deviceName);
-        ApiResponse<bool> CreateOrUpdate(Device device);
+        Task<ApiResponse<bool>> CreateOrUpdate(Device device);
     }
 }
