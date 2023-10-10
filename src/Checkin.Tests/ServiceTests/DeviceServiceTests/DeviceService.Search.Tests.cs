@@ -50,7 +50,7 @@ namespace Checkin.Tests
             var sut = NewDeviceService();
 
             // Act
-            var results = sut.Search(null, string.Empty, string.Empty);
+            var results = sut.Search(new SearchDto());
 
             //Assert
             results.Payload.Count.Should().Be(0);
@@ -61,11 +61,12 @@ namespace Checkin.Tests
         public void GetAll_WhenDevicesExist_WithCorrectSearchParams_ReturnsOneResult()
         {
             // Arrange
-            mockDeviceRepository.Setup(x => x.Search(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>())).Returns(new List<Device>{ defaultDevice });
+            mockDeviceRepository.Setup(x => x.Search(It.IsAny<SearchDto>()))
+                .Returns(new List<Device>{ defaultDevice });
             var sut = NewDeviceService();
 
             // Act
-            var results = sut.Search(Guid.Empty, "192.168.0.0", string.Empty);
+            var results = sut.Search(new SearchDto());
 
             //Assert
             results.Payload.Count.Should().Be(1);

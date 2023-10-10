@@ -10,7 +10,7 @@ namespace Checkin.Services.Interfaces
         bool Set(string key, Device value); //TODO - Remove key and allow the device ID to do the work
         Device GetByKey(string key);
         List<Device> GetAll();
-        List<Device> Search(Guid? deviceId, string ipAddress, string name);
+        List<Device> Search(SearchDto searchDto);
         void Delete(string deviceName);
     }
 }

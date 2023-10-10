@@ -63,7 +63,7 @@ namespace Checkin.Repositories
             throw new NotImplementedException();
         }
 
-        public List<Device> Search(Guid? deviceId, string ipAddress, string name)
+        public List<Device> Search(SearchDto searchDto)
         {
             try
             {
@@ -74,14 +74,14 @@ namespace Checkin.Repositories
                     devices = JsonSerializer.Deserialize<List<Device>>(result);
                 }
 
-                if(deviceId.HasValue)
+                if(searchDto.DeviceId.HasValue)
                 {
-                    devices = devices.Where(x => x.Id == deviceId.Value).ToList();
+                    devices = devices.Where(x => x.Id == searchDto.DeviceId.Value).ToList();
                 }
 
-                if(!string.IsNullOrEmpty(ipAddress))
+                if(!string.IsNullOrEmpty(searchDto.IpAddress))
                 {
-                    devices = devices.Where(x => x.IpAddress == ipAddress).ToList();
+                    devices = devices.Where(x => x.IpAddress == searchDto.IpAddress).ToList();
                 }
                 return devices;
             }

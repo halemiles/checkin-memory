@@ -8,6 +8,7 @@ using Checkin.Models;
 using Checkin.Services;
 using Checkin.Services.Interfaces;
 using AutoMapper;
+using Checkin.Models.Dto;
 
 namespace Checkin.Api.Controllers
 {
@@ -33,12 +34,10 @@ namespace Checkin.Api.Controllers
 
         [HttpGet("search")]
         public ActionResult Search(
-            [FromQuery] Guid? deviceId,
-            [FromQuery] string ipAddress,
-            [FromQuery] string name
+            [FromBody] SearchDto searchViewModel
         )
         {
-            var result = deviceService.Search(deviceId, ipAddress, name);
+            var result = deviceService.Search(searchViewModel);
 
               
 
