@@ -40,7 +40,6 @@ namespace Checkin.Repositories
                     
                     if(!result.IsNull)
                     {
-                        var device = new Device();
                         try
                         {
                             device = JsonSerializer.Deserialize<Device>(result);
