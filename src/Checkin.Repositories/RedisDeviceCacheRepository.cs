@@ -95,11 +95,8 @@ namespace Checkin.Repositories
 
         public List<Device> Search(SearchDto searchDto)
         {
-            //TODO - Might need to get all before we can search
             try
             {
-                string key = searchDto.DeviceName.ToDeviceKey();
-
                 var allDevices = GetAll();
                 
                 var result = new List<Device>();
@@ -116,9 +113,7 @@ namespace Checkin.Repositories
                 if(!string.IsNullOrEmpty(searchDto.DeviceName))
                 {
                     result = allDevices.Where(x => x.Key == searchDto.DeviceName.ToDeviceKey()).ToList();
-                }
-
-               
+                }               
 
                 return result;
             }
