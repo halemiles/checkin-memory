@@ -79,13 +79,16 @@ namespace Checkin.Services
                 //.ForContext("IsUp", isUp)
                 .Information("Searching for device");
             var results = deviceRepository.Search(searchDto);
-
+            if(results == null)
+            {
+                return new ApiResponse<List<Device>>( "Not Found", results , ResultCode.NOTFOUND);
+            }
             if(searchDto.IsUp.HasValue)
             {
                 results = (List<Device>)results.Where(x => x.CheckinDate.IsUp() == searchDto.IsUp.Value);
             }
 
-            if(results.Count() > 0)
+            if(results.Any())
             {
                 return new ApiResponse<List<Device>>( "Success", results, ResultCode.SUCCESS);
             }

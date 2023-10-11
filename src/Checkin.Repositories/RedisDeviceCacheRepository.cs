@@ -39,9 +39,10 @@ namespace Checkin.Repositories
                     var result = database.StringGet(key);
                     
                     if(!result.IsNull)
-                    {
+                    {                        
                         try
                         {
+                            var device = new Device();
                             device = JsonSerializer.Deserialize<Device>(result);
                             devices.Add(device);
                         }
