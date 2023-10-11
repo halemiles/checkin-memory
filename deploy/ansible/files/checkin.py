@@ -58,12 +58,15 @@ def get_custom_attributes():
 
 def get_nordvpn_status():
     returnVal = {}
-    for line in subprocess.check_output(['nordvpn', 'status'], universal_newlines=True).splitlines():    
-        if "Status" in line:
-            status = line.split(":")[1].strip()
-            print("status", status)
+    try:
+        for line in subprocess.check_output(['nordvpn', 'status'], universal_newlines=True).splitlines():    
+            if "Status" in line:
+                status = line.split(":")[1].strip()
+                print("status", status)
     
-    return status
+        return status
+    finally:
+        return {}
 
 def post_ping():
 
