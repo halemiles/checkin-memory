@@ -16,9 +16,12 @@ using Checkin.Api.Models;
 using Serilog;
 using Serilog.Exceptions;
 using StackExchange.Redis;
+using Checkin.Api.Extensions;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Checkin.Api
 {
+    [ExcludeFromCodeCoverage]
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -31,12 +34,7 @@ namespace Checkin.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // The following line enables Application Insights telemetry collection.
-            var appInsightsKey = Configuration.GetSection("ApplicationInsights").Get<ApplicationInsightsSettings>();
-            if(!string.IsNullOrEmpty(appInsightsKey.ConnectionString))
-            {
-                services.AddApplicationInsightsTelemetry();
-            }
+            services.ConfigureTelemetry(Configuration);
 
             var logger = new LoggerConfiguration()
                 .WriteTo.Console()

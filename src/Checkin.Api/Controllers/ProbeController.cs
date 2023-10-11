@@ -8,9 +8,11 @@ using Checkin.Models;
 using Checkin.Services;
 using Checkin.Services.Interfaces;
 using AutoMapper;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Checkin.Api.Controllers
 {
+    [ExcludeFromCodeCoverage]
     [ApiController]
     [Route("[controller]")]
     public class ProbeController : ControllerBase

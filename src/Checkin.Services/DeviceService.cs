@@ -8,6 +8,8 @@ using Serilog;
 using System;
 using System.Text.Json;
 using Checkin.Services.Extensions;
+using Moneyman.Models.Extensions;
+using Checkin.Models.Dto;
 using System.Threading.Tasks;
 
 namespace Checkin.Services
@@ -44,7 +46,7 @@ namespace Checkin.Services
                         .Information("Device does not exist. We will try and create one");
                     device.Id = Guid.NewGuid();
                 }
-                
+                device.CheckinDate = DateTime.Now; //TODO - This may change in the future if we want to use another service and nmap to map out a network
                 deviceRepository.Set(deviceKey, device); 
             }
             catch(Exception err)
@@ -60,22 +62,33 @@ namespace Checkin.Services
             return new ApiResponse<bool>( "Crated device", true, ResultCode.SUCCESS);
         }
 
-        public ApiResponse<List<Device>> GetAll()
-        {            
+        public ApiResponse<List<DeviceDto>> GetAll()
+        {         
+            var devices = deviceRepository.GetAll(); 
+            var mappedDevices = devices.Select(x => mapper.Map<Device, DeviceDto>(x)).ToList();
             logger
                 .Debug("Getting all devices");
-            return new ApiResponse<List<Device>>("Success", deviceRepository.GetAll() ?? new List<Device>(), ResultCode.SUCCESS);
+            return new ApiResponse<List<DeviceDto>>("Success", mappedDevices, ResultCode.SUCCESS);
         }
 
-        public  ApiResponse<List<Device>> Search(DeviceSearchRequest searchRequest)
+        public  ApiResponse<List<Device>> Search(SearchDto searchDto)
         {
             logger
-                .ForContext("DeviceId", searchRequest.DeviceId ?? Guid.Empty)
-                .ForContext("IpAddress", searchRequest.IpAddress)
+                .ForContext("DeviceName", searchDto.DeviceName)
+                .ForContext("IpAddress", searchDto.IpAddress)
+                //.ForContext("IsUp", isUp)
                 .Information("Searching for device");
-            var results = deviceRepository.Search(searchRequest.DeviceId, searchRequest.IpAddress, searchRequest.DeviceName.ToDeviceKey());
+            var results = deviceRepository.Search(searchDto);
+            if(results == null)
+            {
+                return new ApiResponse<List<Device>>( "Not Found", results , ResultCode.NOTFOUND);
+            }
+            if(searchDto.IsUp.HasValue)
+            {
+                results = (List<Device>)results.Where(x => x.CheckinDate.IsUp() == searchDto.IsUp.Value);
+            }
 
-            if(results.Count() > 0)
+            if(results.Any())
             {
                 return new ApiResponse<List<Device>>( "Success", results, ResultCode.SUCCESS);
             }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Checkin.Models.Extensions;
+using Moneyman.Models.Extensions;
 
 namespace Checkin.Models
 {
@@ -15,12 +16,19 @@ namespace Checkin.Models
         public DevicePower Power {get; set;}
         public DateTime CreatedDate {get; set;}
         public DateTime ModifiedDate {get; set;}
+        public DateTime CheckinDate {get; set;}
+        public bool IsUp { get {return CheckinDate.IsUp();}}
 
         public IDictionary<string, object> Attributes {get; set;}
 
         public string ModifiedDateString
         {
             get { return ModifiedDate.GetPrettyDate(); }
+        }
+
+        public string CheckinDateString
+        {
+            get { return CheckinDate.GetPrettyDate(); }
         }
     }
 }

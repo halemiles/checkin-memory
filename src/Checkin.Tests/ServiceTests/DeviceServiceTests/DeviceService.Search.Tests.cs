@@ -8,6 +8,7 @@ using FluentAssertions;
 using AutoMapper;
 using Serilog;
 using Checkin.Services.Interfaces;
+using AutoFixture;
 
 namespace Checkin.Tests
 {
@@ -31,7 +32,10 @@ namespace Checkin.Tests
         {
             mockDeviceRepository = new Mock<IDeviceCacheRepository>();
             mockMapper = new Mock<IMapper>();
+
             mockLogger = new Mock<ILogger>();
+            mockLogger.Setup(x => x.ForContext(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<bool>()))
+            .Returns(mockLogger.Object);
 
             defaultDevice = new Device
             {
@@ -43,30 +47,52 @@ namespace Checkin.Tests
         }
 
         [TestMethod]
-        [Ignore("Mock logger is broken")]
         public void GetAll_WhenNoDevicesExist_ReturnsEmptyResults()
         {
             // Arrange
             var sut = NewDeviceService();
 
             // Act
-            var results = sut.Search(null, string.Empty, string.Empty);
+            var results = sut.Search(new SearchDto());
 
             //Assert
-            results.Payload.Count.Should().Be(0);
+            results.Payload.Should().BeNull();
         }
 
         [TestMethod]
-        [Ignore("Mock logger is broken")]
         public void GetAll_WhenDevicesExist_WithCorrectSearchParams_ReturnsOneResult()
         {
             // Arrange
-            mockDeviceRepository.Setup(x => x.Search(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>())).Returns(new List<Device>{ defaultDevice });
+            mockDeviceRepository.Setup(x => x.Search(It.IsAny<SearchDto>()))
+                .Returns(new List<Device>{ defaultDevice });
             var sut = NewDeviceService();
 
             // Act
-            var results = sut.Search(Guid.Empty, "192.168.0.0", string.Empty);
+            var results = sut.Search(new SearchDto());
+            
+            //Assert
+            results.Payload.Count.Should().Be(1);
+        }
 
+        [TestMethod]
+        [Ignore("IsUp is read only and cannot be set")]
+        public void GetAll_WithIsUpCriteria_ReturnsOneResult()
+        {
+            // Arrange
+            Fixture fixture = new();
+            mockDeviceRepository.Setup(x => x.Search(It.IsAny<SearchDto>()))
+                .Returns(new List<Device>{ 
+                    fixture.Build<Device>().With(x => x.IsUp, true).Create(),
+                    fixture.Build<Device>().With(x => x.IsUp, false).Create(),
+                    fixture.Build<Device>().With(x => x.IsUp, false).Create()
+                 });
+            var sut = NewDeviceService();
+
+            // Act
+            var results = sut.Search(new SearchDto{
+                IsUp = true
+            });
+            
             //Assert
             results.Payload.Count.Should().Be(1);
         }

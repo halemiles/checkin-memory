@@ -7,6 +7,7 @@ using Serilog;
 using Checkin.Services.Interfaces;
 using StackExchange.Redis;
 using System.Net;
+using Checkin.Services.Extensions;
 using System.Threading.Tasks;
 
 namespace Checkin.Repositories
@@ -38,10 +39,10 @@ namespace Checkin.Repositories
                     var result = database.StringGet(key);
                     
                     if(!result.IsNull)
-                    {
-                        var device = new Device();
+                    {                        
                         try
                         {
+                            var device = new Device();
                             device = JsonSerializer.Deserialize<Device>(result);
                             devices.Add(device);
                         }
@@ -92,30 +93,29 @@ namespace Checkin.Repositories
             return new Device();
         }
 
-        public List<Device> Search(Guid? deviceId, string ipAddress, string name)
+        public List<Device> Search(SearchDto searchDto)
         {
-            //TODO - Might need to get all before we can search
             try
             {
-                var result = database.StringGet(name);  //TODO - Use a key for this
-                var devices = new List<Device>();
-                if(!result.IsNull)
+                var allDevices = GetAll();
+                
+                var result = new List<Device>();
+                if(searchDto.DeviceId.HasValue)
                 {
-                    var device = JsonSerializer.Deserialize<Device>(result);
-                    devices.Add(device);
+                    result = allDevices.Where(x => x.Id == searchDto.DeviceId.Value).ToList();
                 }
 
-                //TODO - Does this need checking?
-                // if(deviceId.HasValue)
-                // {
-                //     devices = devices.Where(x => x.Id == deviceId.Value).ToList();
-                // }
+                if(!string.IsNullOrEmpty(searchDto.IpAddress))
+                {
+                    result = allDevices.Where(x => x.IpAddress == searchDto.IpAddress).ToList();
+                }
 
-                // if(!string.IsNullOrEmpty(ipAddress))
-                // {
-                //     devices = devices.Where(x => x.IpAddress == ipAddress).ToList();
-                // }
-                return devices;
+                if(!string.IsNullOrEmpty(searchDto.DeviceName))
+                {
+                    result = allDevices.Where(x => x.Key == searchDto.DeviceName.ToDeviceKey()).ToList();
+                }               
+
+                return result;
             }
             catch(Exception ex)
             {

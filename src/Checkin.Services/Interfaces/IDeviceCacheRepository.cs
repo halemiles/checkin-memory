@@ -11,7 +11,7 @@ namespace Checkin.Services.Interfaces
         Task<bool> Set(string key, Device value); //TODO - Remove key and allow the device ID to do the work
         Task<Device> GetByKey(string key);
         List<Device> GetAll();
-        List<Device> Search(Guid? deviceId, string ipAddress, string name);
+        List<Device> Search(SearchDto searchDto);
         void Delete(string deviceName);
     }
 }
