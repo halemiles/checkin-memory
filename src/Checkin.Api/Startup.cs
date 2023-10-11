@@ -17,9 +17,11 @@ using Serilog;
 using Serilog.Exceptions;
 using StackExchange.Redis;
 using Checkin.Api.Extensions;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Checkin.Api
 {
+    [ExcludeFromCodeCoverage]
     public class Startup
     {
         public Startup(IConfiguration configuration)

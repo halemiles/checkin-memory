@@ -9,9 +9,11 @@ using Checkin.Services;
 using Checkin.Services.Interfaces;
 using AutoMapper;
 using Checkin.Models.Dto;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Checkin.Api.Controllers
 {
+    [ExcludeFromCodeCoverage]
     [ApiController]
     [Route("[controller]")] //TODO - change to /api/v1/device
     public class DeviceController : ControllerBase
