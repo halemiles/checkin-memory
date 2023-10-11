@@ -1,8 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
 namespace Checkin.Api.Extensions
 {
+    [ExcludeFromCodeCoverage]
     public static class Telemetry
     {
         public static IWebHostBuilder UseCustomTelemetry(this IWebHostBuilder webBuilder, IConfiguration configuration)

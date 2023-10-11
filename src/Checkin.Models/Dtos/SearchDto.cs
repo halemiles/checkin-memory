@@ -1,5 +1,7 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 
+[ExcludeFromCodeCoverage]
 public class SearchDto
 {
     public Guid? DeviceId { get; set; }
