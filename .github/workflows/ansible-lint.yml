@@ -4,8 +4,8 @@ name: YAML Lint
 on:  # yamllint disable-line rule:truthy
   push:
     paths:
-      - 'deploy/**/*.yaml'
-      - 'deploy/**/*.yml'
+      - '**/*.yaml'
+      - '**/*.yml'
 
 jobs:
   lint:
