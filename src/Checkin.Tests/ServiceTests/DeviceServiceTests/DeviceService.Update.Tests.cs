@@ -10,6 +10,7 @@ using AutoMapper;
 using Checkin.Tests.Helpers;
 using Serilog;
 using Checkin.Services.Interfaces;
+using System.Threading.Tasks;
 
 namespace Checkin.Tests
 {
@@ -48,14 +49,14 @@ namespace Checkin.Tests
         }
 
         [TestMethod]
-        public void Update_WhenNoDevices_CreatesNew()
+        public async Task Update_WhenNoDevices_CreatesNew()
         {
             // Arrange
-            mockDeviceRepository.Setup(x => x.GetByKey(It.IsAny<string>())).Returns(new Device());
+            mockDeviceRepository.Setup(x => x.GetByKey(It.IsAny<string>())).ReturnsAsync(new Device());
             var sut = NewDeviceService();
 
             // Act
-            sut.CreateOrUpdate(defaultDevice);
+            await sut.CreateOrUpdate(defaultDevice);
 
             //Assert
             mockDeviceRepository.Verify(x => x.GetByKey(It.IsAny<string>()), Times.Once);
@@ -63,17 +64,17 @@ namespace Checkin.Tests
         }
 
         [TestMethod]
-        public void Update_WhenDeviceExists_ExistingIsUpdated()
+        public async Task Update_WhenDeviceExists_ExistingIsUpdated()
         {
             // Arrange
-            var existingDevices = new List<Device>() {
+            var existingDevices = new List<Device>{
                 new Device
-            {
-                Id =  Guid.Empty,
-                CreatedDate = new DateTime(2000,1,1),
-                Name = "Test Device",
-                IpAddress = "127.0.0.2"
-            }
+                {
+                    Id =  Guid.Empty,
+                    CreatedDate = new DateTime(2000,1,1),
+                    Name = "Test Device",
+                    IpAddress = "127.0.0.2"
+                }
             };
 
             var expectedDevices = new List<Device>() {defaultDevice};
@@ -81,7 +82,7 @@ namespace Checkin.Tests
             var sut = NewDeviceService();
 
             // Act
-            sut.CreateOrUpdate(defaultDevice);
+            await sut.CreateOrUpdate(defaultDevice);
 
             //Assert
             mockDeviceRepository.Verify(x => x.GetByKey(It.IsAny<string>()), Times.Once);
@@ -90,10 +91,10 @@ namespace Checkin.Tests
 
         [TestMethod]
         [Ignore("Needs more thought")]
-        public void Update_WhenDeviceExists_DeviceChangesAreMerged()
+        public async Task Update_WhenDeviceExists_DeviceChangesAreMerged()
         {
             // Arrange
-            var existingDevices = new List<Device>() {
+            var existingDevices = new List<Device>{
                 new Device
             {
                 Id =  Guid.Empty,
@@ -108,7 +109,7 @@ namespace Checkin.Tests
             var sut = NewDeviceService();
 
             // Act
-            sut.CreateOrUpdate(defaultDevice);
+            await sut.CreateOrUpdate(defaultDevice);
 
             //Assert
             mockDeviceRepository.Verify(x => x.Set(expectedDevices), Times.Once);

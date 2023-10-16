@@ -11,6 +11,7 @@ using Checkin.Services.Interfaces;
 using AutoMapper;
 using Checkin.Tests.Helpers;
 using AutoFixture;
+using System.Threading.Tasks;
 
 namespace Checkin.Tests
 {
@@ -54,14 +55,14 @@ namespace Checkin.Tests
         }
 
         [TestMethod]
-        public void Add_WhenRepositoryReturnsNull_DeviceCreated_ReturnsSuccess()
+        public async Task Add_WhenRepositoryReturnsNull_DeviceCreated_ReturnsSuccess()
         {
             // Arrange
-            mockDeviceRepository.Setup(x => x.GetByKey(It.IsAny<string>())).Returns(new Device());
+            mockDeviceRepository.Setup(x => x.GetByKey(It.IsAny<string>())).ReturnsAsync(new Device());
             var sut = NewDeviceService();
 
             // Act
-            var result = sut.CreateOrUpdate(defaultDevice);
+            var result = await sut.CreateOrUpdate(defaultDevice);
 
             //Assert
             mockDeviceRepository.Verify(x => x.GetByKey(It.IsAny<string>()), Times.Once);
@@ -70,14 +71,14 @@ namespace Checkin.Tests
         }
 
         [TestMethod]
-        public void Add_WhenNoDevices_DeviceCreated_ReturnsSuccess()
+        public async Task Add_WhenNoDevices_DeviceCreated_ReturnsSuccess()
         {
             // Arrange
-            mockDeviceRepository.Setup(x => x.GetByKey(It.IsAny<string>())).Returns(new Device());
+            mockDeviceRepository.Setup(x => x.GetByKey(It.IsAny<string>())).ReturnsAsync(new Device());
             var sut = NewDeviceService();
 
             // Act
-            var result = sut.CreateOrUpdate(defaultDevice);
+            var result = await sut.CreateOrUpdate(defaultDevice);
 
             //Assert
             mockDeviceRepository.Verify(x => x.GetByKey(It.IsAny<string>()), Times.Once);
@@ -86,17 +87,17 @@ namespace Checkin.Tests
         }
 
         [TestMethod]
-        public void Add_WhenExistingDevices_DeviceUpdated_ReturnsSuccess()
+        public async Task Add_WhenExistingDevices_DeviceUpdated_ReturnsSuccess()
         {
             // Arrange
             //List<Device> devices = DeviceGenerationHelpers();
 
-            mockDeviceRepository.Setup(x => x.GetByKey(It.IsAny<string>())).Returns(new Device());
+            mockDeviceRepository.Setup(x => x.GetByKey(It.IsAny<string>())).ReturnsAsync(new Device());
             mockDeviceRepository.Setup(x => x.Set(It.IsAny<List<Device>>())).Returns(true);
             var sut = NewDeviceService();
 
             // Act
-            var result = sut.CreateOrUpdate(defaultDevice);
+            var result = await sut.CreateOrUpdate(defaultDevice);
 
             //Assert
             mockDeviceRepository.Verify(x => x.GetByKey(It.IsAny<string>()), Times.Once);
@@ -105,16 +106,16 @@ namespace Checkin.Tests
         }
 
         [TestMethod]
-        public void Add_WhenExistingDevices_ReturnsFailure()
+        public async Task Add_WhenExistingDevices_ReturnsFailure()
         {
             // Arrange
             Device devices = new();
-            mockDeviceRepository.Setup(x => x.GetByKey(It.IsAny<string>())).Returns(devices);
+            mockDeviceRepository.Setup(x => x.GetByKey(It.IsAny<string>())).ReturnsAsync(devices);
             mockDeviceRepository.Setup(x => x.Set(It.IsAny<string>(),It.IsAny<Device>())).Throws(new Exception());
             var sut = NewDeviceService();
 
             // Act
-            var result = sut.CreateOrUpdate(defaultDevice);
+            var result = await sut.CreateOrUpdate(defaultDevice);
 
             //Assert
             mockDeviceRepository.Verify(x => x.GetByKey(It.IsAny<string>()), Times.Once);

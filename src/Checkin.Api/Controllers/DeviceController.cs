@@ -8,9 +8,12 @@ using Checkin.Models;
 using Checkin.Services;
 using Checkin.Services.Interfaces;
 using AutoMapper;
+using Checkin.Models.Dto;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Checkin.Api.Controllers
 {
+    [ExcludeFromCodeCoverage]
     [ApiController]
     [Route("[controller]")] //TODO - change to /api/v1/device
     public class DeviceController : ControllerBase
@@ -33,12 +36,10 @@ namespace Checkin.Api.Controllers
 
         [HttpGet("search")]
         public ActionResult Search(
-            [FromQuery] Guid? deviceId,
-            [FromQuery] string ipAddress,
-            [FromQuery] string name
+            [FromBody] SearchDto searchViewModel
         )
         {
-            var result = deviceService.Search(deviceId, ipAddress, name);
+            var result = deviceService.Search(searchViewModel);
 
               
 
@@ -48,8 +49,7 @@ namespace Checkin.Api.Controllers
         [HttpGet]
         public ActionResult GetAll(string name)
         {
-            var devices = deviceService.GetAll();
-
+            var devices = deviceService.GetAll(); //TODO - Return the DeviceDto
 
             return Ok(devices);
             //TODO - Return not found if no devices are found
@@ -59,12 +59,12 @@ namespace Checkin.Api.Controllers
         public ActionResult Summary(string name)
         {
             var devices = deviceService.GetAll();
-            var mappedSummary = devices.Payload.Select(x => mapper.Map<Device, DeviceSummaryDto>(x));
+            var mappedSummary = devices.Payload.Select(x => mapper.Map<DeviceDto, DeviceSummaryDto>(x));
             return Ok(mappedSummary);
         }
 
         [HttpPost]
-        public ActionResult CreateDevice([FromBody]DeviceDto deviceDto)
+        public async Task<ActionResult> CreateDevice([FromBody]DeviceDto deviceDto)
         {
             logger
                 .ForContext("DeviceName",deviceDto.Name)
@@ -73,7 +73,7 @@ namespace Checkin.Api.Controllers
             try
             {
                 var device = mapper.Map<DeviceDto, Device>(deviceDto);
-                deviceService.CreateOrUpdate(device);
+                await deviceService.CreateOrUpdate(device);
             }    
             catch(Exception ex)
             {
@@ -88,12 +88,12 @@ namespace Checkin.Api.Controllers
         }
 
         [HttpPut]
-        public IActionResult UpdateDevice([FromBody] DeviceDto deviceDto)
+        public async Task<ActionResult> UpdateDevice([FromBody] DeviceDto deviceDto)
         {
              try
             {
                 var device = mapper.Map<DeviceDto, Device>(deviceDto);
-                deviceService.CreateOrUpdate(device);
+                await deviceService.CreateOrUpdate(device);
             }    
             catch(Exception ex)
             {

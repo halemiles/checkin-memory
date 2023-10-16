@@ -1,5 +1,6 @@
 using System;
 using AutoMapper;
+using Checkin.Models.Dto;
 
 namespace Checkin.Models
 {

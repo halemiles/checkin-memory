@@ -2,9 +2,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Checkin.Api.Extensions;
 using Serilog;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Checkin.Api
 {
+    [ExcludeFromCodeCoverage]
     public static class Program
     {
         public static void Main(string[] args)
@@ -18,7 +20,6 @@ namespace Checkin.Api
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                    //webBuilder.UseCustomTelemetry();
                 });
     }
 }
