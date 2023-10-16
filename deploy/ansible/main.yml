@@ -1,19 +1,20 @@
 ---
 - name: Copy file and install cronjob
-  hosts: servers  # Replace with your target host
-    #become: yes  # Enable privilege escalation
+  hosts: servers
 
   vars_files:
     - vars/config.vars
-    
+
   tasks:
     - name: Copy file to remote host
-      copy:
+      ansible.builtin.copy:
         src: "{{ file_to_copy }}"
         dest: "{{ destination_directory }}/"
+        mode: preserve
+        create: true
 
     - name: Add cronjob
-      cron:
+      ansible.builtin.cron:
         name: "Run checkin scipt"
         minute: "*/2"
         job: "/usr/bin/python3 /home/miles/checkin/checkin.py"
