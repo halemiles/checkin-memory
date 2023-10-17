@@ -99,7 +99,7 @@ namespace Checkin.Repositories
             {
                 var allDevices = GetAll();
                 
-                var result = new List<Device>();
+                var result = allDevices;
                 if(searchDto.DeviceId.HasValue)
                 {
                     result = allDevices.Where(x => x.Id == searchDto.DeviceId.Value).ToList();

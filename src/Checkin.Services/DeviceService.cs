@@ -47,7 +47,7 @@ namespace Checkin.Services
                     device.Id = Guid.NewGuid();
                 }
                 device.CheckinDate = DateTime.Now; //TODO - This may change in the future if we want to use another service and nmap to map out a network
-                deviceRepository.Set(deviceKey, device); 
+                await deviceRepository.Set(deviceKey, device); 
             }
             catch(Exception err)
             {
@@ -86,6 +86,14 @@ namespace Checkin.Services
             if(searchDto.IsUp.HasValue)
             {
                 results = (List<Device>)results.Where(x => x.CheckinDate.IsUp() == searchDto.IsUp.Value);
+            }
+
+            if(searchDto.AttributeKeys.Any())
+            {
+                var foundDevices = (List<Device>)results
+                    .Where(x => x.Attributes.Any(y => searchDto.AttributeKeys.Contains(y.Value))).ToList();
+
+                results = foundDevices;
             }
 
             if(results.Any())
