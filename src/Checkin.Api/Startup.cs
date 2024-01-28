@@ -74,12 +74,14 @@ namespace Checkin.Api
 
             Log.Information("Using distributed cache");
             var redisSettings = Configuration.GetSection("Redis").Get<RedisProviderSettings>();
-           
+
             services.AddSingleton<IConnectionMultiplexer>(sp =>
                 ConnectionMultiplexer.Connect(redisSettings.ConnectionString)
             );
 
             services.AddScoped<IDeviceCacheRepository, RedisDeviceCacheRepository>();
+            services.AddHostedService<TimedHostedService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

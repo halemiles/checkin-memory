@@ -1,15 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Checkin.Models;
-using Checkin.Services;
-using Checkin.Services.Interfaces;
-using AutoMapper;
 using System.Diagnostics.CodeAnalysis;
-using Discord.WebSocket;
 using System.Collections.Specialized;
 using System.Net;
 using Microsoft.Extensions.Configuration;
