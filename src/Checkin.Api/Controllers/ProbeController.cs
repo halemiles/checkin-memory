@@ -9,6 +9,10 @@ using Checkin.Services;
 using Checkin.Services.Interfaces;
 using AutoMapper;
 using System.Diagnostics.CodeAnalysis;
+using Discord.WebSocket;
+using System.Collections.Specialized;
+using System.Net;
+using Microsoft.Extensions.Configuration;
 
 namespace Checkin.Api.Controllers
 {
@@ -18,11 +22,14 @@ namespace Checkin.Api.Controllers
     public class ProbeController : ControllerBase
     {
         private readonly ILogger<ProbeController> logger;
+        private readonly IConfiguration configuration;
         public ProbeController(
-            ILogger<ProbeController> logger
+            ILogger<ProbeController> logger,
+            IConfiguration configuration
         )
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
         [HttpGet]
@@ -31,5 +38,25 @@ namespace Checkin.Api.Controllers
             logger.LogInformation("Accessing version");
             return Ok("v0.1");
         }
+
+        
+
+        [HttpGet("testwebhook")]
+        public IActionResult TestWebhook2()
+        {
+            var hookUrl = configuration.GetSection("NotificationSettings").Get<NotificationSettings>();
+            sendDiscordWebhook(hookUrl.DiscordWebhookUrl, null, "Test person", "Test Message");
+            return Ok();
+        }
+
+        private void sendDiscordWebhook(string URL, string profilepic, string username, string message)
+        {
+                NameValueCollection discordValues = new NameValueCollection();
+                discordValues.Add("username", username);
+                discordValues.Add("avatar_url", profilepic);
+                discordValues.Add("content", message);
+                new WebClient().UploadValues(URL, discordValues);
+        }
+
     }
 }
