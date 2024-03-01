@@ -36,15 +36,31 @@ namespace Checkin.Api.Controllers
 
         [HttpGet("search")]
         public ActionResult Search(
-            [FromBody] SearchDto searchViewModel
+            [FromQuery] Guid? deviceId,
+            [FromQuery] string ipAddress,
+            [FromQuery] IEnumerable<string> attributeKeys,
+            [FromQuery] bool? isUp,
+            [FromQuery] string deviceName,
+            [FromQuery] string sortBy,
+            [FromQuery] bool? sortDescending
         )
         {
-            var result = deviceService.Search(searchViewModel);
+            var searchDto = new SearchDto
+            {
+                DeviceId = deviceId,
+                IpAddress = ipAddress,
+                //AttributeKeys = attributeKeys,
+                IsUp = isUp,
+                DeviceName = deviceName,
+                SortBy = sortBy,
+                SortDescending = sortDescending
+            };
 
-              
+            var result = deviceService.Search(searchDto);
 
             return Ok(result);
         }
+
 
         [HttpGet]
         public ActionResult GetAll(string name)
@@ -74,16 +90,16 @@ namespace Checkin.Api.Controllers
             {
                 var device = mapper.Map<DeviceDto, Device>(deviceDto);
                 await deviceService.CreateOrUpdate(device);
-            }    
+            }
             catch(Exception ex)
             {
                 logger
                     .Fatal(ex.ToString());
-                
+
                 return StatusCode(500);
             }
-            
-            
+
+
             return Ok();
         }
 
@@ -94,16 +110,16 @@ namespace Checkin.Api.Controllers
             {
                 var device = mapper.Map<DeviceDto, Device>(deviceDto);
                 await deviceService.CreateOrUpdate(device);
-            }    
+            }
             catch(Exception ex)
             {
                 logger
                     .Fatal(ex.ToString());
-                
+
                 return StatusCode(500);
             }
 
-            
+
             return Ok();
             //TODO - Return internal error if the device is not updated.
         }

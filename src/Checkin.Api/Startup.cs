@@ -41,6 +41,18 @@ namespace Checkin.Api
                 .Enrich.FromLogContext()
                 .Enrich.WithExceptionDetails();
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllOrigins",
+                    builder => builder
+                        .WithOrigins("http://localhost:3000")
+                        .WithOrigins("http://localhost:5000")
+                        .WithOrigins("https://localhost:5001")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials());
+            });
+
             // We only want to add Seq if we have defined a host
             var seqSettings = Configuration.GetSection("Seq").Get<SeqSettings>();
             if(seqSettings.UseSeq)
@@ -60,7 +72,7 @@ namespace Checkin.Api
                 mapperConfig.AddProfile<DeviceToDeviceMergeProfile>();
                 mapperConfig.AddProfile<DeviceNetworkToDeviceNetworkDtoProfile>();
                 mapperConfig.AddProfile<DeviceBatterToDeviceBatteryDtoProfile>();
-                mapperConfig.AddProfile<ServiceStatusToServiceStatusDtoProfile>();  
+                mapperConfig.AddProfile<ServiceStatusToServiceStatusDtoProfile>();
                 mapperConfig.AddProfile<ServiceStatusDtoToServiceStatusProfile>();
                 mapperConfig.AddProfile<DeviceToDeviceSummaryDtoProfile>();
                 mapperConfig.AddProfile<DockerServiceDtoToDockerServiceProfile>();
@@ -74,7 +86,7 @@ namespace Checkin.Api
 
             Log.Information("Using distributed cache");
             var redisSettings = Configuration.GetSection("Redis").Get<RedisProviderSettings>();
-           
+
             services.AddSingleton<IConnectionMultiplexer>(sp =>
                 ConnectionMultiplexer.Connect(redisSettings.ConnectionString)
             );
@@ -90,6 +102,7 @@ namespace Checkin.Api
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Checkin.Api v1"));
+                app.UseCors("AllowAllOrigins");
             }
 
             app.UseHttpsRedirection();
