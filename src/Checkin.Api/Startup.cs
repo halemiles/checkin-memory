@@ -18,6 +18,7 @@ using Serilog.Exceptions;
 using StackExchange.Redis;
 using Checkin.Api.Extensions;
 using System.Diagnostics.CodeAnalysis;
+using Microsoft.ApplicationInsights.Extensibility;
 
 namespace Checkin.Api
 {
@@ -35,9 +36,11 @@ namespace Checkin.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.ConfigureTelemetry(Configuration);
-
+            var telemetryConfiguration = new TelemetryConfiguration(Configuration["ApplicationInsights:ConnectionString"]);
+            
             var logger = new LoggerConfiguration()
                 .WriteTo.Console()
+                .WriteTo.ApplicationInsights(telemetryConfiguration,  TelemetryConverter.Traces)
                 .Enrich.FromLogContext()
                 .Enrich.WithExceptionDetails();
 
@@ -54,12 +57,12 @@ namespace Checkin.Api
             });
 
             // We only want to add Seq if we have defined a host
-            var seqSettings = Configuration.GetSection("Seq").Get<SeqSettings>();
-            if(seqSettings.UseSeq)
-            {
-                logger.WriteTo.Seq(seqSettings.Host,
-                 apiKey: seqSettings.ApiKey);
-            }
+            // var seqSettings = Configuration.GetSection("Seq").Get<SeqSettings>();
+            // if(seqSettings.UseSeq)
+            // {
+            //     logger.WriteTo.Seq(seqSettings.Host,
+            //      apiKey: seqSettings.ApiKey);
+            // }
 
             Log.Logger = logger.CreateLogger();
 
@@ -80,6 +83,8 @@ namespace Checkin.Api
             });
 
             services.AddScoped<IDeviceService, DeviceService>();
+            services.AddScoped<IWebhookService, WebhookService>();
+            services.AddSingleton<IAlertService, AlertService>();
 
             services.AddControllers();
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "Checkin.Api", Version = "v1" }));
@@ -92,6 +97,7 @@ namespace Checkin.Api
             );
 
             services.AddScoped<IDeviceCacheRepository, RedisDeviceCacheRepository>();
+            services.AddHostedService<TimedHostedService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

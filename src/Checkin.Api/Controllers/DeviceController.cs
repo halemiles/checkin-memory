@@ -10,6 +10,8 @@ using Checkin.Services.Interfaces;
 using AutoMapper;
 using Checkin.Models.Dto;
 using System.Diagnostics.CodeAnalysis;
+using System.Collections.Specialized;
+using System.Net;
 
 namespace Checkin.Api.Controllers
 {
@@ -33,6 +35,7 @@ namespace Checkin.Api.Controllers
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
+
 
         [HttpGet("search")]
         public ActionResult Search(
